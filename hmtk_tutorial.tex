@@ -1,0 +1,119 @@
+\documentclass[11pt,a4paper,headings=small,dvips]{scrbook}
+\input{configuration.tex}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage[utf8]{inputenc}
+
+\newenvironment{myfancybox}{%
+  \def\FrameCommand{\fboxsep=\FrameSep \fcolorbox{blue01}{honeydew}}%
+  \color{black}\MakeFramed {\FrameRestore}}%
+ {\endMakeFramed}
+
+\setlength{\parskip}{2.5mm}
+\setlength{\parindent}{0.0mm}
+
+\begin{document}
+\setcounter{page}{1}
+
+\begin{titlepage}
+	\title{ \textcolor{blue01}{\textsf{\bfseries\Huge 
+        Hazard Modeller's Toolkit
+        }}}
+	\subtitle{ \textcolor{blue01}{\textsf{\bfseries\LARGE
+        Documentation \& Tutorial}}}
+	\date{July 2013}
+ 
+	\publishers{GEM Foundation, Pavia}
+\end{titlepage}
+\pagestyle{scrheadings}
+\maketitle
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  Load the glossary
+%\input{glossary.tex}
+% -----------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
+%\chapter*{Introduction}
+%\cleardoublepage
+% -----------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
+\tableofcontents
+\cleardoublepage
+% 
+% % -----------------------------------------------------------------------------
+\chapter{Introduction to the Hazard Modeller's Toolkit}
+\begin{myfancybox}
+The objectives of this chapter are:
+\begin{itemize}
+    \item Outline the purpose and creation of the Hazard Modeller's Toolkit 
+    \item Setup and Installation of the Software
+\end{itemize}
+\end{myfancybox}
+  \input{mtk_setup.tex}
+\cleardoublepage
+% % -----------------------------------------------------------------------------
+% % -----------------------------------------------------------------------------
+
+\chapter{Seismicity Tools}
+\begin{myfancybox}
+The objectives of this chapter are:
+\begin{itemize}
+    \item Describe features of the seismicity tools of the Hazard Modeller's Toolkit 
+    \item Run simple calculations using the seismicity tools
+\end{itemize}
+\end{myfancybox}
+  \input{catalogue_tools.tex}
+\cleardoublepage
+
+
+% \cleardoublepage
+% % -----------------------------------------------------------------------------
+\chapter{Geological Tools}
+\begin{myfancybox}
+The objectives of this chapter are:
+\begin{itemize}
+    \item Describe features of the geological tools Hazard Modeller's Toolkit 
+    \item Run simple calculations using the geological tools 
+\end{itemize}
+\end{myfancybox}
+  \input{geology_tools.tex}
+\cleardoublepage
+
+
+% \cleardoublepage
+% % -----------------------------------------------------------------------------
+\chapter{Geodetic Tools}
+\begin{myfancybox}
+The objectives of this chapter are:
+\begin{itemize}
+    \item Describe features of the geodetic tools Hazard Modeller's Toolkit 
+    \item Run simple calculations using the geodetic tools 
+\end{itemize}
+\end{myfancybox}
+  \input{geodetic_tools.tex}
+\cleardoublepage
+
+
+% -----------------------------------------------------------------------------
+%\part{Appendices}
+%\appendix
+% -----------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
+%\chapter{Accessing computation resources}
+%\begin{myfancybox}
+% The objectives of this chapter are:
+% \begin{itemize}
+%     \item to explain how to access computation resources to complete this 
+%         OpenQuake-engine training.
+% \end{itemize}
+%\end{myfancybox}
+%\input{./appendix/computation_resources.tex}
+% -----------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
+%\cleardoublepage
+\bibliographystyle{apalike}
+\bibliography{./bibliography/hazard}
+\cleardoublepage
+\printglossaries
+\printindex
+% -----------------------------------------------------------------------------
+% -----------------------------------------------------------------------------
+\end{document}
