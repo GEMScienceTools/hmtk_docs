@@ -55,6 +55,7 @@ The current dependencies are:
     \hfill \\ (\href{http:/github.com/gem/oq-hazardlib}{http:/github.com/gem/oq-hazardlib})
 \item Matplotlib (\href{http://matplotlib.org/}{http://matplotlib.org/})
 \item PyYaml
+\item Python Decorator
 \end{itemize}
 
 If the OpenQuake Hazard Library (oq-hazardlib) and the OpenQuake Nrml library are already installed on your system (as would be the case if a full installation of the OpenQuake-engine has already been successfully installed) then both dependencies are already available. If this is not the case, however, you will need to install the packages manually. For Linux and OSX users, the recommended approach is to run:
@@ -68,15 +69,77 @@ If the OpenQuake Hazard Library (oq-hazardlib) and the OpenQuake Nrml library ar
 
 As of April 2013, the packages have not been tested in a Windows environment, so the recommended approach for windows users would be to use Ubuntu Linux 12.04 within a Virtual Machine.
 
-
-The Matplotlib and Pyyaml dependencies are installed in the library for the demos, but can be installed easy from the command line by:
+The Matplotlib, Pyyaml and Decorator dependencies are installed in the library for the demos, but can be installed easy from the command line by:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
 ~\$ sudo pip install matplotlib
 ~\$ sudo pip install pyyaml
+~\$ sudo pip install decorator
 
 \end{Verbatim}
+
+To enable usage of the hmtk within any location in the operating system, OSX and Linux users should add the folder location manually to the command line profile file. This can be done as follows:
+
+\begin{enumerate}
+\item Using a command line text editor (e.g. VIM), open the \verb=~/.profile= folder as follows:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+~\$ vim ~/.profile
+\end{Verbatim}
+
+\item At the bottom of the profile file (if one does not exist it will be created) add the line:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+export PYTHONPATH=/path/to/hmtk/folder/:\$PYTHONPATH
+\end{Verbatim}
+
+Where \verb=/path/to/hmtk/folder/ is the system path to the location of the hmtk folder (use the command \verb=pwd= from within the hmtk folder to view the full system path).
+
+\item Re-source the bash shell via the command
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+~\$ source ~/.profile
+\end{Verbatim}
+ 
+\end{enumerate}
+
+\subsection{Windows Installation}
+
+Although this installation has been primarily tested in a Linux/Unix environment it may be possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
+
+The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the openquake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
+
+Click on the executable and follow the instructions (the installation may take up to half an hour or more, depending on the system). It is strongly recommended that the use opt for the ``\textbf{FULL}'' installation, which should bring in almost all of the dependencies needed for installing the OpenQuake hazard library. 
+
+For the oq-nrmllib it is necessary to install the Lxml library (\href{http://lxml.de}{http://lxml.de}). This is not officially supported for Windows, so it is recommended (by Python developers themselves!) to install the unofficial Lxml binding from here: \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/}{http://www.lfd.uci.edu/~gohlke/pythonlibs/}. Download and then run the 32-bit package named ``lxml-\#.\#.\#.win32-py2.7.exe''.
+
+Next you will need to install the op-hazardlib and oq-nrmllib. From the web repositories listed previously click the button ``Download Zip'', then extract contents to the folders \verb=C:/oq-hazardlib= and \verb=C:/oq-nrmllib= respectively.
+
+Now open up an enhanced IPython console. Go to Start $->$ Python(xy) $->$ Enhanced Consoles $->$ Ipython (sh). This will open up an Ipython console terminal. To install the oq-hazardlib, at the console prompt type:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+~\$: cd C:/oq-hazardlib/
+~\$: python setup.py install build --compiler=mingw32
+\end{Verbatim}
+
+This will install the oq-hazardlib with the full C-extensions, which speed up some of the geometry calculations. Then do the same with the oq-nrmllib.
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+~\$: cd C:/oq-hazardlib/
+~\$: python setup.py install
+\end{Verbatim}
+
+Then close the console by typing \verb=exit=. 
+
+Finally, download the zipped folder of the hmtk from the github repository 
+
+
+
+
+
+
+
 
 %\textbf{For the purposes of the current exercises all of the Modeller's Toolkit dependencies have been installed in both the OpenQuake .ova files and on the OATS server - so no installation is necessary! For instructions on how to install OpenQuake and the Modeller's Toolkit, please refer to the appendix of this document}
 
