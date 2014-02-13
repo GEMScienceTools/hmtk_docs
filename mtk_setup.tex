@@ -104,7 +104,7 @@ Where \verb=/path/to/hmtk/folder/ is the system path to the location of the hmtk
  
 \end{enumerate}
 
-\subsection{Windows Installation}
+\subsubsection{Windows Installation}
 
 Although this installation has been primarily tested in a Linux/Unix environment it may be possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
 
@@ -112,7 +112,7 @@ The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of t
 
 Click on the executable and follow the instructions (the installation may take up to half an hour or more, depending on the system). It is strongly recommended that the use opt for the ``\textbf{FULL}'' installation, which should bring in almost all of the dependencies needed for installing the OpenQuake hazard library. 
 
-For the oq-nrmllib it is necessary to install the Lxml library (\href{http://lxml.de}{http://lxml.de}). This is not officially supported for Windows, so it is recommended (by Python developers themselves!) to install the unofficial Lxml binding from here: \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/}{http://www.lfd.uci.edu/~gohlke/pythonlibs/}. Download and then run the 32-bit package named ``lxml-\#.\#.\#.win32-py2.7.exe''.
+For the oq-nrmllib it is necessary to install the Lxml library (\href{http://lxml.de}{http://lxml.de}). This is not officially supported for Windows, so it is recommended (by Python developers themselves!) to install the unofficial Lxml binding from here: \footnote{\href{http://www.lfd.uci.edu/~gohlke/pythonlibs/}{http://www.lfd.uci.edu/~gohlke/pythonlibs/}}. Download and then run the 32-bit package named ``lxml-\#.\#.\#.win32-py2.7.exe''.
 
 Next you will need to install the op-hazardlib and oq-nrmllib. From the web repositories listed previously click the button ``Download Zip'', then extract contents to the folders \verb=C:/oq-hazardlib= and \verb=C:/oq-nrmllib= respectively.
 
@@ -132,12 +132,17 @@ This will install the oq-hazardlib with the full C-extensions, which speed up so
 
 Then close the console by typing \verb=exit=. 
 
-Finally, download the zipped folder of the hmtk from the github repository 
+Finally, download the zipped folder of the hmtk from the github repository and unzip to a folder of your choosing. To allow for usage of the hmtk throughout your operating system, do the following: 
 
+\begin{enumerate}
+\item From the desktop, right-click \textbf{My Computer} and open \textbf{Properties}
+\item In the ``System Properties'' window click on the \textbf{Advanced} tab.
+\item From the ``Advanced'' section open the \textbf{Environment Variables}.
+\item In the ``Environment Variables'' you sill see a list of ``System Variables'', select ``Path'' and ``Edit''.
+\item Add the path to the hmtk directory to the list of folders then save.
+\end{enumerate}
 
-
-
-
+After this process it may be necessary to restart PythonXY.
 
 
 
