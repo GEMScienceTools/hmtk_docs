@@ -1225,12 +1225,11 @@
   number = {6}
 }
 
-@TECHREPORT{Mignan2010,
-  author = {Mignan, A. and Woessner, J. and Scherlemmer, D.},
-  title = {Theme {IV} - {U}nderstanding {S}eismicity {C}atalogs and their {P}roblems
-	{DRAFT}},
+@TECHREPORT{MignanWoessner2012,
+  author = {Mignan, A. and W\"{o}essner, J.},
+  title = {Theme {IV} - {U}nderstanding {S}eismicity {C}atalogs and their {P}roblems},
   institution = {Community Online Resource for Statistical Seismicity Analysis},
-  year = {2010},
+  year = {2012},
   number = {doi: 10.5078/corssa-00180805},
   owner = {GW},
   timestamp = {2010.11.03},
