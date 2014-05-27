@@ -1,0 +1,536 @@
+The HMTK is intended to be used by scientists and engineers without the necessity of having an existing knowledge of Python. It is hoped that the examples contained in this manual should provide enough context to allow the user to understand how to use the tools for their own needs. In spite of this, however, an understanding of the fundamentals of the Python programming language can greatly enhance the user experience and permit the user to join together the tools in a workflow that best matches their needs. 
+
+The aim of this appendix is therefore to introduce some fundamentals of the Python programming language in order to help understand how, and why, the HMTK can be used in a specific manner. If the reader wishes to develop their knowledge of the Python programming language beyond the examples shown here, there is a considerable body of literature on the topic from both a scientific and developer perspective.
+
+\section{Basic Data Types}
+
+Fundamental to the use of the HMTK is an understanding of the basic data types Python recognises:
+
+
+\subsection{Scalar Parameters}
+
+\begin{itemize}
+\item \textbf{float} A floating point (decimal) number. If the user wishes to enter in a floating point value then a decimal point must be included, even if the number is rounded to an integer.
+
+\begin{lstlisting}[frame=single]
+>> a = 3.5
+>> print a, type(a)
+3.5 <type 'float'>
+\end{lstlisting}
+
+\item \textbf{integer} An integer number. If the decimal point is omitted for a floating point number the number will be considered an integer
+
+\begin{lstlisting}[frame=single]
+>> b = 3
+>> print b, type(b)
+3 <type 'int'>
+\end{lstlisting}
+
+The functions \verb=float()= and \verb=int()= can convert an integer to a float and vice-versa. Note that taking \verb=int()= of a fraction will round the fraction down to the nearest integer
+
+\begin{lstlisting}[frame=single]
+>> float(b)
+3
+>> int(a)
+3
+\end{lstlisting}
+
+\item \textbf{string} A text string (technically a ``list'' of text characters). The string is indicated by the quotation marks ''something'' or 'something else'
+
+\begin{lstlisting}[frame=single]
+>> c = "apples"
+>> print c, type(c)
+apples <type 'str'>
+\end{lstlisting}
+
+\item \textbf{bool} For logical operations python can recognise a variable with a boolean data type (\verb=True= / \verb=False=).
+
+\begin{lstlisting}[frame=single]
+>> d = True
+>> if d:
+       print "y"
+   else:
+       print "n"
+y
+>> d = False
+>> if d:
+       print "y"
+   else:
+       print "n"
+n
+\end{lstlisting}
+
+\emph{Care should be taken in Python as the value 0 and 0.0 are both recognised as False if applied to a logical operation. Similarly, booleans can be used in arithmetic where True and False take the values 1 and 0 respectively}
+
+\begin{lstlisting}[frame=single]
+>> d = 1.0
+>> if d:
+       print "y"
+   else:
+       print "n"
+y
+>> d = 0.0
+>> if d:
+       print "y"
+   else:
+       print "n"
+n
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Scalar Arithmetic}
+
+Scalars support basic mathematical operations (\# indicates a comment):
+
+\begin{lstlisting}[frame=single]
+>> a = 3.0
+>> b = 4.0
+>> a + b # Addition
+7.0
+>> a * b # Multiplication
+12.0
+>> a - b # Subtraction
+-1.0
+>> a / b # Division
+0.75
+>> a ** b  # Exponentiation
+81.0
+# But integer behaviour can be different!
+>> a = 3; b = 4
+>> a / b
+0
+>> b / a
+1
+\end{lstlisting}
+
+\subsection{Iterables}
+
+Python can also define variables as lists, tuples and sets. These data types can form the basis for iterable operations. It should be noted that unlike other languages, such as Matlab or Fortran, Python iterable locations are zero-ordered (i.e. the first location in a list has an index value of 0, rather than 1). 
+
+\begin{itemize}
+\item \textbf{List} A simple list of objects, which have the same or different data types. Data in lists can be re-assigned or replaced
+\begin{lstlisting}[frame=single]
+>> a_list = [3.0, 4.0, 5.0]
+>> print a_list
+[3.0, 4.0, 5.0]
+>> another_list = [3.0, "apples", False]
+>> print another_list
+[3.0, 'apples', False]
+>> a_list[2] = -1.0
+a_list = [3.0, 4.0, -1.0]
+\end{lstlisting}
+
+\item \textbf{Tuples} Collections of objects that can be iterated upon. As with lists, they can support mixed data types. However, objects in a tuple cannot be re-assigned or replaced.
+\begin{lstlisting}[frame=single]
+>> a_tuple = (3.0, "apples", False)
+>> print a_tuple
+(3.0, 'apples', False)
+# Try re-assigning a value in a tuple
+>> a_tuple[2] = -1.0
+TypeError                Traceback (most recent call last)
+<ipython-input-43-644687cfd23c> in <module>()
+----> 1 a_tuple[2] = -1.0
+
+TypeError: 'tuple' object does not support item assignment
+\end{lstlisting}
+
+\item \textbf{Range} A range is a convenient function to generate arithmetic progressions. They are called with a \verb=start=, a \verb=stop= and (optionally) a \verb=step= (which defaults to 1 if not specified)
+
+\begin{lstlisting}[frame=single]
+>> a = range(0, 5)
+>> print a
+[0, 1, 2, 3, 4]  # Note that the stop number is not 
+                 # included in the set!  
+>> b = range(0, 6, 2)
+>> print b
+[0, 2, 4]
+\end{lstlisting}
+
+\item \textbf{Sets} A set is a special case of an iterable in which the elements are unordered, but contains more enhanced mathematical set operations (such as intersection, union, difference, etc.)
+
+\begin{lstlisting}[frame=single]
+>> from sets import Set
+>> x = Set([3.0, 4.0, 5.0, 8.0])
+>> y = Set([4.0, 7.0])
+>> x.union(y)
+Set([3.0, 4.0, 5.0, 7.0, 8.0])
+>> x.intersection(y)
+Set([4.0])
+>> x.difference(y)
+Set([8.0, 3.0, 5.0]) # Notice the results are not ordered!
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Indexing}
+
+For some iterables (including lists, sets and strings) Python allows for subsets of the iterable to be selected and returned as a new iterable. The selection of elements within the set is done according to the \verb=index= of the set. 
+
+\begin{lstlisting}[frame=single]
+>> x = range(0, 10)  # Create an iterable
+>> print x
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>> print x[0] # Select the first element in the set
+0             # recall that iterables are zero-ordered!
+>> print x[-1] # Select the last element in the set
+9
+>> y = x[:] # Select all the elements in the set
+>> print y
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>> y = x[:4]  # Select the first four element of the set
+>> print y
+[0, 1, 2, 3]
+>> y = x[-3:] # Select the last three elements of the set
+>> print y
+[7, 8, 9]
+>> y = x[4:7] # Select the 4th, 5th and 6th elements
+>> print y
+[4, 5, 6]
+\end{lstlisting}
+
+\subsection{Dictionaries}
+
+Python is capable of storing multiple data types associated with a map of variable names inside a single object. This is called a ``Dictionary'', and works in a similar manner to a ``data structure'' in languages such as Matlab. Dictionaries are used frequently in the HMTK as ways of structuring inputs to functions that share a common behaviour but may take different numbers and types of parameters on input.
+
+\begin{lstlisting}[frame=single]
+>> earthquake = {"Name": "Parkfield",
+                 "Year": 2004,
+                 "Magnitude": 6.1,
+                 "Recording Agencies" = ["USGS", "ISC"]}
+# To call or view a particular element in a dictionary
+>> print earthquake["Name"], earthquake["Magnitude"]
+Parkfield 6.1
+\end{lstlisting}
+
+\subsection{Loops and Logicals}
+
+Python's syntax for undertaking logical operations and iterable operations is relatively straightforward.
+
+\subsubsection{Logical}
+
+A simple logical branching structure can be defined as follows:
+
+\begin{lstlisting}[frame=single]
+>> a = 3.5
+>> if a <= 1.0:
+       b = a + 2.0
+   elif a > 2.0:
+       b = a - 1.0
+   else:
+       b = a ** 2.0
+>> print b
+2.5
+\end{lstlisting}
+
+Boolean operations can are simply rendered as \verb=and=, \verb=or= and \verb=not=.
+\begin{lstlisting}[frame=single]
+>> a = 3.5
+>> if (a <= 1.0) or (a > 3.0):
+       b = a - 1.0
+   else:
+       b = a ** 2.0
+>> print b
+2.5
+\end{lstlisting}
+
+\subsubsection{Looping}
+
+There are several ways to apply looping in python. For simple mathematical operations, the simplest way is to make use of the \textbf{range} function:
+
+\begin{lstlisting}[frame=single]
+>> for i in range(0, 5):
+       print i, i ** 2
+0  0
+1  1
+2  4
+3  9
+4  16
+\end{lstlisting}
+
+The same could be achieved using the \verb=while= function (though possibly this approach is far less desirable depending on the circumstance):
+
+\begin{lstlisting}[frame=single]
+>> i = 0
+>> while i < 5:
+       print i, i ** 2
+       i += 1
+0  0
+1  1
+2  4
+3  9
+4  16
+\end{lstlisting}
+
+A \verb=for= loop can be applied to any iterable:
+
+\begin{lstlisting}[frame=single]
+>> fruit_data = ["apples", "oranges", "bananas", "lemons", 
+                 "cherries"]
+>> i = 0
+>> for fruit in fruit_data:
+       print i, fruit
+       i += 1
+0  apples
+1  oranges
+2  bananas
+3  lemons
+4  cherries 
+\end{lstlisting}
+
+The same results can be generated, arguably more cleanly, by making use of the \verb=enumerate= function:
+
+\begin{lstlisting}[frame=single]
+>> fruit_data = ["apples", "oranges", "bananas", "lemons", 
+                 "cherries"]
+>> for i, fruit in enumerate(fruit_data):
+       print i, fruit
+0  apples
+1  oranges
+2  bananas
+3  lemons
+4  cherries 
+\end{lstlisting}
+
+As with many other programming languages, Python contains the statements \verb=break= to break out of a loop, and \verb=continue= to pass to the next iteration.
+
+\begin{lstlisting}[frame=single]
+>> i = 0
+>> while i < 10:
+       if i == 3:
+           i += 1
+           continue
+       elif i == 5:
+           break
+       else:
+           print i, i ** 2
+       i += 1
+0  0
+1  1
+2  4
+4  16
+\end{lstlisting}
+
+\section{Functions}
+
+Python easily supports the definition of functions. A simple example is shown below. \emph{Pay careful attention to indentation and syntax!}
+
+\begin{lstlisting}[frame=single]
+>> def a_simple_multiplier(a, b):
+       """
+       Documentation string - tells the reader the function 
+       will multiply two numbers, and return the result and
+       the square of the result
+       """
+       c = a * b
+       return c, c ** 2.0
+
+>> x = a_simple_multiplier(3.0, 4.0)
+>> print x
+(12.0, 144.0)
+\end{lstlisting}
+
+In the above example the function returns two outputs. If only one output is assigned then that output will take the form of a tuple, where the elements correspond to each of the two outputs. To assign directly, simply do the following:
+
+\begin{lstlisting}[frame=single]
+>> x, y = a_simple_multiplier(3.0, 4.0)
+>> print x
+12.0
+>> print y
+144.0
+\end{lstlisting}
+
+\section{Classes and Inheritance}
+
+Python is one of many languages that is fully object-oriented, and the use (and terminology) of objects is prevalent throughout the HMTK and this manual. A full treatise on the topic of object oriented programming in Python is beyond the scope of this manual and the reader is referred to one of the many textbooks on Python for more examples
+
+\subsection{Simple Classes}
+
+A class is an object that can hold both attributes and methods. For example, imagine we wish to convert an earthquake magnitude from one scale to another; however, if the earthquake occurred after a user-defined year we wish to use a different formula. This could be done by a method, but we can also use a class:
+
+\begin{lstlisting}[frame=single]
+>> class MagnitudeConverter(object):
+       """
+       Class to convert magnitudes from one scale to another
+       """
+       def __init__(self, converter_year):
+           """
+           """
+           self.converter_year = converter_year
+       
+       def convert(self, magnitude, year):
+           """
+           Converts the magnitude from one scale to another
+           """
+           if year < self.converter_year:
+               converted_magnitude = -0.3 + 1.2 * magnitude
+           else:
+               converted_magnitude = 0.1 + 0.94 * magnitude
+           return converted_magnitude
+                  
+>> converter1 = MagnitudeConverter(1990)
+>> mag_1 = converter1.convert(5.0, 1987)
+>> print mag_1
+5.7
+>> mag_2 = converter1.convert(5.0, 1994)
+>> print mag_2
+4.8
+# Now change the conversion year
+>> converter2 = MagnitudeConverter(1995)
+>> mag_1 = converter2.convert(5.0, 1987)
+>> print mag_1
+5.7
+>> mag_2 = converter2.convert(5.0, 1994)
+>> print mag_2
+5.7  
+\end{lstlisting}
+
+In this example the class holds both the attribute \verb=converter_year= and the method to convert the magnitude. The class is created (or ``instantiated'') with only the information regarding the cut-off year to use the different conversion formulae. Then the class has a method to convert a specific magnitude depending on its year.
+
+\subsection{Inheritance}
+
+Classes can be useful in many ways in programming. One such way is due to the property of inheritance. This allows for classes to be created that can inherit the attributes and methods of another class, but permit the user to add on new attributes and/or modify methods. 
+
+In the following example we create a new magnitude converter, which may work in the same way as the \verb=MagnitudeConverter= class, but with different conversion methods.
+
+\begin{lstlisting}[frame=single]
+>> class NewMagnitudeConverter(MagnitudeConverter):
+       """
+       A magnitude converter using different conversion
+       formulae
+       """
+       def convert(self, magnitude, year):
+           """
+           Converts the magnitude from one scale to another
+           - differently!!!
+           """
+           if year < self.converter_year:
+               converted_magnitude = -0.1 + 1.05 * magnitude
+           else:
+               converted_magnitude = 0.4 + 0.8 * magnitude
+           return converted_magnitude
+# Now compare converters
+>> converter1 = MagnitudeConverter(1990)
+>> converter2 = NewMagnitudeConverter(1990)
+>> mag1 = converter1.convert(5.0, 1987)
+>> print mag1
+5.7
+>> mag2 = converter2.convert(5.0, 1987)
+>> print mag2
+5.15
+>> mag3 = converter1.convert(5.0, 1994)
+>> print mag3
+4.8
+>> mag4 = converter2.convert(5.0, 1994)
+>> print mag4
+4.4    
+\end{lstlisting}
+
+\subsection{Abstraction}
+
+Inspection of the HMTK code (\href{https://github.com/GEMScienceTools/hmtk}{https://github.com/GEMScienceTools/hmtk}) shows frequent usage of classes and inheritance. This is useful in our case if we wish to make available different methods for the same problem. In many cases the methods may have similar logic, or may provide the same types of outputs, but the specifics of the implementation may differ. Functions or attributes that are common to all methods can be placed in a ``Base Class'', permitting each implementation of a new method to inherit the ``Base Class'' and its functions/attributes/behaviour. The new method will simply modify those aspects of the base class that are required for the specific method in question. This allows functions to be used interchangeably, thus allowing for a "mapping" of data to specific methods. 
+
+An example of abstraction is shown using our two magnitude converters shown previously. Imagine that a seismic recording network (named "XXX") has a model for converting from their locally recorded magnitude to a reference global scale (for the purposes of narrative, imagine that a change in recording procedures in 1990 results in a change of conversion model). A different recording network (named ``YYY'') has a different model for converting their local magnitude to a reference global scale (and we imagine they also changed their recording procedures, but they did so in 1994). We can create a mapping that would apply the correct conversion for each locally recorded magnitude in a short catalogue, provided we know the local magnitude, the year and the recording network.
+
+\begin{lstlisting}[frame=single]
+>> CONVERSION_MAP = {"XXX": MagnitudeConverter(1990),
+                     "YYY": NewMagnitudeConverter(1994)}
+>> earthquake_catalogue = [(5.0, "XXX", 1985),
+                           (5.6, "YYY", 1992),
+                           (4.8, "XXX", 1993),
+                           (4.4, "YYY", 1997)]
+>> for earthquake in earthquake_catalogue:
+       converted_magnitude = \ # Line break for long lines!
+           CONVERSION_MAP[earthquake[1]].convert(earthquake[0],
+                                                 earthquake[2])
+       print earthquake, converted_magnitude
+(5.0, "XXX", 1985) 5.7
+(5.6, "YYY", 1992) 5.78
+(4.8, "XXX", 1993) 4.612
+(4.4, "YYY", 1997) 3.92
+\end{lstlisting}
+
+So we have a simple magnitude homogenisor that applies the correct function depending on the network and year. It then becomes a very simple matter to add on new converters for new agencies; hence we have a ``toolkit'' of conversion functions!
+
+\section{Numpy/Scipy}
+
+Python has two powerful libraries for undertaking mathematical and scientific calculation, which are essential for the vast majority of scientific applications of Python: Numpy (for multi-dimensional array calculations) and Scipy (an extensive library of applications for maths, science and engineering). Both libraries are critical to both OpenQuake and the HMTK. Each package is so extensive that a comprehensive description requires a book in itself. Fortunately there is abundant documentation via the online help for Numpy \href{www.numpy.org}{www.numpy.org} and Scipy \href{www.scipy.org}{www.scipy.org}, so we do not need to go into detail here. 
+
+The particular facet we focus upon is the way in which Numpy operates with respect to vector arithmatic. Users familiar with Matlab will recognise many similarities in the way the Numpy package undertakes array-based calculations. Likewise, as with Matlab, code that is well vectorised is signficantly faster and more efficient than the pure Python equivalent. 
+
+The following shows how to undertake basic array arithmetic operations using the Numpy library
+
+\begin{lstlisting}[frame=single]
+>> import numpy as np
+# Create two vectors of data, of equal length
+>> x = np.array([3.0, 6.0, 12.0, 20.0])
+>> y = np.array([1.0, 2.0, 3.0, 4.0])
+# Basic arithmetic
+>> x + y   # Addition (element-wise)
+np.array([4.0, 8.0, 15.0, 24.0])
+>> x + 2   # Addition of scalar
+np.array([5.0, 8.0, 14.0, 22.0])
+>> x * y   # Multiplication (element-wise)
+np.array([3.0, 12.0, 36.0, 80.0])
+>> x * 3.0   # Multiplication by scalar
+np.array([9.0, 18.0, 36.0, 60.0])
+>> x - y   # Subtraction (element-wise)
+np.array([2.0, 4.0, 9.0, 16.0])
+>> x - 1.0   # Subtraction of scalar
+np.array([2.0, 5.0, 11.0, 19.0])
+>> x / y   # Division (element-wise)
+np.array([3.0, 3.0, 4.0, 5.0])
+>> x / 2.0   # Division over scalar
+np.array([1.5, 3.0, 6.0, 10.0])
+>> x ** y    # Exponentiation (element-wise)
+np.array([3.0, 36.0, 1728.0, 160000.0])
+>> x ** 2.0   # Exponentiation (by scalar)
+np.array([9.0, 36.0, 144.0, 400.0])
+\end{lstlisting}
+
+Numpy contains a vast set of mathematical functions that can be operated on a vector (e.g.):
+
+\begin{lstlisting}[frame=single]
+>> x = np.array([3.0, 6.0, 12.0, 20.0])
+>> np.exp(x)
+np.array([2.00855369e+01, 4.03428793e+02, 1.62754791e+05,
+         4.85165195e+08])
+# Trigonometry
+>> theta = np.array([0., np.pi / 2.0, np.pi, 1.5 * np.pi])
+>> np.sin(theta)
+np.array([0.0000, 1.0000, 0.0000, -1.0000])
+>> np.cos(theta)
+np.array([1.0000, 0.0000, -1.0000, 0.0000])
+\end{lstlisting}
+
+Some of the most powerful functions of Numpy, however, come from its logical indexing:
+
+\begin{lstlisting}[frame=single]
+>> x = np.array([3.0, 5.0, 12.0, 21.0, 43.0])
+>> idx = x >= 10.0   # Perform a logical operation
+>> print idx
+np.array([False, False, True, True, True])
+>> x[idx]   # Return an array consisting of elements
+            # for which the logical operation returned True
+np.array([12.0, 21.0, 43.0])
+\end{lstlisting}
+
+Create, index and slice n-dimensional arrays:
+
+\begin{lstlisting}[frame=single]
+>> x = np.array([[3.0,  5.0, 12.0, 21.0, 43.0],
+                 [2.0,  1.0,  4.0, 12.0, 30.0],
+                 [1.0, -4.0, -2.1,  0.0, 92.0]])
+>> np.shape(x)
+(3, 5)
+>> x[:, 0]
+np.array([3.0, 2.0, 1.0])
+>> x[1, :]
+np.array([2.0, 1.0, 4.0, 12.0, 30.0])
+>> x[:, [1, 4]]
+np.array([[ 5.0, 43.0],
+          [ 1.0, 30.0],
+          [-4.0, 92.0]])
+\end{lstlisting}
+
+The reader is referred to the online documentation for the full set of functions!
+
+

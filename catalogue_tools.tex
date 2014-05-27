@@ -1,104 +1,6 @@
-%In the first exercise, the earthquake catalogue will be declustered and the time-variation in completeness analysed. For three of the sources shown in figure \ref{fig:KathGSHAPLabel} (Sources 8.CH.257, 8.CH.258 and 8.CH.259) the recurrence model will be calculated (first using the algorithm of \cite{KijkoSmit2012} - others could be attempted) and maximum magnitude inferred using one of the \cite{Kijko2004} methods 
-%
-%The configuration file indicates to the toolkit where to look for input files, write output files, which processes and methods to apply and any possible parameters that should be set for given methods. A ''comprehensive'' example of the configuration file is given automatically in the file \verb=config.yml=, which outlines all possible options. The easiest process is to open this file, then edit and delete various options and parameters before saving the configution file to a new file (e.g. \verb=my_config_1.yml=) then executing that in place of the original configuration file.    
-%
-%The various settings for the different algorithms will be discussed in due course, so the following considers just the main headers (i.e. the control) of the toolkit:
-%
-%\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=false]
-%\#*****************************************************************************
-%\# HMTK Workflow Configuration File
-%\#*****************************************************************************
-%
-%\#=============================================================================
-%\# Input/Output Files
-%\#=============================================================================
-%
-%\# Inputs the Path to the Earthquake Catalogue
-%input_catalogue: input/NepalCatalogue_ISC.csv
-%\# Inputs the path to the source model (if needed)
-%input_model: input/Nepal_3GSHAP_sources.xml
-%\# Inputs the path to the output directory
-%output_directory: output/
-%\# Plotting Folders
-%figure_directory: output/plotting/
-%
-%
-%\# Configuration for the Declustering Algorithm (leave blank if not wanted)
-%declustering_config: \{\\
-%    \# Algorithm choice\\
-%    \# 'GardnerKnopoff'  | 'Afteran'\\
-%    algorithm: 'GardnerKnopoff',\\
-%    \# Choice of magnitude and distance scaling relations\\
-%    \# 'GardnerKnopoff' | 'Uhrhammer' | 'Gruenthal'\\
-%    time_distance_windows: 'GardnerKnopoff',\\
-%    \# Foreshock time as a proportion of aftershock time\\
-%    # (GardnerKnopoff only)
-%    fs_time_prop: 0.0,\\
-%    \# Fixed-width moving time window in days (Afteran only)
-%    time_window=60.
-%    \}\\
-%
-%
-%\# Configuration for the Completeness Algorithm (only Stepp supported)
-%completeness_config: \{
-%    \# Choice of algorithm (currently only 'Stepp' supported)
-%    algorithm: 'Stepp', 
-%    \# Magnitude interval 
-%    magnitude_bin: 1.0,
-%    \# Time interval (years - as float)
-%    time_bin: 5.0,
-%    \# Locks the increment to ensure completeness values only increase for
-%    \# longer periods 
-%    \# True | False
-%    increment_lock: True,
-%    \# If a plot is wanted (i.e. for Stepp (1971) then set to true
-%    include_plot: True,
-%    \# If a pre-computed completeness is preferred, define here
-%    completeness_table: \}
-%
-%
-%recurrence_config: \{
-%    \# Choice of algorithm
-%    \# 'Weichert' | 'KijkoSmit' | 'MaxLikelihood'
-%    algorithm: 'KijkoSmit',
-%    \# Magnitude for calculating rate (if not set will return true a-value
-%    reference_magnitude: ,
-%    \# Magnitude bin interval
-%    magnitude_interval: 0.1,
-%    \# Minimum magnitude for sources
-%    minimum_magnitude: 4.5\}
-%
-%
-%mmax_config: \{
-%    \# Choice of algorithm
-%    \# 'KijkoSellevol' | 'KijkoSellevolBayes' | 'KijkoNonparametric | 
-%    \# 'CumulativeMoment'
-%    algorithm: 'KijkoNonparametric',
-%    \# Minimum magniutde (for Kijko & Sellevol methods only)
-%    input_mmin: 5.5,
-%    \# Input maximum magnitude (if not specified will take largest in catalogue)
-%    input_mmax: ,
-%    \# Uncertainty on maximum magnitude
-%    input_mmax_uncertainty: ,
-%    \# Number of N largest earthquakes for consideration (KijkoNonparametric 
-%    \# only)
-%    number_earthquakes: 50,
-%    \# Maximum number of iterations (for all Kijko methods)
-%    max_iterations: 1000\}
-%       
-%\end{Verbatim}
-%
-%In the initial lines, the toolkit is told the path to look for the input earthquake catalogue (\verb=eq_catalog_file=); the path to which it should write the ''pre-processed catalogue'' (\verb=pprocessing_catalog_file=); the path to which it should write the completeness table, or from which it should read the completeness table if no completeness jobs are defined (\verb=completeness_table_file=); the path from which it should find the area source geometries (\verb=source_model_file=), formatted here as xml (\verb=source_model_file=), and the path to write the output area sources (\verb=result_file=). 
-%
-%The ''pre-processing'' refers to the combined operations for declustering and/or completeness - i.e. those that remove from consideration all events that are not indicative of complete stationary seismicity. If the user wishes to simply execute those jobs and no others then they should set the value \verb=apply_processing_jobs: no=. This will cause the program to terminate after completion of the pre-processing tasks. If the user has specified a valid path for the \verb=pprocessing_catalog_file= the program will export the catalogue with foreshocks, aftershocks and incomplete magnitude events removed.
-%
-%After completion of the ''pre-processing'' tasks, the toolkit will then undertake the ''processing'' tasks. These are the calculations to determine the parameters of the double-truncated \cite{GutenbergRichter1944} distribution (i.e. a-value, b-value, minimum magnitude and maximum magnitude). If no source model input is specified in the \verb=source_model_file=, the processing will return (to the screen) a single a-value, b-value, $m_max$ and their respective uncertainties for the whole catalogue. Otherwise the program will loop over each of the zones specified in the file, select those earthquakes from the pre-processed catalogue that are found inside each zone and calculate the recurrence parameters for each zone. The output will then be written to the \verb=result_file=.
-%
-%\textbf{The order in which the ''pre-processing'' and the ''processing'' tasks are define in the configuration is the order in which the program will execute them!}
+\section{The Earthquake Catalogue}
 
-\section{The Seismicity Tools}
-
-The seismicity tools are intended for use in deriving activity rates from an observed earthquake catalogue, which may include both instrumental and historical seismicity. The tools are broken down into five separate libraries: i) Declustering, ii) Completeness, iii) Calculation of Gutenberg-Richter a- and b-value, iv) Statistical estimators of maximum magnitude from seismicity) and v) Smoothed Seismicity. In a common use case it is likely that many of the above methods, particularly recurrence and maximum magnitude estimation, may need to be applied to a selected sub-catalogue (e.g. earthquakes within a particular polygon). The toolkit allows for the creation of a source model containing one or more of the supported OpenQuake seismogenic source typologies, which can be used as a reference for selection, e.g. events within an area source (polygon), events within a distance of a fault etc. The supported input formats for both the catalogue and the source model are described below. 
+The seismicity tools are intended for use in deriving activity rates from an observed earthquake catalogue, which may include both instrumental and historical seismicity. The tools are broken down into five separate libraries: i) Declustering, ii) Completeness, iii) Calculation of Gutenberg-Richter a- and b-value, iv) Statistical estimators of maximum magnitude from seismicity) and v) Smoothed Seismicity. In a common use case it is likely that many of the above methods, particularly recurrence and maximum magnitude estimation, may need to be applied to a selected sub-catalogue (e.g. earthquakes within a particular polygon). The toolkit allows for the creation of a source model containing one or more of the supported OpenQuake seismogenic source typologies, which can be used as a reference for selection, e.g. events within an area source (polygon), events within a distance of a fault etc. The supported input formats for both the catalogue are described below, and the source models in the subsequent chapter. 
 
 \subsection{The Catalogue Format and Class}
 
@@ -137,7 +39,6 @@ sigmaMagnitude* & Uncertainty on the homogenised magnitude (float) typically Mw 
 To load the catalogue using the IPython environment, in an open IPython session type:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
 [1] from hmtk.parsers.catalogue import CsvCatalogueParser
 
 [2] catalogue_filename = 'path/to/catalogue_file.csv'
@@ -145,7 +46,6 @@ To load the catalogue using the IPython environment, in an open IPython session 
 [3] parser = CsvCatalogueParser(catalogue_filename)
 
 [4] catalogue = parser.read_file()
-
 \end{Verbatim}
 
 \textbf{N.B. the csv file can contain additional attributes of the catalogue too and will be parsed correctly; however, if the attribute is not one that is specifically recognised by the catalogue class then a message will be displayed indicating:}
@@ -155,7 +55,6 @@ Catalogue Attribute ... is not a recognised catalogue key
 \end{Verbatim}
 
 \textbf{This is expected behaviour and simply indicates that although this data is given in the input file, it is not retained in the data dictionary.}
-
 
 The variable \verb=catalogue= is an instance of the class hmtk.seismicity.catalogue.Catalogue, which now contains the catalogue itself (as \verb=catalogue.data=) and some methods that can be applied to the catalogue. The first attribute (\verb=catalogue.data=), is a dictionary where each attribute of the catalogue is either a 1-D numpy vector (for float and integer values) or a python list (for string values). For example, to return a vector containing all the magnitudes in the \verb=magnitude= column of the catalogue simply type:
 
@@ -212,19 +111,35 @@ In [6]: catalogue.load_from_array(data, headers)
 \end{Verbatim}
  
 
-\item \verb=catalogue.get_decimal_time()= Returns the time of the earthquake in a decimal format
+\item \verb=catalogue.get_decimal_time()= 
 
-\item \verb=catalogue.hypocentres_as_mesh()= Returns the hypocentres of an earthquake as an instance of the openquake.hazardlib.geo.mesh.Mesh class (useful for geospatial functions)
+Returns the time of the earthquake in a decimal format
 
-\item \verb=catalogue.hypocentres_to_cartesian()= Returns the hypocentres in a 3D cartesian framework
+\item \verb=catalogue.hypocentres_as_mesh()=
 
-\item \verb=catalogue.purge_catalogue(flag_vector)= Purges the catalogue of all \verb=False= events in the boolean vector. Thus is used for removing foreshocks and aftershocks from a catalogue after the application of a declustering algorithm.
+Returns the hypocentres of an earthquake as an instance of the class \\ ``openquake.hazardlib.geo.mesh.Mesh'' (useful for geospatial functions)
 
-\item \verb=catalogue.sort_catalogue_chronologically()= Sorts an input into chronological order (N.B. some methods will implicitly assume that the catalogue is in chronological order, so it is recommended to run this function if you believe that there may be events out of order)
+\item \verb=catalogue.hypocentres_to_cartesian()=
 
-\item \verb=catalogue.select_catalogue_events(IDX)= Orders the catalogue according to the event order specified in IDX. Behaves the same as \verb=catalogue.purge_catalogue(IDX)= if IDX is a boolean vector
+Returns the hypocentres in a 3D cartesian framework
 
-\item \verb=catalogue.get_depth_distribution(depth_bins, normalisation\=False, bootstrap\=None)= Returns a depth histogram for the catalogue using bins specified by \verb=depth_bins=. If \verb=normalisation\=True= then the function will return the histogram as a probability mass function, otherwise the original count will be returned. If uncertainties are reported on depth such that one or more values in \verb=catalogue.data['depthError']= are greater than 0., the function will perform a bootstrap analysis, taking into account the depth error, with the number of bootstraps given by the keyword \verb=bootstrap=. To generate a simple histogram plot of hypocentral depth, the process below can be followed to produce a depth histogram similar to the one shown in Figure :
+\item \verb=catalogue.purge_catalogue(flag_vector)=
+
+Purges the catalogue of all \verb=False= events in the boolean vector. Thus is used for removing foreshocks and aftershocks from a catalogue after the application of a declustering algorithm.
+
+\item \verb=catalogue.sort_catalogue_chronologically()=
+
+Sorts an input into chronological order. \\
+\emph{N.B. Some methods will implicitly assume that the catalogue is in chronological order, so it is recommended to run this function if you believe that there may be events out of order}
+
+\item \verb=catalogue.select_catalogue_events(IDX)=
+
+Orders the catalogue according to the event order specified in IDX. Behaves the same as \verb=purge_catalogue(IDX)= if IDX is a boolean vector
+
+\item \verb;catalogue.get_depth_distribution(depth_bins, normalisation=False,;\\
+\verb;    bootstrap=None);
+
+Returns a depth histogram for the catalogue using bins specified by \verb=depth_bins=. If \verb;normalisation=True; then the function will return the histogram as a probability mass function, otherwise the original count will be returned. If uncertainties are reported on depth such that one or more values in \\ \verb=catalogue.data['depthError']= are greater than 0., the function will perform a bootstrap analysis, taking into account the depth error, with the number of bootstraps given by the keyword \verb=bootstrap=. 
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
 # Import numpy and matplotlib
@@ -236,242 +151,171 @@ In [3]: depth_bins = np.arange(0., 160., 10.)
 
 # Get normalised histograms (without bootstrapping)
 In [4]: depth_hist = catalogue.get_depth_distribution(depth_bins, normalisation=True)
-
-# Create a simple histogram plot
-In [5]: plt.bar(depth_bins[:-1], depth_hist, width=10.)
-
-# Add some labels
-In [6]: plt.xlabel('Depth (km)')
-In [7]: plt.ylabel('Density')
 \end{Verbatim}
 
+To generate a simple histogram plot of hypocentral depth, the process below can be followed to produce a depth histogram similar to the one shown in Figure \ref{fig:simple_depth_hist}:
 
-\item \verb=catalogue.get_magnitude_depth_distribution(magnitude_bins, depth_bins, normalisation\=False, bootstrap\=None)= Returns a two-dimensional histogram of magnitude and hypocentral depth, with the corresponding bins defined by the vectors \verb=magnitude_bins= and \verb=depth_bins=. The options \verb=normalisation= and \verb=bootstrap= are the same as for the one dimensional histogram.
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_depth_histogram
 
+In [2]: depth_bin = 5.0
+
+In [3]: plot_depth_histogram(catalogue,
+                             depth_bin,
+                             filename="/path/to/image.eps", \# Optional
+                             filetype="eps")   \# Optional
+\end{Verbatim}
+\begin{figure}[htb]
+  \centering
+      \includegraphics[trim=10mm 8mm 10mm 10mm, clip, width=12cm]{./figures/simple_depth_histogram.eps}
+  \caption{Example depth histogram}
+  \label{fig:simple_depth_hist}
+\end{figure}
+
+\item \verb;catalogue.get_magnitude_depth_distribution(magnitude_bins, depth_bins,;\\
+\verb;    normalisation=False, bootstrap=None); 
+
+Returns a two-dimensional histogram of magnitude and hypocentral depth, with the corresponding bins defined by the vectors \verb=magnitude_bins= and \verb=depth_bins=. The options \verb=normalisation= and \verb=bootstrap= are the same as for the one dimensional histogram. The usage is illustrated below:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+# Define depth bins for (e.g) 0. - 150 km in intervals of 55 km
+In [1]: depth_bins = np.arange(0., 155., 5.)
+
+# Define magnitude bins (e.g.) 2.5 - 7.6 in intervals of 0.1
+In [2]: magnitude_bins = np.arange(2.5, 7.7, 0.1)
+
+# Get normalised histograms (without bootstrapping)
+In [3]: mag_depth_hist = catalogue.get_magnitude_depth_distribution(magnitude_bins,
+                                           depth_bins,
+                                           normalisation=True,
+                                           bootstrap=None)
+\end{Verbatim}
+
+To generate a plot of magnitude-depth density, the following function can be used to produce a figure similar to that shown in Figure \ref{fig:mag_depth_density}.
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_magnitude_depth_density
+In [2]: magnitude_bin = 0.1
+In [3]: depth_bin = 5.0 
+In [4]: plot_magnitude_depth_density(catalogue,
+                                     magnitude_bin
+                                     depth_bin,
+                                     logscale=True, \# Logarithmic colour scale
+                                     filename="/path/to/image.eps", \# Optional
+                                     filetype="eps")   \# Optional
+\end{Verbatim}
+
+\begin{figure}[htb]
+  \centering
+      \includegraphics[trim=10mm 10mm 10mm 10mm, clip, width=14cm]{./figures/magnitude_depth_density.eps}
+  \caption{Example magnitude-depth density plot}
+  \label{fig:mag_depth_density}
+\end{figure}
+
+\item \verb;catalogue.get_magnitude_time_distribution(magnitude_bins, time_bins,;\\
+\verb; normalisation=False, bootstrap=None);
+
+Returns a 2D histogram of magnitude with time. \verb=time_bins= are the bin edges for the time windows, in decimal years. To run the function simple follow:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+# Define annual time bins from 1900 CE to 2012 CE
+In [1]: time_bins = np.arange(1900., 2013., 1.)
+
+# Define magnitude bins (e.g.) 2.5 - 7.6 in intervals of 0.1
+In [2]: magnitude_bins = np.arange(2.5, 7.7, 0.1)
+
+# Get normalised histograms (without bootstrapping)
+In [3]: mag_time_hist = catalogue.get_magnitude_time_distribution(magnitude_bins,
+                                          timme_bins,
+                                          normalisation=True,
+                                          bootstrap=None)
+\end{Verbatim}
+
+To automatically generate a plot, similar to that shown in Figure \ref{fig:mag_time_density} , run the following:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_magnitude_time_density
+In [2]: magnitude_bin_width = 0.1
+In [3]: time_bin_width = 0.1 
+In [4]: plot_magnitude_time_density(catalogue,
+                                    magnitude_bin_width,
+                                    time_bin_width,
+                                    filename="/path/to/image.eps", \# Optional
+                                    filetype="eps")   \# Optional
+\end{Verbatim}
+
+\begin{figure}[htb]
+  \centering
+      \includegraphics[trim=10mm 8mm 10mm 10mm, clip, width=12cm]{./figures/magnitude_time_density.eps}
+  \caption{Example magnitude-time density plot}
+  \label{fig:mag_time_density}
+\end{figure}
 \end{itemize}
 
+\subsection{The ``Selector'' Class}
 
+In the process of constructing a PSHA seismogenic source model from seismicity it is necessary to select sub-sets of the earthquake catalogue, usually for calculating earthquake recurrence statistics pertinent to a particular region or seismogenic source. As catalogue selection is such a prevalent aspect of the source modelling process, the selection is done inside the HMTK via the use of a "Selector" tool. This tools is a container for all methods associated with the selection of sub-catalogues from a given earthquake catalogue. It will be seen in due course that later methods relating to the selection of the catalogue for a particular source require as an input an instance of the selector class, rather than the catalogue itself.
 
-\subsection{The Source Model Format}
-
-The seismic source model formats currently required by the hmtk are the nrml  The source model is both input and output in GEM's NRML (\verb=Natural Risk Markup Language=) format (although support for shapefile input definitions are expected in future releases). However, unlike the OpenQuake engine, for which each source typology must contain all of the necessary attributes, it is recognised that it may be desirable to use the seismic source model with a partially defined source (one for which only the ID, name and geometry are known) in order to make use of the modelling tools. Therefore, the validation checks have been relaxed to allow for data such as the recurrence model, the hypocentral depth distribution and the faulting mechanism to be specified at a later stage. However, if using this minimal format it will not be possible to use the resulting output file in OpenQuake until the remaining information is filled in.  
-
-A full description of the complete nrml seismogenic source model format is found in the OpenQuake Version 1.0 manual \cite{crowley2010}. An example of a minimal format is shown below for:
-
-\subsubsection{Point Source}
+To setup the ``Selector'' tool:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+In [1]: from hmtk.seismicity.selector import CatalogueSelector
 
-<?xml version='1.0' encoding='utf-8'?>
-<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
-    <sourceModel name="Some Source Model">
-        <pointSource id="2" name="point" tectonicRegion="">
+\# Assuming that there already exists a catalogue named ''catalogue1''
 
-        <pointGeometry>
-            <gml:Point>
-                <gml:pos>-122.0 38.0</gml:pos>
-            </gml:Point>
-
-            <upperSeismoDepth>0.0</upperSeismoDepth>
-            <lowerSeismoDepth>10.0</lowerSeismoDepth>
-        </pointGeometry>
-
-        <magScaleRel></magScaleRel>
-        <ruptAspectRatio></ruptAspectRatio>
-
-        <truncGutenbergRichterMFD aValue="" bValue="" minMag="" maxMag="" />
-
-        <nodalPlaneDist>
-            <nodalPlane probability="" strike="" dip="" rake="" />
-            <nodalPlane probability="" strike="" dip="" rake="" />
-        </nodalPlaneDist>
-
-        <hypoDepthDist>
-            <hypoDepth probability="" depth="" />
-            <hypoDepth probability="" depth="" />
-        </hypoDepthDist>
-
-    </pointSource>
-    </sourceModel>
-</nrml>
+In [2]: selector1 = CatalogueSelector(catalogue1,
+                                      create_copy=True)
 
 \end{Verbatim}
 
+The optional keyword \verb=create_copy= ensures that when the events not selected are purged from the catalogue a ``deepcopy'' is taken of the original catalogue. This ensures that the original catalogue remains unmodified when a subset of events is selected.
 
-\subsubsection{Area Source}
+The catalogue selector class has the following methods:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\verb;.within_polygon(polygon, distance=None);
 
-<?xml version='1.0' encoding='utf-8'?>
-<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
+Selects events within a polygon described by the class \verb=openquake.hazardlib.geo.=\\\verb=polygon.Polygon=. \verb=distance= is the distance (in km) to use as a buffer, if required. Optional keyword arguments \verb=upper_depth= and \verb=lower_depth= can be used to limit the depth range of the catalogue returned by the selector to only those events whose hypocentres are within the specified depth limits.
 
-<sourceModel name="Some Source Model">
-    <!-- Note: Area sources are identical to point sources, except for the geometry. -->
-    <areaSource id="1" name="Quito" tectonicRegion="">
-        <areaGeometry>
-            <gml:Polygon>
-                <gml:exterior>
-                    <gml:LinearRing>
-                        <gml:posList>
-                         -122.5 38.0
-                         -122.0 38.5
-                         -121.5 38.0
-                         -122.0 37.5
-                        </gml:posList>
-                    </gml:LinearRing>
-                </gml:exterior>
-            </gml:Polygon>
+\verb;.circular_distance_from_point(point, distance, distance_type="epicentral");
 
-            <upperSeismoDepth>0.0</upperSeismoDepth>
-            <lowerSeismoDepth>10.0</lowerSeismoDepth>
-        </areaGeometry>
+Selects events within a distance from the a location. The location (\verb=point=) is an instance of the openquake.hazardlib.point.Point class, whilst \verb=distance= is the selection distance (km) and \verb=distance_type= can be either "epicentral" or "hypocentral".  
 
-        <magScaleRel></magScaleRel>
+\verb;.cartesian_square_centred_on_point(point, distance);
 
-        <ruptAspectRatio></ruptAspectRatio>
+Selects events within a square of side length \verb=distance=, on a location (represented as an openquake \verb=Point= class).
 
-        <incrementalMFD minMag="" binWidth="">
-            <occurRates></occurRates>
-        </incrementalMFD>
+\verb;.within_joyner_boore_distance(surface, distance);
 
-        <nodalPlaneDist>
-            <nodalPlane probability="" strike="" dip="" rake="" />
-            <nodalPlane probability="" strike="" dip="" rake="" />
-        </nodalPlaneDist>
+Returns earthquakes within a distance (km) of the surface projection (``Joyner-Boore'' distance) of a fault surface. The fault surface must be defined as an instance of the class \verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
 
-        <hypoDepthDist>
-            <hypoDepth probability="" depth="" />
-            <hypoDepth probability="" depth="" />
-        </hypoDepthDist>
+\verb;.within_rupture_distance(surface, distance);
 
-    </areaSource>
-    </sourceModel>
-</nrml>
+Returns earthquakes within a distance (km) of a fault surface. The fault surface must be defined as an instance of the class \verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
 
-\end{Verbatim}
+\verb;.within_time_period(start_time=None, end_time=None);
 
-\subsubsection{Simple Fault Source}
+Selects earthquakes within a time period. Times must be input as instances of a \verb=datetime= object. For example:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+In [1]: from datetime import datetime
 
-<?xml version='1.0' encoding='utf-8'?>
-<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
-    <sourceModel name="Some Source Model">
-        <simpleFaultSource id="3" name="Mount Diablo Thrust" tectonicRegion="">
+In [2]: selector1 = CatalogueSelector(catalogue1, create_copy=True)
+\# Early time limit is 1 January 1990 00:00:00
+In [3]: early = datetime(1990, 1, 1, 0, 0, 0)
+\# Late time limit is 31 December 1999 23:59:59
+In [4]: late = datetime(1999, 12, 31, 23, 59, 59)
 
-            <simpleFaultGeometry>
-                <gml:LineString>
-                    <gml:posList>
-                        -121.82290 37.73010
-                        -122.03880 37.87710
-                    </gml:posList>
-                </gml:LineString>
-
-                <dip>45.0</dip>
-                <upperSeismoDepth>10.0</upperSeismoDepth>
-                <lowerSeismoDepth>20.0</lowerSeismoDepth>
-            </simpleFaultGeometry>
-
-            <magScaleRel></magScaleRel>
-
-            <ruptAspectRatio></ruptAspectRatio>
-
-            <incrementalMFD minMag="" binWidth="">
-                <occurRates></occurRates>
-            </incrementalMFD>
-
-            <rake></rake>
-        </simpleFaultSource>
-    </sourceModel>
-</nrml>
-
+In [5]: catalogue_nineties = selector1.within_time_period(start_time=early,
+                                                          end_time=late)
 \end{Verbatim}
 
+\verb;.within_depth_range(lower_depth=None, upper_depth=None);
 
-\subsubsection{Complex Fault Source}
+Selects earthquakes whose hypocentres are within the range specified by the lower depth limit (\verb=lower_depth=) and the upper depth limit (\verb=upper_depth=), both in km.
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\verb;.within_magnitude_range(lower_mag=None, upper_mag=None);
 
-<?xml version='1.0' encoding='utf-8'?>
-<nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
-    <sourceModel name="Some Source Model">
-    <complexFaultSource id="4" name="Cascadia Megathrust" tectonicRegion="">
-
-        <complexFaultGeometry>
-            <faultTopEdge>
-                <gml:LineString>
-                    <gml:posList>
-                        -124.704 40.363 0.5493260E+01
-                        -124.977 41.214 0.4988560E+01
-                        -125.140 42.096 0.4897340E+01
-                    </gml:posList>
-                </gml:LineString>
-            </faultTopEdge>
-
-            <intermediateEdge>
-                <gml:LineString>
-                    <gml:posList>
-                        -124.704 40.363 0.5593260E+01
-                        -124.977 41.214 0.5088560E+01
-                        -125.140 42.096 0.4997340E+01
-                    </gml:posList>
-                </gml:LineString>
-            </intermediateEdge>
-
-            <intermediateEdge>
-                <gml:LineString>
-                    <gml:posList>
-                        -124.704 40.363 0.5693260E+01
-                        -124.977 41.214 0.5188560E+01
-                        -125.140 42.096 0.5097340E+01
-                    </gml:posList>
-                </gml:LineString>
-            </intermediateEdge>
-
-            <faultBottomEdge>
-                <gml:LineString>
-                    <gml:posList>
-                        -123.829 40.347 0.2038490E+02
-                        -124.137 41.218 0.1741390E+02
-                        -124.252 42.115 0.1752740E+02
-                    </gml:posList>
-                </gml:LineString>
-            </faultBottomEdge>
-        </complexFaultGeometry>
-
-        <magScaleRel></magScaleRel>
-        
-        <ruptAspectRatio></ruptAspectRatio>
-
-        <truncGutenbergRichterMFD aValue="" bValue="" minMag="" maxMag="" />
-
-        <rake></rake>
-    </complexFaultSource>
-    </sourceModel>
-</nrml>
-
-\end{Verbatim}
-
-To load in a source model such as those shown above, in an IPython environment simply execute the following:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In: [1] from hmtk.parsers.source_model.nrml04_parser import nrmlSourceModelParser
-
-In: [2] model_filename = 'path/to/source_model_file.xml'
-
-In: [3] model_parser = nrmlSourceModelParser(model_filename)
-
-In: [4] model = model_parser.read_file()
-Area source - ID: 1, name: Quito
-Point Source - ID: 2, name: point
-Simple Fault source - ID: 3, name: Mount Diablo Thrust
-Complex Fault Source - ID: 4, name: Cascadia Megathrust
-
-\end{Verbatim}
-
-If loaded successfully a list of the source typology, ID and source name for each source will be returned to the screen as shown above. The variable \verb=model= contains the whole source model, and can support multiple typologies (i.e. point, area, simple fault and complex fault).
-
+Selects earthquakes whose magnitudes are within the range specified by the lower limit (\verb=lower_mag=) and the upper limit (\verb=upper_mag=).
 
 \section{Declustering}
 
@@ -521,7 +365,7 @@ originally suggested by \cite{GardnerKnopoff1974} are approximated by:
               10^{0.5409 M - 0.547} & \mbox{otherwise}  \end{cases}\end{split}
 \end{equation}
 
-An alternative formulation is proposed by Gr\"unthal (as reported in\cite{vanStiphout2012}):
+An alternative formulation is proposed by Gr\"unthal (as reported in \cite{vanStiphout2012}):
 
 \begin{equation}\begin{split} 
 \mbox{distance (km)} = & e^{1.77 + \left( {0.037 + 1.02 M} \right)^2} \\ 
@@ -561,11 +405,11 @@ descending-magnitude order, the parameter \verb=foreshock_time_window=
 defines the size of the time window used for searching for foreshocks, 
 as a fractional proportion of the size of the aftershock window (the 
 distance windows are always equal for both fore- and aftershocks). 
-So for an evenly sized time window for foreshocks and aftershocks, 
-\verb=foreshock_time_window= should equal 1. For shorter or longer 
+So for an evenly sized time window for foreshocks and aftershocks,the\\
+\verb=foreshock_time_window= parameter should equal 1. For shorter or longer 
 foreshock time windows this parameter can be reduced or increased respectively.
 
-To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary.\footnote{A dictionary is Python's way of storing a mapping of data (including different types) to a set of keys (similar to a data structure in Matlab).} A config file for the \cite{GardnerKnopoff1974} algorithm, using for example the \cite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
+To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \cite{GardnerKnopoff1974} algorithm, using for example the \cite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
 
@@ -625,7 +469,7 @@ In [7]: catalogue.purge_catalogue(mainshock_flag)
 
 \subsection{AFTERAN (\cite{Musson1999PSHABalkan})}
 
-A particular development of the standard windowing approach is introduced in the program AFTERAN \cite{Musson1999PSHABalkan}. This is a modification of the \cite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
+A particular development of the standard windowing approach is introduced in the program AFTERAN (\cite{Musson1999PSHABalkan}). This is a modification of the \cite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
 
 The theory of the AFTERAN algorithm is broadly consistent with that of \cite{GardnerKnopoff1974}. This algorithm, whilst a little more computationally complex, and therefore slower, than the \cite{GardnerKnopoff1974} windowing approach, remains simple to implement. 
 
@@ -659,7 +503,7 @@ It should be noted that this summary of methodologies for estimating completenes
 
 The current workflows assume that completeness will be applied to the whole catalogue, ideally returning a table of time-varying completeness. The option to explore spatial variation in completeness is not explicitly supported, but could be accommodated by an appropriate configuration of the toolkit.
 
-In the current version (July 2013) of the Modeller's Toolkit only the \cite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
+In the current version of the Modeller's Toolkit the \cite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
 
 %\subsection{User-defined Table}
 %
@@ -840,7 +684,7 @@ The extremum of $\ln \left( {\mathbf{L}}\right)$ is found at:
    \frac{\sum_i t_i m_i \exp \left( {-\beta m_i} \right)}{\sum_j t_j \exp \left( {-\beta m_j} \right)}
 \end{equation}
 
-The computational implementation of this method is given as an appendix to \cite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \citep[e.g.]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \citet{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
+The computational implementation of this method is given as an appendix to \cite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \citep[e.g.][]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \citet{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
 
 To implement the \cite{Weichert1980} recurrence estimator, the configuration properties are defined as:
 
@@ -889,9 +733,9 @@ The uncertainty on $m_{max}$ is also defined according to:
 
 In the three estimators some lower bound magnitude constraint must be defined. For those estimators that assume an exponential recurrence model the lower bound magnitude must be specified by the users. For the non-Parametric Gaussian method and explicit lower bound magnitude does not have to be specified; however, the estimation is conditioned upon the largest N magnitudes, where N must be specified by the user.
 
-If the user wishes to input a maximum magnitude that is larger than that observed in the catalogue (e.g. a known historical magnitude), this can be specified in the config file using \verb=input_mmax= with the corresponding uncertainty defined by \verb=input_mmax_uncertainty=. If these are not defined (i.e. set to \verb=None=) then the maximum magnitude will be taken from the catalogue.
+If the user wishes to input a maximum magnitude that is larger than that observed in the catalogue (e.g. a known historical magnitude), this can be specified in the config file using \verb=input_mmax= with the corresponding uncertainty defined by \\ \verb=input_mmax_uncertainty=. If these are not defined (i.e. set to \verb=None=) then the maximum magnitude will be taken from the catalogue.
 
-All three estimators require an iterative solution, therefore additional parameters can be specified in the configuration file that control the iteration process: \verb=tolerance= difference in $M_Max$ estimate for the algorithm to be considered converged, and \verb=maximum_iterations= the maximum number of iterations for stability. 
+All three estimators require an iterative solution, therefore additional parameters can be specified in the configuration file that control the iteration process: \verb=tolerance= difference in $M_Max$ estimate for the algorithm to be considered converged, and \\ \verb=maximum_iterations= the maximum number of iterations for stability. 
 
 
 \subsubsection{''Fixed b-value''}
@@ -985,7 +829,8 @@ In [1]: mmax_config = \{'input_mmax': 7.6,
                        'tolerance': 1.0E-5, \# Defaults to this if not specified
                        'maximum_iterations': 1000\} \# Defaults to this if not specified
                        
-In [2]: from hmtk.seismicity.max-magnitude.kijko_nonparametric_gausian import KijkoNonParametricGaussian
+In [2]: from hmtk.seismicity.max-magnitude.kijko_nonparametric_gaussian import
+    KijkoNonParametricGaussian
 
 In [3]: mmax_estimator = KijkoNonParametricGaussian()
 
@@ -994,7 +839,7 @@ In [4]: mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue, mmax_config)
 \end{Verbatim}
 
 
-\subsection{Cumulative Moment\citep{MakropoulosBurton1983}}
+\subsection{Cumulative Moment \citep{MakropoulosBurton1983}}
 
 The cumulative moment release method is an adaptation of the cumulative strain energy release method for estimating $m_{max}$ originally proposed by \cite{MakropoulosBurton1983}. Another method based on a pseudo-graphical formulation, an estimator of maximum magnitude can be derived from a plot of cumulative seismic moment release with time. The average slope of this plot indicates the mean moment release for the input catalogue in question. Two further straight lines are defined with gradients equal to that of the slope of mean cumulative moment release, both enveloping the cumulative plot. The vertical distance between these two lines indicates the total amount of moment that may be released in the region, if no earthquakes were to occur in the corresponding time (i.e. the distance between the upper and lower bounding lines on the time axis). This concept is illustrated in Figure \ref{fig:Cumulative_Moment}. 
 
@@ -1105,7 +950,8 @@ The analysis is then run via:
 In [9]: config = {`Length_Limit': 3., `BandWidth': 50., 'increment': True}
 
 # Run the analysis!
-In [10]: output_data = smooth_seis.run_analysis(catalogue, config, completeness_table, smoothing_kernel=IsotropicGaussian(), end_year=None)
+In [10]: output_data = smooth_seis.run_analysis(catalogue, config, completeness_table, 
+    smoothing_kernel=IsotropicGaussian(), end_year=None)
 
 # To write the resulting data to a csv file
 In [11] = smooth_seis.write_to_csv(`path/to/output_file.csv')

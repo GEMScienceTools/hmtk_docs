@@ -3,6 +3,7 @@
 \usepackage{xcolor}
 \usepackage{framed}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
 
 \newenvironment{myfancybox}{%
   \def\FrameCommand{\fboxsep=\FrameSep \fcolorbox{blue01}{honeydew}}%
@@ -14,6 +15,7 @@
 
 \begin{document}
 \setcounter{page}{1}
+\lstset{language=Python}
 
 \begin{titlepage}
 	\title{ \textcolor{blue01}{\textsf{\bfseries\Huge 
@@ -21,7 +23,7 @@
         }}}
 	\subtitle{ \textcolor{blue01}{\textsf{\bfseries\LARGE
         Documentation \& Tutorial}}}
-	\date{February 2014}
+	\date{June 2014}
  
 	\publishers{GEM Foundation, Pavia}
 \end{titlepage}
@@ -44,7 +46,8 @@
 The objectives of this chapter are:
 \begin{itemize}
     \item Outline the purpose and creation of the Hazard Modeller's Toolkit 
-    \item Setup and Installation of the Software
+    \item Setup and installation of the software
+    \item Introduction to the visualisation and mapping functions
 \end{itemize}
 \end{myfancybox}
   \input{mtk_setup.tex}
@@ -65,7 +68,21 @@ The objectives of this chapter are:
 
 
 % \cleardoublepage
-% % -----------------------------------------------------------------------------
+% %
+\chapter{Hazard Tools}
+\begin{myfancybox}
+The objectives of this chapter are:
+\begin{itemize}
+    \item Introduction to the HMTK source model classes
+    \item Understand how to link source models to seismicity
+    \item Run simple PSHA calculations in OpenQuake, using the HMTK
+\end{itemize}
+\end{myfancybox}
+  \input{hazard_tools.tex}
+\cleardoublepage
+ 
+
+-----------------------------------------------------------------------------
 \chapter{Geological Tools}
 \begin{myfancybox}
 The objectives of this chapter are:
@@ -93,19 +110,19 @@ The objectives of this chapter are:
 
 
 % -----------------------------------------------------------------------------
-%\part{Appendices}
-%\appendix
+\part{Appendices}
+\appendix
 % -----------------------------------------------------------------------------
 % -----------------------------------------------------------------------------
-%\chapter{Accessing computation resources}
-%\begin{myfancybox}
-% The objectives of this chapter are:
-% \begin{itemize}
-%     \item to explain how to access computation resources to complete this 
-%         OpenQuake-engine training.
-% \end{itemize}
-%\end{myfancybox}
-%\input{./appendix/computation_resources.tex}
+\chapter{The 10 Minute Guide to Python!}
+\label{sec:python_guide}
+\begin{myfancybox}
+ The objectives of this chapter are:
+\begin{itemize}
+     \item To introduce Python data types to facilitate use of the HMTK for Python beginners
+ \end{itemize}
+\end{myfancybox}
+\input{python_guide.tex}
 % -----------------------------------------------------------------------------
 % -----------------------------------------------------------------------------
 %\cleardoublepage
