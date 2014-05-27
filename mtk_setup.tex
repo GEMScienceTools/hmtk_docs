@@ -1,4 +1,4 @@
-The Hazard Modeller's Toolkit (or ''hmtk'') is a Python 2.7 library of functions written by scientists at the GEM Model Facility, which is intended to provide 
+The Hazard Modeller's Toolkit (or HMTK) is a Python 2.7 library of functions written by scientists at the GEM Model Facility, which is intended to provide 
 scientists and engineers with the tools to help create the seismogenic 
 input models that go into the OpenQuake hazard engine. The process of 
 developing building the hazard model is a complex and often challenging 
@@ -7,9 +7,7 @@ choice of certain methods or tools for undertaking each step can be a
 matter of judgement. The intention of this software is to provide 
 scientists and engineers with the means to apply many of the most 
 commonly used algorithms for preparing seismogenic source models 
-using seismicity and geological data. It is still in an early 
-stage of development and the current versions contain only a preliminary
-set of tools for undertaking the necessary workflows. In forthcoming 
+using seismicity and geological data. In forthcoming 
 versions will hope to make available more tools for the current processes
 indicated here, and to integrate new functionalities for i) merging and
 homogenisation of earthquake catalogues, ii) calculation of activity 
@@ -20,12 +18,12 @@ in the construction of seismogenic source zones.
 
 \section{The Development Process}
 
-The Hazard Modeller's Toolkit is an activity that has been under development in GEM and has followed different stages. The present decision to make the modelling tools available as a library reflects the general trend in the OpenQuake development process toward having a modular software framework. This means that the modelling - hazard - risk process is separated into libraries (e.g. oq-hazardlib, oq-risklib) that can be utilised as standalone tools, in addition to being integrated within the OpenQuake engine and platform. This is designed to allow for flexibility in the process, to allow the user to begin to utilise (possibly in other contexts) functions and classes that are intended to address particular stages of the calculation. Such an approach ensure that each sub-component of the toolkit is fully tested, with a minimal degree of duplication in the testing process. In the HMTK this is taken a step further as we are aiming to provide the hazard modeller as much control over the modelling process as possible, whilst retaining as complete a level of code testing as is practical to implement given the development resources available. 
+The Hazard Modeller's Toolkit is an activity that has been under development in GEM and has followed different stages. The present decision to make the modelling tools available as a library reflects the general trend in the OpenQuake development process toward having a modular software framework. This means that the modelling - hazard - risk process is separated into libraries (e.g. oq-hazardlib, oq-risklib) that can be utilised as standalone tools, in addition to being integrated within the OpenQuake engine and platform. This is designed to allow for flexibility in the process, and also allow the user to begin to utilise (possibly in other contexts) functions and classes that are intended to address particular stages of the calculation. Such an approach ensures that each sub-component of the toolkit is fully tested, with a minimal degree of duplication in the testing process. In the HMTK this is taken a step further, as we are aiming to provide the hazard modeller as much control over the modelling process as possible, whilst retaining as complete a level of code testing as is practical to implement given the development resources available. 
 
 The change in the HMTK development process that leads towards the current version is designed to address particular objectives:
 
 \begin{description}
-\item[Portability] Reduction in the number of python dependencies to allow for a greater degree of cross-platform deployment than is currently feasible with the main OpenQuake engine
+\item[Portability] Reduction in the number of Python dependencies to allow for a greater degree of cross-platform deployment than is currently feasible with the main OpenQuake engine
 
 \item[Adaptability] Cleaner separation of methods into self-contained components that can be implemented and tested within requiring adaption of the remainder of the code.
 
@@ -41,7 +39,7 @@ The change in the HMTK development process that leads towards the current versio
 
 The Modeller's Toolkit and associated software are designed for execution 
 from the command line. As with OpenQuake, the preferred environment is 
-Ubuntu Linux (11.04 or later). A careful effort has been made to keep 
+Ubuntu Linux (12.04 or later). A careful effort has been made to keep 
 the number of additional dependencies to a minimum. No packaged version of the software has been released at the time of writing, so the user must install the dependencies manually. More information regarding the current dependencies of the toolkit can be found at \hfill \\
 \href{http://github.com/GEMScienceTools/hmtk}{http://github.com/GEMScienceTools/hmtk}. 
 
@@ -61,22 +59,18 @@ The current dependencies are:
 If the OpenQuake Hazard Library (oq-hazardlib) and the OpenQuake Nrml library are already installed on your system (as would be the case if a full installation of the OpenQuake-engine has already been successfully installed) then both dependencies are already available. If this is not the case, however, you will need to install the packages manually. For Linux and OSX users, the recommended approach is to run:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
 ~\$ sudo pip install -e https://github.com/gem/oq-hazardlib.git
 ~\$ sudo pip install -e https://github.com/gem/oq-nrmllib.git
-
 \end{Verbatim}
 
-As of April 2013, the packages have not been tested in a Windows environment, so the recommended approach for windows users would be to use Ubuntu Linux 12.04 within a Virtual Machine.
+For Windows users, the recommended approach for windows users would be to use Ubuntu Linux 12.04 within a Virtual Machine. However, instructions to install natively in Windows can be found in due course.
 
-The Matplotlib, Pyyaml and Decorator dependencies are installed in the library for the demos, but can be installed easy from the command line by:
+The Matplotlib, Pyyaml and Decorator dependencies are installed in the library for the demos, but can be installed easily from the command line by:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
 ~\$ sudo pip install matplotlib
 ~\$ sudo pip install pyyaml
 ~\$ sudo pip install decorator
-
 \end{Verbatim}
 
 To enable usage of the hmtk within any location in the operating system, OSX and Linux users should add the folder location manually to the command line profile file. This can be done as follows:
@@ -94,7 +88,7 @@ To enable usage of the hmtk within any location in the operating system, OSX and
 export PYTHONPATH=/path/to/hmtk/folder/:\$PYTHONPATH
 \end{Verbatim}
 
-Where \verb=/path/to/hmtk/folder/ is the system path to the location of the hmtk folder (use the command \verb=pwd= from within the hmtk folder to view the full system path).
+Where \verb=/path/to/hmtk/folder/= is the system path to the location of the hmtk folder (use the command \verb=pwd= from within the hmtk folder to view the full system path).
 
 \item Re-source the bash shell via the command
 
@@ -106,9 +100,9 @@ Where \verb=/path/to/hmtk/folder/ is the system path to the location of the hmtk
 
 \subsubsection{Windows Installation}
 
-Although this installation has been primarily tested in a Linux/Unix environment it may be possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
+Although this installation has been primarily tested in a Linux/Unix environment it is possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
 
-The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the openquake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
+The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the OpenQuake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
 
 Click on the executable and follow the instructions (the installation may take up to half an hour or more, depending on the system). It is strongly recommended that the use opt for the ``\textbf{FULL}'' installation, which should bring in almost all of the dependencies needed for installing the OpenQuake hazard library. 
 
@@ -144,13 +138,9 @@ Finally, download the zipped folder of the hmtk from the github repository and u
 
 After this process it may be necessary to restart PythonXY.
 
-
-
-%\textbf{For the purposes of the current exercises all of the Modeller's Toolkit dependencies have been installed in both the OpenQuake .ova files and on the OATS server - so no installation is necessary! For instructions on how to install OpenQuake and the Modeller's Toolkit, please refer to the appendix of this document}
-
 \subsection{Current Features}
 
-The Hazard Modeller's Toolkit is currently divided into three sections, which can be used interactively: 
+The Hazard Modeller's Toolkit is currently divided into three sections: 
 
 \begin{enumerate}
 \item \textbf{Earthquake Catalogue and Seismicity Analysis}
@@ -165,8 +155,9 @@ The Hazard Modeller's Toolkit is currently divided into three sections, which ca
     These functions are intended to address the use of geodetic data to derive seismic activity rates from a strain rate model for a region, implementing the Seismic Hazard Inferred from Tectonics (SHIFT) methodology developed by \cite{BirdLiu2007} and applied on a global scale by\cite{Bird_etal2010}.
 \end{enumerate}
 
-A summary of the algorithms available in the present version (V0.1) is given in Table 
+A summary of the algorithms available in the present version is given in Table \ref{tab:current_features}.
 \begin{table}
+\centering
 \begin{tabular}{|c|c|} \hline
 Feature & Algorithm\\ \hline
 \textbf{Seismicity} & \\ \hline
@@ -187,67 +178,126 @@ Recurrence & Maximum Likelihood \cite{Aki1965}\\
  Recurrence & Seismic Hazard Inferred from Tectonics (SHIFT) \\
            &  \cite{BirdLiu2007, Bird_etal2010} \\ \hline
 \end{tabular}
+\caption{Current algorithms in the HMTK}
+\label{tab:current_features}
 \end{table}
 
 \subsection{About this Tutorial}
 
 As previously indicated, the Modeller's Toolkit itself is a Python library. This means that its functions can be utilised in many different python applications. It is not, at present, a stand-alone software, and requires some investment of time from the user to understand the functionalities and learn how to link the various tools together into a workflow that will be suitable for the modelling problem at hand.
 
-This manual is designed to explain the various functions in the toolkit and to provide some illustrative examples showing how to implement them for particular contexts and applications. The tutorial itself does not specifically require a working knowledge of Python. However, an understanding of the basic python data types, and ideally some familiarity with the use of Python objects, is highly desirable. A good overview of the features of the python programming language can be found in the standard python documentation (\href{http://docs.python.org/2/tutorial/}{http://docs.python.org/2/tutorial/}). Where necessary particular Python programming concepts will be explained in further detail.
+This manual is designed to explain the various functions in the toolkit and to provide some illustrative examples showing how to implement them for particular contexts and applications. The tutorial itself does not specifically require a working knowledge of Python. However, an understanding of the basic python data types, and ideally some familiarity with the use of Python objects, is highly desirable. Users who are new to Python are recommended to familiarise themselves with Appendix \ref{sec:python_guide} of this tutorial. This provides a brief overview of the Python programming language and should introduce concepts such as classes and dictionaries, which will be encountered in due course. For more detail of the complete Python language, a comprehensive overview of its features and usage standard python documentation (\href{http://docs.python.org/2/tutorial/}{http://docs.python.org/2/tutorial/}). Where necessary particular Python programming concepts will be explained in further detail.
 
-The code snippets (indicated by verbatim text) can be executed from within an ''Interactive Python'' environment, or may form the basis for usage of the hmtk in other python scripts that the user may wish to run construct themselves. If not already installed on your system, ipython can be installed from the python package repository by entering: 
+The code snippets (indicated by verbatim text) can be executed from within an ''Interactive Python (IPython)'' environment, or may form the basis for usage of the hmtk in other python scripts that the user may wish to run construct themselves. If not already installed on your system, IPython can be installed from the python package repository by entering: 
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
 ~\$ sudo pip install ipython
-
 \end{Verbatim}
 
-%For the current exercise of preparing seismic hazard inputs for sources in Nepal, a "wrapper" script has been prepared that links together a common workflow: 
-
-\begin{enumerate}
-
-\item Starting with a single magnitude-homogenised earthquake catalogue apply a declustering algorithm to identify and remove non-Poissonian events
-
-\item For the declustered catalogue, use a statistical methodology to determine the time variation in completeness. Currently only the methodology of \cite{Stepp1971} is implemented.
-
-\item With the completeness periods of the catalogue known calculate a \cite{GutenbergRichter1944} recurrence model (a- and b-value with uncertainties) for either the catalogue as a whole, or for earthquakes selected within certain area zones.
-
-\item Implementation of a statistical estimator of maximum magnitude from the earthquake catalogue  
-
-\end{enumerate}
-
-An "interactive" session can then be opened by typing \verb=ipython= at the command prompt. If matplotlib is installed and you want to make use of one or two of the plotting functionalities then you should open ipython with \verb=ipython --pylab=. To exit an ipython session at any time simply type \verb=exit=.
-
-The Modeller's Toolkit itself requires no specific installation. In a Unix/Linux environment you can simply download the code as a zipped package from the website shown previously, then unzip and move into the code directory.
-Alternatively you can download the code directly into  any current repository with the command
+An ``interactive'' session can then be opened by typing \verb=ipython= at the command prompt. If \verb=matplotlib= is installed and you wish to use the plotting functionalities described herein then you should open IPython with the command:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
-~\$ git clone https://github.com/GEMScienceTools/hmtk.git
-
+~\$ ipython --pylab
 \end{Verbatim}
 
+To exit an IPython session at any time simply type \verb=exit=.
 
-%The execution of the Modeller's Toolkit is done from within the main directory in which the code is contained. The selection of the algorithm and the general configuration of the software is done via a configuration file (in this example \verb=Nepal_hmtk_demo_config.yml=. This is a YAML (Yet Another Markup Language) file, which can be opened and edited with any common text editor (e.g. vi, emacs, gedit).
-%
-%To run the Nepal "wrapper" code for the Modeller's Toolkit simply move into the directory in which the \verb=main.py= file is found. Once the configuration file is correctly set up, execute via the following command:
+For a more visual application of the hmtk the reader is encouraged to utilise the ``IPython Notebook'' (\href{http://ipython.org/notebook.html}{http://ipython.org/notebook.html}). This novel tool implements IPython inside a web-browser environment, permitting the user to create and store real Python workflows that can be retrieved and executed, whilst allowing for images and text to be embedded. A screenshot of the hmtk used in an IPython Notebook environment is shown in Figure \ref{fig:notebook}. From version 1.0 of IPython, the IPython Notebook comes installed. A notebook session can be
+started via the command:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+ipython notebook --pylab inline
+\end{Verbatim}
+
+\begin{figure}[htb]
+  \centering
+      \includegraphics[width=\textwidth]{./figures/hmtk_notebook_screenshot.eps}
+  \caption{Example of the hmtk embedded in an IPython Notebook}
+  \label{fig:notebook}
+\end{figure}
+
+%The Modeller's Toolkit itself requires no specific installation. In a Unix/Linux environment you can simply download the code as a zipped package from the website shown previously, then unzip and move into the code directory.
+%Alternatively you can download the code directly into  any current repository with the command
+
 %\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-%~\$ python hmtk_Nepal_Demo.py --input=Nepal_hmtk_demo_config.yml
+%
+%~\$ git clone https://github.com/GEMScienceTools/hmtk.git
+%
 %\end{Verbatim}
 
-%The \verb=-d= indicates that the program can be run in ''debug'' mode. This will create a log (written automatically to the file \verb=debug.log=) of the processes that are executed inside the toolkit in addition to certain parameters that may be calculated at intermediate steps of the process, but are not written to the output. The \verb=-d= can be omitted if preferred, in which case the program will return only a minimal indication of the progress to the command prompt.
+\subsection{Visualisation}
 
-%\subsection{Nepal Demonstration: The Configuration File}
-%
-%The following demonstration is designed to illustrate how the toolkit could be used to help build a hazard model using current data (and seismogenic sources) for Nepal and the surrounding regions. The data and the study area are shown in Figure \ref{fig:KathGSHAPLabel}
-%
-%\begin{figure}[htbp]
-%	\centering
-%		\includegraphics[width=15cm, keepaspectratio=true]{./figures/Kathmandu_plus_GSHAP_sources_labelled.eps}
-%	\caption{Seismotectonic Information for Nepal and the Surroundings. Earthquakes catalogue taken from the International Seismological Centre, Area Sources (red) from GSHAP and active fault sources (including surface projections for the Main Boundary Thrust (orange)) from \cite{TaylorYin2009}}
-%	\label{fig:KathGSHAPLabel}
-%\end{figure}
+In addition to the scientific tools, which will be described in detail in due course, the hmtk also has a set of functionalities for visualisation of data and results pertinent to the preparation of seismic hazard input models. Whilst not necessarily an essential component of the hmtk, the usage of the plotting functions can facilitate model development. Particular visualisation functions shall be referred to where relevant for the particular tool or data set. 
+
+\subsubsection{Map Creation}
+
+Contained within the existing plotting tools is a set of functions to create maps of geospatial data. To do this, the hmtk requires the Matplotlib "Basemap" add-on, which can also be installed from the command line using the Python Package Manager (pip) for OSX/Linux environments:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+~\$ sudo pip install basemap
+\end{Verbatim}   
+
+Or, for Windows users, can be downloaded and installed from\\ \href{http://matplotlib.org/basemap/users/download.html}{http://matplotlib.org/basemap/users/download.html}. 
+
+To set-up a simple basemap it is necessary to define the configuration of the plot (such as spatial limit and coastline resolution). This is done as follows:
+
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+In [1]: from hmtk.plotting.mapping import HMTKBaseMap
+
+In [2]: map_config = \{"min_lon": 18.0,
+                       "max_lon": 32.0,
+                       "min_lat": 33.0,
+                       "max_lat": 43.0,
+                       "resolution": "h"\}
+
+In [3]: basemap1 = HMTKBaseMap(map_config, "Title of Map")
+\end{Verbatim}  
+
+\verb=HMTKBaseMap= is instantiated with a dictionary of configuration parameters: minimum longitude (\verb=min_lon=), maximum longitude (\verb=max_lon=), minimum latitude (\verb=min_lat=), maximum latitude (\verb=max_lat=). The setting \verb=resolution= determines the coastline resolution: `c' (crude), `l' (low), `i' (intermediate), `h' (high) and `f' (full).
+
+\textbf{N.B. The resolution of the coastline boundary can be computationally demanding, depending on the application. For very large scale (e.g. continent or global) it is recommended to use the `c' or `l' settings, whilst for maps of the order of $20^{\circ} \times 20^{\circ}$ or better, the `h' setting can be used.} 
+
+The class \verb=HMTKBaseMap= contains a set of methods for mapping other data for model building:
+\begin{itemize}
+\item \verb;.add_catalogue(catalogue, overlay=False);
+
+This function will overlay an earthquake catalogue onto the basemap. The input value \verb=catalogue= is the earthquake catalogue as an instance of the class \\\verb=hmtk.seismicity.catalogue.Catalogue= (see the next section for details), whilst the parameter \verb=overlay= indicates whether the use expects to add another layer on top of the map (True) or whether to close the image to overlaying (False), as would be the case when the image is ready for exporting. An example map for the Aegean is shown in Figure \ref{fig:eqcat_simple}.
+   
+\begin{figure}[htb]
+  \centering
+      \includegraphics[trim=20mm 14mm 1mm 1mm, clip, width=\textwidth]{./figures/EQCatalogueSimple.eps}
+  \caption{Example visualisation of an Earthquake Catalogue}
+  \label{fig:eqcat_simple}
+\end{figure}
+
+\item \verb;.add_source_model(model, area_border='k-', border_width='1.0',;\\
+    \verb;    point_marker='ks', point_size=2.0, overlay=False);
+
+This function adds a source model to the basemap. The input value \verb=model= is an instance of the class \verb=hmtk.sources.source_model.mtkSourceModel= (see next section). The remaining parameters control the plot settings: i) \verb=area_border= (the colour of the borders of an area source), ii) \verb=border_width= (the line width of the area source border), iii) \verb=point_marker= (the marker style for a point source), iv) \verb=point_size= (the size of the point source). An example of a source model plot is shown in \ref{fig:source_model_map}.
+ 
+\begin{figure}[htb]
+  \centering
+      \includegraphics[trim=20mm 14mm 20mm 14mm, clip, width=\textwidth]{./figures/source_model_map.eps}
+  \caption{Example visualisation of a source model with area sources (blue) and simple fault sources (black)}
+  \label{fig:source_model_map}
+\end{figure}
+
+\item \verb;.add_colour_scaled_points(longitude, latitude, data, shape='s',;\\
+\verb;    alpha=1.0, size=20, norm=None, overlay=False);
+
+Overlays a set of data points with colour scaled according to the \verb=data= value.
+
+\item \verb;.add_size_scaled_points(longitude, latitude, data, shape='o',;\\
+\verb;    logplot=False, alpha=1.0, colour='b', smin=2.0, sscale=2.0,;\\
+\verb;    overlay=False);
+
+Overlays a set of data points with size scaled according to the \verb=data= value.
+\end{itemize}
+ 
+ 
+
+
+
 
 
 
