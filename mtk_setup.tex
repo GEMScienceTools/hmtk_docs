@@ -102,7 +102,7 @@ Where \verb=/path/to/hmtk/folder/= is the system path to the location of the hmt
 
 Although this installation has been primarily tested in a Linux/Unix environment it is possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
 
-The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the OpenQuake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
+The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the OpenQuake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \\ \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
 
 Click on the executable and follow the instructions (the installation may take up to half an hour or more, depending on the system). It is strongly recommended that the use opt for the ``\textbf{FULL}'' installation, which should bring in almost all of the dependencies needed for installing the OpenQuake hazard library. 
 
@@ -110,7 +110,7 @@ For the oq-nrmllib it is necessary to install the Lxml library (\href{http://lxm
 
 Next you will need to install the op-hazardlib and oq-nrmllib. From the web repositories listed previously click the button ``Download Zip'', then extract contents to the folders \verb=C:/oq-hazardlib= and \verb=C:/oq-nrmllib= respectively.
 
-Now open up an enhanced IPython console. Go to Start $->$ Python(xy) $->$ Enhanced Consoles $->$ Ipython (sh). This will open up an Ipython console terminal. To install the oq-hazardlib, at the console prompt type:
+Now open up an enhanced IPython console. Go to Start $->$ Python(xy) $->$ Enhanced Consoles $->$ IPython (sh). This will open up an Ipython console terminal. To install the oq-hazardlib, at the console prompt type:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 ~\$: cd C:/oq-hazardlib/
@@ -152,14 +152,14 @@ The Hazard Modeller's Toolkit is currently divided into three sections:
 
 \item \textbf{Seismic Source Models from Geodetic Data}
 
-    These functions are intended to address the use of geodetic data to derive seismic activity rates from a strain rate model for a region, implementing the Seismic Hazard Inferred from Tectonics (SHIFT) methodology developed by \cite{BirdLiu2007} and applied on a global scale by\cite{Bird_etal2010}.
+    These functions are intended to address the use of geodetic data to derive seismic activity rates from a strain rate model for a region, implementing the Seismic Hazard Inferred from Tectonics (SHIFT) methodology developed by \cite{BirdLiu2007} and applied on a global scale by \cite{Bird_etal2010}.
 \end{enumerate}
 
 A summary of the algorithms available in the present version is given in Table \ref{tab:current_features}.
 \begin{table}
 \centering
 \begin{tabular}{|c|c|} \hline
-Feature & Algorithm\\ \hline
+\textbf{Feature} & \textbf{Algorithm}\\ \hline
 \textbf{Seismicity} & \\ \hline
 Declustering & \cite{GardnerKnopoff1974}  \\
     & AFTERAN (\cite{Musson1999}) \\ \hline
@@ -206,7 +206,7 @@ For a more visual application of the hmtk the reader is encouraged to utilise th
 started via the command:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-ipython notebook --pylab inline
+~\$ ipython notebook --pylab inline
 \end{Verbatim}
 
 \begin{figure}[htb]
@@ -241,7 +241,8 @@ Or, for Windows users, can be downloaded and installed from\\ \href{http://matpl
 
 To set-up a simple basemap it is necessary to define the configuration of the plot (such as spatial limit and coastline resolution). This is done as follows:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+%\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
 In [1]: from hmtk.plotting.mapping import HMTKBaseMap
 
 In [2]: map_config = \{"min_lon": 18.0,
@@ -251,11 +252,12 @@ In [2]: map_config = \{"min_lon": 18.0,
                        "resolution": "h"\}
 
 In [3]: basemap1 = HMTKBaseMap(map_config, "Title of Map")
-\end{Verbatim}  
+\end{python}
+%\end{Verbatim}  
 
 \verb=HMTKBaseMap= is instantiated with a dictionary of configuration parameters: minimum longitude (\verb=min_lon=), maximum longitude (\verb=max_lon=), minimum latitude (\verb=min_lat=), maximum latitude (\verb=max_lat=). The setting \verb=resolution= determines the coastline resolution: `c' (crude), `l' (low), `i' (intermediate), `h' (high) and `f' (full).
 
-\textbf{N.B. The resolution of the coastline boundary can be computationally demanding, depending on the application. For very large scale (e.g. continent or global) it is recommended to use the `c' or `l' settings, whilst for maps of the order of $20^{\circ} \times 20^{\circ}$ or better, the `h' setting can be used.} 
+\noindent \textbf{N.B. The resolution of the coastline boundary can be computationally demanding, depending on the application. For very large scale (e.g. continent or global) it is recommended to use the `c' or `l' settings, whilst for maps of the order of $20^{\circ} \times 20^{\circ}$ or better, the `h' setting can be used.} 
 
 The class \verb=HMTKBaseMap= contains a set of methods for mapping other data for model building:
 \begin{itemize}
