@@ -1,9 +1,9 @@
 \section{Fault Recurrence from Geology}
 
-The second set of tools is designed to support a workflow in which the modeller has sufficient information to define both the geometry of the active fault surface and the slip rate, from which they then wish to calculate the activity rate on the fault according to a particular magnitude frequency distribution. It is recognised that in practice this is a complex and challenging process as the physical parameters of many faults may be highly uncertain, and the propagation of this uncertainty is critical in defining the epistemic uncertainty on such source models \citep{Peruzza_etal2010}. The current implementation of the tools focusses on the time-independent workflow entirely, aiming to allow the user to constrain the activity rate from the geological slip for an assumed single section. It is hoped that in future this will evolve to consider more complex conditions, such as those in which the observations of displacement at points along the segment and interactions between segments can be taken into consideration. The manner in which these features take shape will become clearer as more data is input into the global fault database created by the GEM Faulted Earth project.
+The second set of tools is designed to support a workflow in which the modeller has sufficient information to define both the geometry of the active fault surface and the slip rate, from which they then wish to calculate the activity rate on the fault according to a particular magnitude frequency distribution. It is recognised that in practice this is a complex and challenging process as the physical parameters of many faults may be highly uncertain, and the propagation of this uncertainty is critical in defining the epistemic uncertainty on such source models \parencite{Peruzza_etal2010}. The current implementation of the tools focusses on the time-independent workflow entirely, aiming to allow the user to constrain the activity rate from the geological slip for an assumed single section. It is hoped that in future this will evolve to consider more complex conditions, such as those in which the observations of displacement at points along the segment and interactions between segments can be taken into consideration. The manner in which these features take shape will become clearer as more data is input into the global fault database created by the GEM Faulted Earth project.
 
 The core of the time-independent workflow originates from the simple moment balance 
-in which the total moment release rate (in Nm) on the fault $\dot{M}_o$ is derived from the slip rate $\dot{s}$\citep{AndersonLuco1983, Bungum2007}: 
+in which the total moment release rate (in Nm) on the fault $\dot{M}_o$ is derived from the slip rate $\dot{s}$\parencite{AndersonLuco1983, Bungum2007}: 
 
 \begin{equation}
 \dot{M}_o = c \mu A \dot{s}
@@ -49,7 +49,7 @@ N.B. When collapsing the branches it the original magnitude scaling relations us
 
 \subsubsection{Magnitude Scaling Relations}
 
-To ensure compatibility with the OpenQuake engine, the scaling relations are taken directly from the OpenQuake library. Therefore the only scaling relations available are those that can be currently found in the oq-hazardlib (\citet{wells1994} and \citet{thomas2010} at the time of writing). To implement new magnitude scaling relations the reader is referred to the documentation and source code for the OpenQuake hazard library (\href{http://docs.openquake.org/oq-hazardlib}{http://docs.openquake.org/oq-hazardlib})
+To ensure compatibility with the OpenQuake engine, the scaling relations are taken directly from the OpenQuake library. Therefore the only scaling relations available are those that can be currently found in the oq-hazardlib (\textcite{wells1994} and \textcite{thomas2010} at the time of writing). To implement new magnitude scaling relations the reader is referred to the documentation and source code for the OpenQuake hazard library (\href{http://docs.openquake.org/oq-hazardlib}{http://docs.openquake.org/oq-hazardlib})
 
 \subsection{Tectonic Regionalisation}
 
@@ -220,7 +220,7 @@ The details of the magnitude frequency distribution configurations \verb=MFD_Mod
 \item \verb=Name= The fault name
 \item \verb=Tectonic Region= The tectonic region class to which the fault is assigned. Note that if the region class if not defined in the tectonic region header than an error will be raised.
 \item \verb=Fault Geometry= A dictionary of the geometrical properties of the fault (described in further detail in due course
-\item \verb=Rake= The rake of the fault (as defined using the \cite{aki2002} convention)
+\item \verb=Rake= The rake of the fault (as defined using the \textcite{aki2002} convention)
 \item \verb=Slip= A dictionary with the slip rate of the fault in mm yr$^{-1}$ and their corresponding uncertainties
 \item \verb=Aseismic= A coefficient describing the pfraction of slip released aseismically (effectively $1 - c$ where $c$ is the coupling coefficient)
 \item \verb=MFD_Model= A list of models describing the corresponding magnitude frequency distribution properties
@@ -228,7 +228,7 @@ The details of the magnitude frequency distribution configurations \verb=MFD_Mod
 \item \verb=Scaling_Relation_Sigma= The number of standard deviations of the magnitude scaling relation and their corresponding weights. 
 \end{itemize}
 
-For shear modulus, magnitude scaling relation and displacement to length ratio the fault input is the same as for the tectonic regionalisation. These attributes can be for a single fault, but if they are not provided for the fault they can be defined within the tectonic regionalisation. If they are not defined within the tectonic regionalisation then the default values are assumed: 30 GPa for the shear modulus, \cite{wells1994} for the scaling relation and $1.25\times10^{-5}$ for the displacement to length ratio. 
+For shear modulus, magnitude scaling relation and displacement to length ratio the fault input is the same as for the tectonic regionalisation. These attributes can be for a single fault, but if they are not provided for the fault they can be defined within the tectonic regionalisation. If they are not defined within the tectonic regionalisation then the default values are assumed: 30 GPa for the shear modulus, \textcite{wells1994} for the scaling relation and $1.25\times10^{-5}$ for the displacement to length ratio. 
 
 The remaining attributes are not essential and are not used in the calculation at present, but are included for completeness:
 \begin{itemize}
@@ -237,13 +237,11 @@ The remaining attributes are not essential and are not used in the calculation a
 \end{itemize}
 
 
-
-
 \subsection{Fault Recurrence Models}
 
-The current implementation of the hmtk supports nine different models for deriving recurrence models from geological parameters. Six different models are provided for exponential distributions, which originate from the study of \cite{AndersonLuco1983}, one for a ''simple characteristic'' earthquake (used here), a further exponential model (\cite{YoungsCoppersmith1985}) and the hybrid characteristic-exponential model also presented by \cite{YoungsCoppersmith1985}). Models describing exponential recurrence requiring the definition of a ''b-value'' for each source. The various nuances and assumptions behind each model are described in the sources cited here, and the reader is strongly encouraged to refer to the source material for further detail.
+The current implementation of the hmtk supports nine different models for deriving recurrence models from geological parameters. Six different models are provided for exponential distributions, which originate from the study of \textcite{AndersonLuco1983}, one for a ''simple characteristic'' earthquake (used here), a further exponential model \parencite{YoungsCoppersmith1985} and the hybrid characteristic-exponential model also presented by \textcite{YoungsCoppersmith1985}. Models describing exponential recurrence requiring the definition of a ''b-value'' for each source. The various nuances and assumptions behind each model are described in the sources cited here, and the reader is strongly encouraged to refer to the source material for further detail.
 
-Common to many of these models is the moment magnitude definition of \cite{HanksKanamori1979}:
+Common to many of these models is the moment magnitude definition of \textcite{HanksKanamori1979}:
 
 \begin{equation}
 M_o \left( {M_W} \right) = 10.0 ^{16.05 + 1.5 M_W} = M_o \left( {M_{MAX}} \right) e^{-\bar{d} \Delta M}
@@ -251,12 +249,12 @@ M_o \left( {M_W} \right) = 10.0 ^{16.05 + 1.5 M_W} = M_o \left( {M_{MAX}} \right
 
 where $\bar{d} = 1.5 \log_e \left( {10.0} \right)$.
 
-\subsubsection{\cite{AndersonLuco1983} ``Arbitrary''}
+\subsubsection{\textcite{AndersonLuco1983} ``Arbitrary''}
 
-The study of \cite{AndersonLuco1983} defines three categories of models for defining a magnitude recurrence distribution from the geological slip. The first model refers to the case when the recurrence is related to the entire fault, which we call the ``Arbitrary`` model here. The second model refers the recurrence to the rupture area of the maximum earthquake, the ``Area Mmax'' model here. The third category relates the recurrence to a specific site on the fault, and is not yet implemented in to tools. From within each of the three categories there are three different subcategories, which allow for different forms of tapering at the upper edge of the model. The reader is referred to the original paper of \cite{AndersonLuco1983} for further details and a complete derivation of the models. The different forms of the recurrence model are referred to here as types 1, 2 and 3, which correspond to equations 4, 3 and 2 in the original paper of \cite{AndersonLuco1983}. 
+The study of \textcite{AndersonLuco1983} defines three categories of models for defining a magnitude recurrence distribution from the geological slip. The first model refers to the case when the recurrence is related to the entire fault, which we call the ``Arbitrary`` model here. The second model refers the recurrence to the rupture area of the maximum earthquake, the ``Area Mmax'' model here. The third category relates the recurrence to a specific site on the fault, and is not yet implemented in to tools. From within each of the three categories there are three different subcategories, which allow for different forms of tapering at the upper edge of the model. The reader is referred to the original paper of \textcite{AndersonLuco1983} for further details and a complete derivation of the models. The different forms of the recurrence model are referred to here as types 1, 2 and 3, which correspond to equations 4, 3 and 2 in the original paper of \textcite{AndersonLuco1983}. 
 
 \begin{enumerate}
-\item The `first' type of \cite{AndersonLuco1983} arbitrary model is defined as:
+\item The `first' type of \textcite{AndersonLuco1983} arbitrary model is defined as:
 \begin{equation}
 N \left( {M_W \geq M} \right) = \frac{\bar{d} - \bar{b}}{\bar{d}} \frac{\mu A \dot{s}}{M_o \left( {M_{MAX}} \right)} \exp \left( {\bar{b} \left[ {M_{MAX} - M} \right]} \right)
 \end{equation}
@@ -275,7 +273,7 @@ N \left( {M_W \geq M} \right) = & \frac{\bar{d} \left( {\bar{d} - \bar{b}} \righ
 \end{split}\end{equation}
 \end{enumerate}
 
-The configuration of the \verb=MFD_Model= for the \cite{AndersonLuco1983} ``Arbitrary'' calculators shown as follows:
+The configuration of the \verb=MFD_Model= for the \textcite{AndersonLuco1983} ``Arbitrary'' calculators shown as follows:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
         - Model_Name: AndersonLucoArbitrary
@@ -294,7 +292,7 @@ The configuration of the \verb=MFD_Model= for the \cite{AndersonLuco1983} ``Arbi
 
 The \verb=Model_Name= and the \verb=Type= are self explanatory. \verb=Model_Weight= is the weighting of the particular MFD within the epistemic uncertainty analysis. \verb=MFD_Spacing= is the spacing of the evenly discretized magnitude frequency distribution that will be output. The three parameters \verb=Minimum_Magnitude=, \verb=Maximum_Magnitude= and \\ \verb=Maximum_Magnitude_Uncertainty= define the bounding limits of the MFD and the standard deviation of $M_{MAX}$ in $M_W$ units. \verb=Minimum_Magnitude= is an essential attribute, whereas \verb=Maximum_Magnitude= and \verb=Maximum_Magnitude_Uncertainty= are optional. If not specified the code will calculate \verb=Maximum_Magnitude= and \\ \verb=Maximum_Magnitude_Uncertainty= from the magnitude scaling relationship. Finally, as these are exponential models the b-value must be specified. Here it is preferred that b-value is specified as a tuple of $\left[ {b-value, b-value\ error} \right]$, although at present the epistemic uncertainty on b-value does not propagate (this may change in future!). 
 
-As with the catalogue tools, plotting functions are available to assist the user understand the nature of the recurrence model used for a given fault. To illustrate the impact of the choice of the `first', `second' and `third' type of model we consider a simple fault with the following properties: along-strike length = 200 km, down-dip width = 20 km, rake = 0.0 (strike-slip) and slip-rate = 10 mm/yr. The \cite{wells1994} magnitude scaling relation is assumed. The fault and three magnitude frequency distributions are configured as shown:
+As with the catalogue tools, plotting functions are available to assist the user understand the nature of the recurrence model used for a given fault. To illustrate the impact of the choice of the `first', `second' and `third' type of model we consider a simple fault with the following properties: along-strike length = 200 km, down-dip width = 20 km, rake = 0.0 (strike-slip) and slip-rate = 10 mm/yr. The \textcite{wells1994} magnitude scaling relation is assumed. The fault and three magnitude frequency distributions are configured as shown:
 
 \begin{python}[frame=single]
 >> slip = 10.0  # Slip rate in mm/yr
@@ -355,15 +353,15 @@ The models are then compared, as shown in Figure \ref{fig:anderson_luco_arb}, us
 
 
 
-\subsubsection{\cite{AndersonLuco1983} ``Area Mmax''}
+\subsubsection{\textcite{AndersonLuco1983} ``Area Mmax''}
 
-The second set of models from \cite{AndersonLuco1983} consider the case when the the recurrence model is referred to the rupture area of the maximum earthquake specified on the fault. As the area is not extracted directly from the geometry, additional information must be provided, namely the aspect ratio of ruptures on the fault and the displacement to length ratio ($\alpha$) of the fault \cite{Bungum2007}. This information is used to derived an additional parameter ($\beta$):
+The second set of models from \textcite{AndersonLuco1983} consider the case when the the recurrence model is referred to the rupture area of the maximum earthquake specified on the fault. As the area is not extracted directly from the geometry, additional information must be provided, namely the aspect ratio of ruptures on the fault and the displacement to length ratio ($\alpha$) of the fault \parencite{Bungum2007}. This information is used to derived an additional parameter ($\beta$):
 
 \begin{equation}
 \beta=\sqrt{\frac{\alpha M_o \left( 0 \right)}{\mu W}}
 \end{equation}
 
-The three types of \cite{AndersonLuco1983} ``Area Mmax'' model are then calculated via:
+The three types of \textcite{AndersonLuco1983} ``Area Mmax'' model are then calculated via:
 
 \begin{enumerate}
 
@@ -391,12 +389,12 @@ N \left( {M_W \geq M} \right) = & \frac{\bar{d} \left( {\bar{d} - \bar{b}} \righ
 
 \end{enumerate}
 
-As the rupture aspect ratio and displacement to length ratio are attributes of the fault and not of the MFD, then the MFD configuration is the same as that of the \cite{AndersonLuco1983} ``Arbitrary'' calculator, albeit that \verb=Model_Name= must now be specified as \verb=AndersonLucoAreaMmax=. As before, the maximum magnitude and their uncertainty are optional, and will taken from the magnitude scaling relation if not specified in the configuration. This is permitted simply to ensure flexibility of the algorithm, although given the context of the ``Area MMax'' algorithm it is understood that the maximum magnitude should be interpreted by the modeller. If this is not the case, and the maximum magnitude is intended to be constrained using the geometry of the rupture, the ``Arbitrary'' model may be preferable.
+As the rupture aspect ratio and displacement to length ratio are attributes of the fault and not of the MFD, then the MFD configuration is the same as that of the \textcite{AndersonLuco1983} ``Arbitrary'' calculator, albeit that \verb=Model_Name= must now be specified as \verb=AndersonLucoAreaMmax=. As before, the maximum magnitude and their uncertainty are optional, and will taken from the magnitude scaling relation if not specified in the configuration. This is permitted simply to ensure flexibility of the algorithm, although given the context of the ``Area MMax'' algorithm it is understood that the maximum magnitude should be interpreted by the modeller. If this is not the case, and the maximum magnitude is intended to be constrained using the geometry of the rupture, the ``Arbitrary'' model may be preferable.
 
 \begin{figure}[htb]
   \centering
       \includegraphics[trim=5mm 5mm 5mm 5mm, clip, width=12cm]{./figures/anderson_luco_mmax_mfds.eps}
-  \caption{Comparison of magnitude frequency distributions for the specified fault using the three different models of the \cite{AndersonLuco1983} ``Area-Mmax'' configuration}
+  \caption{Comparison of magnitude frequency distributions for the specified fault using the three different models of the \textcite{AndersonLuco1983} ``Area-Mmax'' configuration}
   \label{fig:anderson_luco_area_mmax}
 \end{figure}
 
@@ -485,14 +483,14 @@ The distribution is shown, for the fault example defined previously, in Figure \
                           msr_sigma=0.0)
 \end{python}                               
 
-\subsubsection{\cite{YoungsCoppersmith1985} ``Exponential''}
+\subsubsection{\textcite{YoungsCoppersmith1985} ``Exponential''}
 
-This model is another form of ``Exponential'' model and is noted as being similar in construct to the \cite{AndersonLuco1983} Type 2 models. It is included here mostly for completeness. The model is given as:
+This model is another form of ``Exponential'' model and is noted as being similar in construct to the \textcite{AndersonLuco1983} Type 2 models. It is included here mostly for completeness. The model is given as:
 
 \begin{equation}
 N \left( {M_W \geq M} \right) = \frac{\mu A \dot{s} \left( {1.5 - b} \right) \left( {1 - \exp \left( {-\beta \left( {M_{MAX} - M} \right)} \right)} \right)}{b M_{0}^{MAX} \exp \left( {-\beta \left( {M_{MAX} - M} \right)} \right)}
 \end{equation}
-where $M_0^{MAX}$ is the moment corresponding to the maximum magnitude. The inputs for the model are defined in a similar manner as for the \cite{AndersonLuco1983} models:
+where $M_0^{MAX}$ is the moment corresponding to the maximum magnitude. The inputs for the model are defined in a similar manner as for the \textcite{AndersonLuco1983} models:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
         - Model_Name: YoungsCoppersmithExponential
@@ -507,21 +505,21 @@ where $M_0^{MAX}$ is the moment corresponding to the maximum magnitude. The inpu
 
 Note that all of the exponential models described here contain the term $d - b$, or some variant thereof, where $d$ is equal to 1.5. This introduces the condition that $b \leq 1.5$. 
 
-\subsubsection{\cite{YoungsCoppersmith1985} ``Characteristic''}
+\subsubsection{\textcite{YoungsCoppersmith1985} ``Characteristic''}
 
-The \cite{YoungsCoppersmith1985} model is a hybrid model, comprising an exponential distribution for lower magnitudes and a fixed recurrence rate for the characteristic magnitude $M_C$. The exponential component of the model is described via:
+The \textcite{YoungsCoppersmith1985} model is a hybrid model, comprising an exponential distribution for lower magnitudes and a fixed recurrence rate for the characteristic magnitude $M_C$. The exponential component of the model is described via:
 
 \begin{equation}
 N \left( M \right) - N \left( {M_C} \right) = \frac{\mu A \dot{s}\ e^{\left( {-\beta \left( {M_{MAX} - M - 0.5} \right)}\right)} M_{0}^{MAX}}{1 - e^{\left( {-\beta \left( {M_{MAX} - M - 0.5} \right)} \right)}} 
  \left[ {\frac{b10^{-c/2}}{c - b} + \frac{b e^{\beta}\left({1 - 10^{-c/2}}\right)}{c}} \right]\end{equation}
 
-where $\beta = b \ln \left( {10} \right)$, $c = 1.5$ and all other parameters are described as for the \cite{YoungsCoppersmith1985} ``Exponential'' and \cite{AndersonLuco1983} models. The rate for the characteristic magnitude is then given by:
+where $\beta = b \ln \left( {10} \right)$, $c = 1.5$ and all other parameters are described as for the \textcite{YoungsCoppersmith1985} ``Exponential'' and \textcite{AndersonLuco1983} models. The rate for the characteristic magnitude is then given by:
 
 \begin{equation}
 N \left( {M_C} \right) = \frac{\beta \left( {N \left( M \right) - N \left( {M_C} \right)} \right) e^{-\beta \left( {M_{MAX} - M - 1.5} \right)}}{2 \left( {1 - e^{-\beta \left( {M_{MAX} - M - 1.5} \right)}} \right)}
 \end{equation}
 
-As described in \cite{YoungsCoppersmith1985}, this model assumes that:
+As described in \textcite{YoungsCoppersmith1985}, this model assumes that:
 \begin{enumerate}
 \item The characteristic magnitude bin width $\Delta M_C$ is 0.5 $M_W$
 \item Magnitudes are exponentially distributed up to a value $M'$, where $M' = M_{MAX} - \Delta M_C$
@@ -533,11 +531,11 @@ The current calculator adopts the implementation found in the \href{http://docs.
 \begin{figure}[htb]
   \centering
       \includegraphics[trim=5mm 5mm 5mm 5mm, clip, width=12cm]{./figures/youngs_coppersmith_mfds.eps}
-  \caption{Magnitude frequency distribution for the specified fault configuration using the \cite{YoungsCoppersmith1985} ``Exponential'' and ``Hybrid'' models}
+  \caption{Magnitude frequency distribution for the specified fault configuration using the \textcite{YoungsCoppersmith1985} ``Exponential'' and ``Hybrid'' models}
   \label{fig:youngs_coppersmith}
 \end{figure}
 
-The two \cite{YoungsCoppersmith1985} distributions are compared in Figure \ref{fig:youngs_coppersmith}, which is generated using the code below:
+The two \textcite{YoungsCoppersmith1985} distributions are compared in Figure \ref{fig:youngs_coppersmith}, which is generated using the code below:
 \begin{python}[frame=single]
 >> exponential = {'Model_Name': 'YoungsCoppersmithExponential',
                   'MFD_spacing': 0.1,
@@ -613,7 +611,7 @@ Hypocentral Depth Distribution & Depth = 10.0 km, Probability = 1.0 \\ \hline
 \subsubsection{Epistemic Uncertainties}
 
 The following example compares the case when epistemic uncertainties are incorporated into the analysis. A demonstration file (\verb=tests/parsers/faults/yaml_examples/=\\
-\verb=simple_fault_example_4branch.yml=) is included, which considers two epistemic uncertainties for a specific fault: slip rate and magnitude frequency distribution type. The fault has two estimates of slip rate (5 $mm \ yr^{-1}$ and 7 $mm\ yr^{-1}$), each assigned a weighting of 0.5. Two magnitude frequency distribution types (Characteristic and \cite{AndersonLuco1983} ``Arbitrary'') are assigned, with weights of 0.7 and 0.3 respectively. The analysis is run, in the manner described previously. Firstly we consider the case when the different options are enumerated (the default option:
+\verb=simple_fault_example_4branch.yml=) is included, which considers two epistemic uncertainties for a specific fault: slip rate and magnitude frequency distribution type. The fault has two estimates of slip rate (5 $mm \ yr^{-1}$ and 7 $mm\ yr^{-1}$), each assigned a weighting of 0.5. Two magnitude frequency distribution types (Characteristic and \textcite{AndersonLuco1983} ``Arbitrary'') are assigned, with weights of 0.7 and 0.3 respectively. The analysis is run, in the manner described previously. Firstly we consider the case when the different options are enumerated (the default option:
 
 \begin{python}[frame=single]
 >> from hmtk.parsers.faults.fault_yaml_parser import\

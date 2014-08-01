@@ -60,6 +60,7 @@
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 
 % Bibliography
+\usepackage{csquotes}
 \usepackage[style=alphabetic,
             sorting=nyt,
             sortcites=true,
@@ -73,6 +74,8 @@
             doi=true,
             abbreviate=false,
             backref=true,
+            uniquename=false,
+            uniquelist=false,
             backend=biber]{biblatex}
 \addbibresource{./bibliography/hazard.bib} % BibTeX bibliography file
 \defbibheading{bibempty}{}
@@ -161,7 +164,6 @@ Hazard Modeller's Toolkit - User Guide\par % Book title
    and GEM Foundation have no obligations to provide maintenance, support,
    updates, enhancements, or modifications. 
    \hfill \\
-   \todo{This needs to be updated or removed}
    The current version of the book has been revised only by members of 
    the GEM model facility and it must be considered a draft copy. 
    %

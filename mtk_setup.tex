@@ -144,7 +144,7 @@ The Hazard Modeller's Toolkit is currently divided into three sections:
 
 \begin{enumerate}
 \item \textbf{Earthquake Catalogue and Seismicity Analysis}
-    These functions are intended to address the needs of defining seismic activity rate from an earthquake catalogue. They algorithms for identification of Non-Poissonian events (declustering), analysis of catalogue completeness, calculation of activity rate and b-value and, finally, estimation of maximum magnitude using statistical analyses of the earthquake catalogue. Also included in these tools is an initial implementation of a smoothed seismicity algorithm using the \cite{frankel1995} approach.
+    These functions are intended to address the needs of defining seismic activity rate from an earthquake catalogue. They algorithms for identification of Non-Poissonian events (declustering), analysis of catalogue completeness, calculation of activity rate and b-value and, finally, estimation of maximum magnitude using statistical analyses of the earthquake catalogue. Also included in these tools is an initial implementation of a smoothed seismicity algorithm using the \textcite{frankel1995} approach.
      
 \item \textbf{Active Faults Source Models from Geological Data}
 
@@ -152,7 +152,7 @@ The Hazard Modeller's Toolkit is currently divided into three sections:
 
 \item \textbf{Seismic Source Models from Geodetic Data}
 
-    These functions are intended to address the use of geodetic data to derive seismic activity rates from a strain rate model for a region, implementing the Seismic Hazard Inferred from Tectonics (SHIFT) methodology developed by \cite{BirdLiu2007} and applied on a global scale by \cite{Bird_etal2010}.
+    These functions are intended to address the use of geodetic data to derive seismic activity rates from a strain rate model for a region, implementing the Seismic Hazard Inferred from Tectonics (SHIFT) methodology developed by \textcite{BirdLiu2007} and applied on a global scale by \textcite{Bird_etal2010}.
 \end{enumerate}
 
 A summary of the algorithms available in the present version is given in Table \ref{tab:current_features}.
@@ -161,22 +161,22 @@ A summary of the algorithms available in the present version is given in Table \
 \begin{tabular}{|c|c|} \hline
 \textbf{Feature} & \textbf{Algorithm}\\ \hline
 \textbf{Seismicity} & \\ \hline
-Declustering & \cite{GardnerKnopoff1974}  \\
-    & AFTERAN (\cite{Musson1999}) \\ \hline
-Completeness & \cite{Stepp1971}\\ \hline
-Recurrence & Maximum Likelihood \cite{Aki1965}\\
+Declustering & \textcite{GardnerKnopoff1974}  \\
+    & AFTERAN \parencite{Musson1999} \\ \hline
+Completeness & \textcite{Stepp1971}\\ \hline
+Recurrence & Maximum Likelihood \parencite{Aki1965}\\
  & Time-dependent MLE\\
- & \cite{Weichert1980}\\ \hline
- Smoothed Seismicity & \cite{frankel1995} \\ \hline
+ & \textcite{Weichert1980}\\ \hline
+ Smoothed Seismicity & \textcite{frankel1995} \\ \hline
  \textbf{Geology} & \\ \hline
- Recurrence & \cite{AndersonLuco1983} ``Arbitrary''\\
-  & \cite{AndersonLuco1983} ``Area $M_{MAX}$''\\
+ Recurrence & \textcite{AndersonLuco1983} ``Arbitrary''\\
+  & \textcite{AndersonLuco1983} ``Area $M_{MAX}$''\\
   & Characteristic (Truncated Gaussian) \\
-  & \cite{YoungsCoppersmith1985} Exponential\\
-  & \cite{YoungsCoppersmith1985} Characteristic\\ \hline
+  & \textcite{YoungsCoppersmith1985} Exponential\\
+  & \textcite{YoungsCoppersmith1985} Characteristic\\ \hline
  \textbf{Geodetic Strain} & \\ \hline
  Recurrence & Seismic Hazard Inferred from Tectonics (SHIFT) \\
-           &  \cite{BirdLiu2007, Bird_etal2010} \\ \hline
+           &  \textcite{BirdLiu2007, Bird_etal2010} \\ \hline
 \end{tabular}
 \caption{Current algorithms in the HMTK}
 \label{tab:current_features}

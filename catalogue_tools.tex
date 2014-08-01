@@ -325,15 +325,15 @@ Selects earthquakes whose magnitudes are within the range specified by the lower
 
 To identify Poissonian rate of seismicity, it is necessary to remove foreshocks/aftershocks/swarms from the catalogue. The Modeller's Toolkit contains, at present, two algorithms to undertake this task, with more under development.
 
-\subsection{\cite{GardnerKnopoff1974}}
+\subsection{\textcite{GardnerKnopoff1974}}
 
 The most widely applied simple windowing algorithm is that of 
-\cite{GardnerKnopoff1974}. Originally conceived for Southern California, 
+\textcite{GardnerKnopoff1974}. Originally conceived for Southern California, 
 the method simply identifies aftershocks by virtue of fixed time-distance
 windows proportional to the magnitude of the main shock. Whilst this 
 premise is relatively simple, the manner in which the windows are 
 applied can be ambiguous. Four different possibilities can be 
-considered (\cite{LuenStark2012}):
+considered \parencite{LuenStark2012}:
 
 \begin{enumerate}
 \item Search events in magnitude-descending order. Remove events if it is 
@@ -359,8 +359,8 @@ originating due to the previous aftershocks); however, it is assumed
 all would occur within the window.
 
 Several modifications to the time and distance windows have been 
-suggested, which are summarised in \cite{vanStiphout2012}. The windows 
-originally suggested by \cite{GardnerKnopoff1974} are approximated by:
+suggested, which are summarised in \textcite{vanStiphout2012}. The windows 
+originally suggested by \textcite{GardnerKnopoff1974} are approximated by:
 
 \begin{equation}\begin{split} 
 \mbox{distance (km)} = &10^{0.1238 M + 0.983}\\
@@ -369,7 +369,7 @@ originally suggested by \cite{GardnerKnopoff1974} are approximated by:
               10^{0.5409 M - 0.547} & \mbox{otherwise}  \end{cases}\end{split}
 \end{equation}
 
-An alternative formulation is proposed by Gr\"unthal (as reported in \cite{vanStiphout2012}):
+An alternative formulation is proposed by Gr\"unthal (as reported in \textcite{vanStiphout2012}):
 
 \begin{equation}\begin{split} 
 \mbox{distance (km)} = & e^{1.77 + \left( {0.037 + 1.02 M} \right)^2} \\ 
@@ -377,7 +377,7 @@ An alternative formulation is proposed by Gr\"unthal (as reported in \cite{vanSt
     \right)^2}|    & \text{if $M \geq 6.5$ } \\ 10^{2.8 + 0.024 M} & 
     \text{otherwise}  \end{cases}\end{split}
 \end{equation}
-A further alternative is suggested by \cite{Uhrhammer1986}
+A further alternative is suggested by \textcite{Uhrhammer1986}
 %
 \begin{equation}
 \mbox{distance (km)} = e^{-1.024 + 0.804 M} \quad \mbox{time (decimal years)} = 
@@ -401,7 +401,7 @@ distance  and time (Figure \ref{fig:declust_scaling}).
 	\label{fig:declust_scaling}
 \end{figure}
 
-The \cite{GardnerKnopoff1974} algorithm and its derivatives represent 
+The \textcite{GardnerKnopoff1974} algorithm and its derivatives represent 
 are most computationally straightforward approach to declustering. The \verb=time_dist_windows= attribute indicates the choice of the 
 time and distance window scaling model from the three listed. As 
 the current version of this algorithm considers the events in a 
@@ -413,7 +413,7 @@ So for an evenly sized time window for foreshocks and aftershocks,the\\
 \verb=foreshock_time_window= parameter should equal 1. For shorter or longer 
 foreshock time windows this parameter can be reduced or increased respectively.
 
-To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \cite{GardnerKnopoff1974} algorithm, using for example the \cite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
+To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \textcite{GardnerKnopoff1974} algorithm, using for example the \textcite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
 
 \begin{python}[frame=single]
 >> from hmtk.seismicity.declusterer.distance_time_windows import\
@@ -457,13 +457,13 @@ Alternatively, to purge the catalogue of non-Poissonian events:
 \end{python}
 
 
-\subsection{AFTERAN (\cite{Musson1999PSHABalkan})}
+\subsection{AFTERAN \parencite{Musson1999PSHABalkan}}
 
-A particular development of the standard windowing approach is introduced in the program AFTERAN (\cite{Musson1999PSHABalkan}). This is a modification of the \cite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
+A particular development of the standard windowing approach is introduced in the program AFTERAN \parencite{Musson1999PSHABalkan}. This is a modification of the \textcite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
 
-The theory of the AFTERAN algorithm is broadly consistent with that of \cite{GardnerKnopoff1974}. This algorithm, whilst a little more computationally complex, and therefore slower, than the \cite{GardnerKnopoff1974} windowing approach, remains simple to implement. 
+The theory of the AFTERAN algorithm is broadly consistent with that of \textcite{GardnerKnopoff1974}. This algorithm, whilst a little more computationally complex, and therefore slower, than the \textcite{GardnerKnopoff1974} windowing approach, remains simple to implement. 
 
-As with the \cite{GardnerKnopoff1974} function, the \verb=time_dist_window= attribute indicates the choice of the time and distance window scaling model. The parameter \verb=time_window= indicates the size (in days) of the moving time window used to identify fore- and aftershocks. The following example will show how to run the AFTERAN algorithm, using the  \cite{GardnerKnopoff1974} definition of the distance windows, and a fixed-width moving time window of 100 days.
+As with the \textcite{GardnerKnopoff1974} function, the \verb=time_dist_window= attribute indicates the choice of the time and distance window scaling model. The parameter \verb=time_window= indicates the size (in days) of the moving time window used to identify fore- and aftershocks. The following example will show how to run the AFTERAN algorithm, using the  \textcite{GardnerKnopoff1974} definition of the distance windows, and a fixed-width moving time window of 100 days.
 
   
 \begin{python}[frame=single]
@@ -489,13 +489,13 @@ As with the \cite{GardnerKnopoff1974} function, the \verb=time_dist_window= attr
 
 \section{Completeness}
 
-In the earliest stages of processing an instrumental seismic catalogue to derive inputs for seismic hazard analysis, it is necessary to determine the magnitude completeness threshold of the catalogue. To outline the meaning of the term ''magnitude completeness'' and the requirements for its analysis as an input to PSHA, the terminology of \cite{MignanWoessner2012} is adopted. This defines the magnitude of completeness as the ''lowest magnitude at which 100 \% of the events in a space-time volume are detected (\cite{RydelekSacks1989, WoessnerWiemer2005})''. Incompleteness of an earthquake catalogue will produce bias when determining models of earthquake recurrence, which may have a significant impact on the estimation of hazard at a site. Identification of the completeness magnitude of an earthquake catalogue is therefore a clear requirement for the processing of input data for seismic hazard analysis.
+In the earliest stages of processing an instrumental seismic catalogue to derive inputs for seismic hazard analysis, it is necessary to determine the magnitude completeness threshold of the catalogue. To outline the meaning of the term ''magnitude completeness'' and the requirements for its analysis as an input to PSHA, the terminology of \textcite{MignanWoessner2012} is adopted. This defines the magnitude of completeness as the ''lowest magnitude at which 100 \% of the events in a space-time volume are detected \parencite{RydelekSacks1989, WoessnerWiemer2005}''. Incompleteness of an earthquake catalogue will produce bias when determining models of earthquake recurrence, which may have a significant impact on the estimation of hazard at a site. Identification of the completeness magnitude of an earthquake catalogue is therefore a clear requirement for the processing of input data for seismic hazard analysis.
 
-It should be noted that this summary of methodologies for estimating completeness is directed toward techniques that can be applied to a ''typical'' instrumental seismic catalogue. We therefore make the assumption that the input data will contain basic information for each earthquake such as time, location, magnitude. We do not make the assumption that network-specific or station-specific properties (e.g., configuration, phase picks, attenuation factors) are known a priori. This limits the selection of methodologies to those classed as estimators of ''sample completeness'', which defines completeness on the basis of the statistical properties of the earthquake catalogue, rather than ''probability-based completeness'', which defines the probability of detection given knowledge of the properties of the seismic network (\cite{SchorlemmerWoessner2008}). This therefore excludes the methodology of (\cite{SchorlemmerWoessner2008}), and similar approaches such as that of \cite{Felzer2008}
+It should be noted that this summary of methodologies for estimating completeness is directed toward techniques that can be applied to a ''typical'' instrumental seismic catalogue. We therefore make the assumption that the input data will contain basic information for each earthquake such as time, location, magnitude. We do not make the assumption that network-specific or station-specific properties (e.g., configuration, phase picks, attenuation factors) are known a priori. This limits the selection of methodologies to those classed as estimators of ''sample completeness'', which defines completeness on the basis of the statistical properties of the earthquake catalogue, rather than ''probability-based completeness'', which defines the probability of detection given knowledge of the properties of the seismic network \parencite{SchorlemmerWoessner2008}. This therefore excludes the methodology of \textcite{SchorlemmerWoessner2008}, and similar approaches such as that of \textcite{Felzer2008}
 
 The current workflows assume that completeness will be applied to the whole catalogue, ideally returning a table of time-varying completeness. The option to explore spatial variation in completeness is not explicitly supported, but could be accommodated by an appropriate configuration of the toolkit.
 
-In the current version of the Modeller's Toolkit the \cite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
+In the current version of the Modeller's Toolkit the \textcite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
 
 %\subsection{User-defined Table}
 %
@@ -512,7 +512,7 @@ In the current version of the Modeller's Toolkit the \cite{Stepp1971} methodolog
 
 \subsection{\cite{Stepp1971}}
 
-This is one of the earliest analytical approaches to estimation of completeness magnitude. It is based on estimators of the mean rate of recurrence of earthquakes within given magnitude and time ranges, identifying the completeness magnitude when the observed rate of earthquakes above MC begins to deviate from the expected rate. If a time interval ($T_i$) is taken, and the earthquake sequence assumed Poissonian, then the unbiased estimate of the mean rate of events per unit time interval of a given sample is:
+This is one of the earliest analytical approaches to estimation of completeness magnitude. It is based on estimators of the mean rate of recurrence of earthquakes within given magnitude and time ranges, identifying the completeness magnitude when the observed rate of earthquakes above $M_C$ begins to deviate from the expected rate. If a time interval ($T_i$) is taken, and the earthquake sequence assumed Poissonian, then the unbiased estimate of the mean rate of events per unit time interval of a given sample is:
 
 \begin{equation}
    \lambda = \frac{1}{n} \sum_{i = 1}^{n} T_i
@@ -529,15 +529,15 @@ where $T$ is the sample length. As the Poisson assumption implies a stationary p
 \begin{figure}[htb]
 	\centering
 		\includegraphics[height=10cm, keepaspectratio=true]{./figures/C2Fig1SteppFig1.eps}
-	\caption{Example of Completeness Estimation by the \cite{Stepp1971} methodology}
+	\caption{Example of Completeness Estimation by the \textcite{Stepp1971} methodology}
 	\label{fig:SteppFigExample1}
 \end{figure}
 
-The analysis of \citet{Stepp1971} is a coarse, but relatively robust, approach to estimating the temporal variation in completeness of a catalogue. It has been widely applied since its development. The accuracy of the completeness magnitude depends on the magnitude and time intervals considered, and a degree of judgement is often needed to determine the time at which the rate deviates from the expected values. It has tended to be applied to catalogues on a large scale, and for relatively higher completeness magnitudes. 
+The analysis of \textcite{Stepp1971} is a coarse, but relatively robust, approach to estimating the temporal variation in completeness of a catalogue. It has been widely applied since its development. The accuracy of the completeness magnitude depends on the magnitude and time intervals considered, and a degree of judgement is often needed to determine the time at which the rate deviates from the expected values. It has tended to be applied to catalogues on a large scale, and for relatively higher completeness magnitudes. 
 
 To translate the methodology from a largely graphical methods into a computational method the completeness period needs to be identified by automatically identifying the point at which the gradient of the observed values decreases with respect to that expected from a Poisson process (see \ref{fig:SteppFigExample1}). In the implementation found within the current toolkit, the divergence point is identified by fitting a two-segment piecewise linear function to the observed data. Although a two-segment piecewise linear function is normally fit with four parameters (intercept, $slope_1$, $slope_2$ and crossover point), by virtue of the assumption that for the complete catalogue the rate is assumed to be stationary such that $\sigma_{\lambda} = \frac{1}{\sqrt{T}}$ the slope of the first segment can be fixed as $-0.5$, and the second slope should be constrained such that $slope_2 \leq -0.5$, whilst the crossover point ($x_c$) is subject to the constraint ($x_c \geq 0.0$). Thus it is possible to fit the two-segment linear function using constrained optimisation with only three free parameters. For this purpose the toolkit minimises the residual sum-of-squares of the model fit using numerical optimisation. 
 
-To run the \cite{Stepp1971} algorithm the configuration parameters should be entered in the form of a dictionary, such as the example shown below:
+To run the \textcite{Stepp1971} algorithm the configuration parameters should be entered in the form of a dictionary, such as the example shown below:
 
 \begin{python}[frame=single]
 comp_config = {'magnitude_bin': 0.5,
@@ -587,11 +587,11 @@ If a \verb=completeness_table= is input then this will override the selection of
 
 \section{Recurrence Models}
 
-The current sets of tools are intended to determine the parameters of the \cite{GutenbergRichter1944} recurrence model, namely the a- and b-value. It is expected that in the most common use case the catalogue that is input to these algorithms will be declustered, with a time-varying completeness defined according to a \verb=completeness_table= of the kind shown previously. If no \verb=completeness_table= is input the algorithm will assume the input catalogue is complete above the minimum magnitude for its full duration.
+The current sets of tools are intended to determine the parameters of the \textcite{GutenbergRichter1944} recurrence model, namely the a- and b-value. It is expected that in the most common use case the catalogue that is input to these algorithms will be declustered, with a time-varying completeness defined according to a \verb=completeness_table= of the kind shown previously. If no \verb=completeness_table= is input the algorithm will assume the input catalogue is complete above the minimum magnitude for its full duration.
 
-\subsection{\cite{Aki1965}}
+\subsection{\textcite{Aki1965}}
 
-The classical maximum likelihood estimator for a simple unbounded \cite{GutenbergRichter1944} model is that of \cite{Aki1965}, adapted for binned magnitude data by \cite{Bender1983}. It assumes a fixed completeness magnitude ($M_C$) for the catalogue, and a simple power law recurrence model. It does not explicitly take into account magnitude uncertainty.
+The classical maximum likelihood estimator for a simple unbounded \textcite{GutenbergRichter1944} model is that of \textcite{Aki1965}, adapted for binned magnitude data by \textcite{Bender1983}. It assumes a fixed completeness magnitude ($M_C$) for the catalogue, and a simple power law recurrence model. It does not explicitly take into account magnitude uncertainty.
 
 \begin{equation}
    b = \frac{ \log_{10} \left( e \right)}{ \bar{m} - m_0 + \left( {\frac{\Delta M}{2}} \right)}
@@ -601,7 +601,7 @@ The classical maximum likelihood estimator for a simple unbounded \cite{Gutenber
 
 \subsection{Maximum Likelihood}
 
-This method adjusts the \cite{Aki1965} and \cite{Bender1983} method to incorporate for time variation in completeness. The catalogue is divided into
+This method adjusts the \textcite{Aki1965} and \textcite{Bender1983} method to incorporate for time variation in completeness. The catalogue is divided into
 into S sub-catalogues, where each sub-catalogue corresponds to a period 
 with a corresponding $M_C$.  An average a- and b-value (with uncertainty) is returned by taking 
 the mean of the a- and b-value of each sub-catalogue, weighted by 
@@ -629,9 +629,9 @@ the number of events in each sub-catalogue.
 
 Where \verb=magnitude_window= indicates the size of the magnitude bin, \verb=recurrence_algorithm= and \verb=reference_magnitude= the magnitude for which the output calculates that rate greater than or equal to (set to \verb=0= for $10^{a}$). 
 
-\subsection{\cite{KijkoSmit2012}}
+\subsection{\textcite{KijkoSmit2012}}
 
-A recent adaption of the \cite{Aki1965} estimator of b-value for  a catalogue containing different completeness periods has been proposed by \cite{KijkoSmit2012}. Dividing the earthquake catalogue into $s$ subcatalogues of $n_i$ events with corresponding completeness magnitudes $m_{c_i}$ for $i = 1, 2, ..., s$, the likelihood function of $\beta$ where $\beta = b \ln		 \left( {10.0} \right)$ is given as:
+A recent adaption of the \textcite{Aki1965} estimator of b-value for  a catalogue containing different completeness periods has been proposed by \textcite{KijkoSmit2012}. Dividing the earthquake catalogue into $s$ subcatalogues of $n_i$ events with corresponding completeness magnitudes $m_{c_i}$ for $i = 1, 2, ..., s$, the likelihood function of $\beta$ where $\beta = b \ln		 \left( {10.0} \right)$ is given as:
 
 \begin{equation}
     \mathbf{L} = \prod_{i = 1}^{s} \prod_{j = 1}^{n_i} \beta \exp(\left[ {-\beta \left( {m_j^i - m_{min}^i } \right) } \right])
@@ -651,9 +651,9 @@ A recent adaption of the \cite{Aki1965} estimator of b-value for  a catalogue co
                         'reference_magnitude': None\}
 \end{python}
 
-\subsection{\cite{Weichert1980}}
+\subsection{\textcite{Weichert1980}}
 
-Recognising the typical conditions of an earthquake catalogue, \cite{Weichert1980} developed a maximum likelihood estimator of $b$ for grouped magnitudes and unequal periods of observation. The likelihood formulation for this approach is:
+Recognising the typical conditions of an earthquake catalogue, \textcite{Weichert1980} developed a maximum likelihood estimator of $b$ for grouped magnitudes and unequal periods of observation. The likelihood formulation for this approach is:
 
 \begin{equation}
    \mathbf{L} \left( {\beta | n_i, m_i, t_i} \right) = \frac{ N!}{\prod_i n_i!} \prod_i p_{i}^{n_i}
@@ -671,9 +671,9 @@ The extremum of $\ln \left( {\mathbf{L}}\right)$ is found at:
    \frac{\sum_i t_i m_i \exp \left( {-\beta m_i} \right)}{\sum_j t_j \exp \left( {-\beta m_j} \right)}
 \end{equation}
 
-The computational implementation of this method is given as an appendix to \cite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \citep[e.g.][]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \citet{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
+The computational implementation of this method is given as an appendix to \textcite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \parencite[e.g.][]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \textcite{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
 
-To implement the \cite{Weichert1980} recurrence estimator, the configuration properties are defined as:
+To implement the \textcite{Weichert1980} recurrence estimator, the configuration properties are defined as:
 
 \begin{python}[frame=single]
 
@@ -685,7 +685,7 @@ To implement the \cite{Weichert1980} recurrence estimator, the configuration pro
                       `maxiter': 1000}
 \end{python}
 
-As the \cite{Weichert1980} algorithm is reaches the MLE estimation by iteration then three additional optional parameters can control the iteration process: \verb=bvalue= is the initial guess for the b-value, \verb=itstab= the difference in b-value in order to reach convergence, and \verb=maxiter= the maximum number of iterations. \footnote{The iterative nature of the \cite{Weichert1980} algorithm can result in very slow convergence and unstable behaviour when the magnitudes infer b-values that are very small, or even negative. This can occur when very few events are in the resulting catalogue, or when the magnitudes converge within a narrow range.}
+As the \textcite{Weichert1980} algorithm is reaches the MLE estimation by iteration then three additional optional parameters can control the iteration process: \verb=bvalue= is the initial guess for the b-value, \verb=itstab= the difference in b-value in order to reach convergence, and \verb=maxiter= the maximum number of iterations. \footnote{The iterative nature of the \textcite{Weichert1980} algorithm can result in very slow convergence and unstable behaviour when the magnitudes infer b-values that are very small, or even negative. This can occur when very few events are in the resulting catalogue, or when the magnitudes converge within a narrow range.}
 
 
 
@@ -694,9 +694,9 @@ As the \cite{Weichert1980} algorithm is reaches the MLE estimation by iteration 
 
 The estimation of the maximum magnitude for use in seismic hazard analysis is a complex, and often controversial, process that should be guided by information from geology and the seismotectonics of a seismic source. Estimation of maximim magnitude from the observed (instrumental and historical) seismicity can be undertaken using methods assuming a truncated \cite{GutenbergRichter1944} model, or via non-parametric methods that are independent any assumed functional form. 
 
-\subsection{\cite{Kijko2004}}
+\subsection{\textcite{Kijko2004}}
 
-Three different estimators of maximum magnitude are given by \cite{Kijko2004}, each depending on a different set of assumptions:
+Three different estimators of maximum magnitude are given by \textcite{Kijko2004}, each depending on a different set of assumptions:
 \begin{enumerate}
 \item ''Fixed b-value'': Assumes a single b-value with no uncertainty 
 \item ''Uncertain b-value'': Assumes and uncertain b-value defined by an expected b and the standard deviation
@@ -726,14 +726,14 @@ All three estimators require an iterative solution, therefore additional paramet
 
 \subsubsection{''Fixed b-value''}
 
-For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \cite{GutenbergRichter1944} distribiution with a fixed "b" value, the increment of maximum magnitude is determined via:
+For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \textcite{GutenbergRichter1944} distribiution with a fixed "b" value, the increment of maximum magnitude is determined via:
 
 \begin{equation}
 \Delta = \int\limits_{m_{min}} ^{m_{max}} \left[ {\frac{1 - \exp \left[ {-\beta \left( {m - m_{min}} \right)} \right]}{1 - \exp \left[ {-\beta \left( {m_{max}^{obs} - m_{min}} \right) } \right]}} \right] ^n dm
 \end{equation}
 
 
-The execution of the \cite{Kijko2004} ''fixed-b'' algorithm is as follows:
+The execution of the \textcite{Kijko2004} ''fixed-b'' algorithm is as follows:
 
 \begin{python}[frame=single]
 >> mmax_config = {`input_mmax': 7.6,
@@ -754,7 +754,7 @@ The execution of the \cite{Kijko2004} ''fixed-b'' algorithm is as follows:
 
 \subsubsection{''Uncertain b-value''}
 
-For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \cite{GutenbergRichter1944} distribiution with an uncertain "b" value, characterised by and expected term ($b$) and a corresponding undertainty ($\sigma_b$), the increment of maximum magnitude is determined via:
+For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \textcite{GutenbergRichter1944} distribiution with an uncertain "b" value, characterised by and expected term ($b$) and a corresponding undertainty ($\sigma_b$), the increment of maximum magnitude is determined via:
 
 
 \begin{equation}
@@ -825,9 +825,9 @@ Due to the need to define some additional parameters the configuration file is s
 \end{python}
 
 
-\subsection{Cumulative Moment \citep{MakropoulosBurton1983}}
+\subsection{Cumulative Moment \parencite{MakropoulosBurton1983}}
 
-The cumulative moment release method is an adaptation of the cumulative strain energy release method for estimating $m_{max}$ originally proposed by \cite{MakropoulosBurton1983}. Another method based on a pseudo-graphical formulation, an estimator of maximum magnitude can be derived from a plot of cumulative seismic moment release with time. The average slope of this plot indicates the mean moment release for the input catalogue in question. Two further straight lines are defined with gradients equal to that of the slope of mean cumulative moment release, both enveloping the cumulative plot. The vertical distance between these two lines indicates the total amount of moment that may be released in the region, if no earthquakes were to occur in the corresponding time (i.e. the distance between the upper and lower bounding lines on the time axis). This concept is illustrated in Figure \ref{fig:Cumulative_Moment}. 
+The cumulative moment release method is an adaptation of the cumulative strain energy release method for estimating $m_{max}$ originally proposed by \textcite{MakropoulosBurton1983}. Another method based on a pseudo-graphical formulation, an estimator of maximum magnitude can be derived from a plot of cumulative seismic moment release with time. The average slope of this plot indicates the mean moment release for the input catalogue in question. Two further straight lines are defined with gradients equal to that of the slope of mean cumulative moment release, both enveloping the cumulative plot. The vertical distance between these two lines indicates the total amount of moment that may be released in the region, if no earthquakes were to occur in the corresponding time (i.e. the distance between the upper and lower bounding lines on the time axis). This concept is illustrated in Figure \ref{fig:Cumulative_Moment}. 
 
 \begin{figure}[htb]
 	\centering
@@ -836,11 +836,11 @@ The cumulative moment release method is an adaptation of the cumulative strain e
 	\label{fig:Cumulative_Moment}
 \end{figure}
 
-The cumulative moment estimator of $m_{max}$, whilst simple in concept, has several key advantages. As a non-parametric method it is independent of any assumed probability distribution and cannot estimate $m_{max}$ lower than the observed $m_{max}$. It is also principally controlled by the largest events in the catalogue, this making it relative insensitive to uncertainties in completeness or lower bound threshold. In practice, this estimator, and to some extent that of \cite{Kijko2004} are dependent on having a sufficiently long record of events relative to the strain cycle for the region in question, such that the estimate of average moment release is stable. This will obviously depend on the length of the catalogue, and for some regions, particularly those in low strain intraplate environments, it is often the case that $m_{max}$ will be close to the observed $m_{max}$. Therefore it may be the case that it is most appropriate to use these techniques on a larger scale, either considering multiple sources or an appropriate tectonic proxy.
+The cumulative moment estimator of $m_{max}$, whilst simple in concept, has several key advantages. As a non-parametric method it is independent of any assumed probability distribution and cannot estimate $m_{max}$ lower than the observed $m_{max}$. It is also principally controlled by the largest events in the catalogue, this making it relative insensitive to uncertainties in completeness or lower bound threshold. In practice, this estimator, and to some extent that of \textcite{Kijko2004} are dependent on having a sufficiently long record of events relative to the strain cycle for the region in question, such that the estimate of average moment release is stable. This will obviously depend on the length of the catalogue, and for some regions, particularly those in low strain intraplate environments, it is often the case that $m_{max}$ will be close to the observed $m_{max}$. Therefore it may be the case that it is most appropriate to use these techniques on a larger scale, either considering multiple sources or an appropriate tectonic proxy.
 
-For the cumulative moment estimator it is possible to take into account the uncertainty on $m_{max}$ by applying bootstrap sampling to the observed magnitudes and their respective uncertainties. This has the advantage that $\sigma_{m_{max}}$ is not controlled by the uncertainty on the observed $m_{max}$, as it is for the \cite{Kijko2004} algorithm. Instead it takes into account the uncertainty on all the magnitudes in the catalogue. The cost of this, however, is that this method is more computationally intensive, and therefore slower, than \cite{Kijko2004}, depending on the number of bootstrap samples the user chooses.
+For the cumulative moment estimator it is possible to take into account the uncertainty on $m_{max}$ by applying bootstrap sampling to the observed magnitudes and their respective uncertainties. This has the advantage that $\sigma_{m_{max}}$ is not controlled by the uncertainty on the observed $m_{max}$, as it is for the \textcite{Kijko2004} algorithm. Instead it takes into account the uncertainty on all the magnitudes in the catalogue. The cost of this, however, is that this method is more computationally intensive, and therefore slower, than \textcite{Kijko2004}, depending on the number of bootstrap samples the user chooses.
 
-The algorithm is slightly simpler to run than the \cite{Kijko2004} methods; however, due to the bootstrapping process it is slightly slower. It is run as per the following example:
+The algorithm is slightly simpler to run than the \textcite{Kijko2004} methods; however, due to the bootstrapping process it is slightly slower. It is run as per the following example:
 
 \begin{python}[frame=single]
 
@@ -862,15 +862,15 @@ For the cumulative moment algorithm the only user configurable parameter is the 
 
 The use of smoothed seismicity in seismic hazard analysis has generally become a common way of characterising distributed seismicity, for which the seismogenic source are defined exclusively from the uncertain locations of observed seismicity. There are many different methods for smoothing the catalogue, adopting different smoothing kernels or making different correction factors to compensate for spatial and/or temporal completeness. 
 
-\subsection{\cite{frankel1995}}
+\subsection{\textcite{frankel1995}}
 
-A smoothed seismicity method that has one of the clearest precedents for use in seismic hazard analysis is that of \cite{frankel1995}, originally derived to characterise the seismicity of the Central and Eastern United States as part of the 1996 National Seismic Hazard Maps of the United States. The method applies a simple isotropic Gaussian smoothing kernel to derive the expected rate of events at each cell $\tilde{n}_i$ from the observed rate $n_j$ of seismicity in a grid of $j$ cells. This kernel takes the form:
+A smoothed seismicity method that has one of the clearest precedents for use in seismic hazard analysis is that of \textcite{frankel1995}, originally derived to characterise the seismicity of the Central and Eastern United States as part of the 1996 National Seismic Hazard Maps of the United States. The method applies a simple isotropic Gaussian smoothing kernel to derive the expected rate of events at each cell $\tilde{n}_i$ from the observed rate $n_j$ of seismicity in a grid of $j$ cells. This kernel takes the form:
 
 \begin{equation}
 \tilde{n_i} = \frac{\sum_j n_j e^{d_{ij}^2 / c^2}}{\sum_j e^{d_{ij}^2 / c^2}} 
 \end{equation}
 
-In the implementation of the algorithm, two steps are taken that we prefer to make configurable options here. The first step is that the time-varying completeness is accounted for using a correction factor ($t_f$) based on the \cite{Weichert1980} method:
+In the implementation of the algorithm, two steps are taken that we prefer to make configurable options here. The first step is that the time-varying completeness is accounted for using a correction factor ($t_f$) based on the \textcite{Weichert1980} method:
 
  \begin{equation}
  t_f = \frac{\sum_i e^{-\beta m_{c_i}}}{\sum_i T_i e^{-\beta m_{c_i}}} 
@@ -920,7 +920,7 @@ Next setup the smoothing algorithm using and the corresponding kernel:
 
 The smoothed seismicity function needs to be set up with three variables: i) the extent (and spacing) of the grid, ii) the choice to use 3D smoothing (i.e. distances are taken as hypocentral rather than epicentral) and iii) the input b-value. The extent of the grid can also be defined from the catalogue. If preferred the user need only specify the spacing of the longitude-latitude grid (as a single floating point value), then the grid will be defined by taking the bounding box of the earthquake catalogue and extended by the total smoothing length (i.e. the bandwidth (in km) multiplied by the maximum number of bandwidths). 
 
-To run the smoothed seismicity analysis, the configurable parameters are: \verb=BandWidth= the bandwidth of the Gaussian kernel (in km), \verb=Length_Limit= the number of bandwidths considered as a maximum smoothing length, and \verb=increment= chooses whether to output the incremental a-value (for consistency with the original \cite{frankel1995} methodology) or the cumulative a-value (corresponding to the a-value of the Gutenberg-Richter model).
+To run the smoothed seismicity analysis, the configurable parameters are: \verb=BandWidth= the bandwidth of the Gaussian kernel (in km), \verb=Length_Limit= the number of bandwidths considered as a maximum smoothing length, and \verb=increment= chooses whether to output the incremental a-value (for consistency with the original \textcite{frankel1995} methodology) or the cumulative a-value (corresponding to the a-value of the Gutenberg-Richter model).
 
 
 The algorithm requires two essential inputs (the earthquake catalogue and the config file), and three optional inputs:
@@ -960,10 +960,3 @@ Longitude, Latitude, Depth, Observed Count, Smoothed Rate, b-value
 
 \noindent where \verb=Observed Count= is the observed number of earthquakes in each cell, and \\ 
 \verb=Smoothed Rate= is the smoothed seismicity rate.
-
-
-
-
-
-
-
