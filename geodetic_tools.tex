@@ -1,6 +1,6 @@
 \section{Recurrence from Geodetic Strain}
 
-The final third workflow currently supported by the Hazard Modeller's toolkit is somewhat more experimental than the seismicity or geological workflows. The role that geodesy plays in directly constraining earthquake recurrence rates for active seismological structures and regions is becoming widely recognised. Whilst s standard methodology has not yet emerged, the tools constructed here are built around the ``Seismic Hazard Inferred from Tectonics (SHIFT)'' methodology originally proposed by \citet{BirdLiu2007} and applied on a global scale by \citet{Bird_etal2010}. The focus is placed on this model, in part, because it is fed by regional and/or global scale models of strain on a continuum. The initial global application, which underpins part of the present implementation, uses the first version of the Global Strain Rate Model \citep{Kreemer_etal2003}. The second version of the Global Strain Rate Model has been produced as part of the Global Earthquake Model, and it is anticipated that this will form a basis for many future uses of the present geodetic tools.
+The final third workflow currently supported by the Hazard Modeller's toolkit is somewhat more experimental than the seismicity or geological workflows. The role that geodesy plays in directly constraining earthquake recurrence rates for active seismological structures and regions is becoming widely recognised. Whilst s standard methodology has not yet emerged, the tools constructed here are built around the ``Seismic Hazard Inferred from Tectonics (SHIFT)'' methodology originally proposed by \textcite{BirdLiu2007} and applied on a global scale by \textcite{Bird_etal2010}. The focus is placed on this model, in part, because it is fed by regional and/or global scale models of strain on a continuum. The initial global application, which underpins part of the present implementation, uses the first version of the Global Strain Rate Model \parencite{Kreemer_etal2003}. The second version of the Global Strain Rate Model has been produced as part of the Global Earthquake Model, and it is anticipated that this will form a basis for many future uses of the present geodetic tools.
 
 \subsection{The Recurrence Calculation}
 
@@ -8,12 +8,12 @@ The point of convergence between the geological and geodetic methodologies for e
  \begin{equation}
  \dot{M}_o = c \mu A \dot{s}
  \end{equation}
- where A is the area of the coupled surface, $\dot{s}$ is the slip rate, $\mu$ the shear modulus and $c$ the coefficient describing the fraction of seismogenic coupling. Initially, the moment-rate tensor may be related to the strain rate tensor ($\epsilon_{ij}$) using the formula of \cite{Kostrov1974}:
+ where A is the area of the coupled surface, $\dot{s}$ is the slip rate, $\mu$ the shear modulus and $c$ the coefficient describing the fraction of seismogenic coupling. Initially, the moment-rate tensor may be related to the strain rate tensor ($\epsilon_{ij}$) using the formula of \textcite{Kostrov1974}:
  \begin{equation}
  \dot{M}_{oij} = 2 \mu H A \varepsilon_{ij}
  \end{equation}
  
- where H is the seismogenic thickness and A the area of the seismogenic source. Adopting the definition for a deforming continuum given by \citet{BirdLiu2007} the moment rate is equal to:
+ where H is the seismogenic thickness and A the area of the seismogenic source. Adopting the definition for a deforming continuum given by \textcite{BirdLiu2007} the moment rate is equal to:
  
 \begin{equation}
 \dot{M}_o = A \left\langle {cz} \right\rangle \mu \left\{\begin{array}{lr}
@@ -22,11 +22,11 @@ The point of convergence between the geological and geodetic methodologies for e
 \end{array}\right.
 \end{equation}
  
- where assuming $\dot{\varepsilon}_1 \leq \dot{\varepsilon}_2 \leq \dot{\varepsilon}_3$ and $\dot{\varepsilon}_1 + \dot{\varepsilon}_2 + \dot{\varepsilon}_3 = 0$ (i.e. no volumetric changes are observed). The coupled seismogenic thickness ($\left\langle cz \right\rangle$) is a characteristic of each tectonic zone, and for the current purposes corresponds to the values (and regionalisation) proposed by \cite{BirdKagan2004}. 
+ where assuming $\dot{\varepsilon}_1 \leq \dot{\varepsilon}_2 \leq \dot{\varepsilon}_3$ and $\dot{\varepsilon}_1 + \dot{\varepsilon}_2 + \dot{\varepsilon}_3 = 0$ (i.e. no volumetric changes are observed). The coupled seismogenic thickness ($\left\langle cz \right\rangle$) is a characteristic of each tectonic zone, and for the current purposes corresponds to the values (and regionalisation) proposed by \textcite{BirdKagan2004}. 
  
- \subsubsection{The \cite{BirdLiu2007} Approach}
+ \subsubsection{The \textcite{BirdLiu2007} Approach}
  
- As the regionalisation of \citet{BirdKagan2004} underpins the \cite{BirdLiu2007} methodology, the following approach is used to derive the shallow sesimicity rate. The geodetic moment rate  is first divided by the ``model'' moment rate ($\dot{M}_o^{CMT}$), which is the integral of the tapered Gutenberg-Richter distribution fit to the subset of the Global CMT catalogue for each tectonic zone, then multiplied by the number of events in the sub-catalogue ($N^{CMT}$) above the threshold (completeness) magnitude for the sub-catalogue ($m_T$):
+ As the regionalisation of \textcite{BirdKagan2004} underpins the \textcite{BirdLiu2007} methodology, the following approach is used to derive the shallow sesimicity rate. The geodetic moment rate  is first divided by the ``model'' moment rate ($\dot{M}_o^{CMT}$), which is the integral of the tapered Gutenberg-Richter distribution fit to the subset of the Global CMT catalogue for each tectonic zone, then multiplied by the number of events in the sub-catalogue ($N^{CMT}$) above the threshold (completeness) magnitude for the sub-catalogue ($m_T$):
  
  \begin{equation}
  \dot{N} \left( {m > m_T^{CMT}} \right) = \left( {\frac{\dot{M}_o}{\dot{M}_o^{CMT}}} \right) \dot{N}^{CMT}
@@ -55,69 +55,56 @@ longitude, latitude, exx, eyy, exy, region
 177.0,-38.2,19.3,-37.0,-49.7,C
 \end{Verbatim}
 
-In the present format, the values \verb=exx, eyy, exy= describe the horizontal components of the strain tensor (in the example above in terms of nanostrain, $10^{-9}$). The \verb=region= term corresponds to the region (in this instance the \cite{Kreemer_etal2003} class) to which the cell belongs: Intra-plate [IPL], Subduction [S], Continental [C], Oceanic[O] and Ridge[R]. If the user does not have a previously defined regionalisation, can be determined using the $0.6^{\circ} \times 0.5^{\circ}$ global regionalisation cells.
+In the present format, the values \verb=exx, eyy, exy= describe the horizontal components of the strain tensor (in the example above in terms of nanostrain, $10^{-9}$). The \verb=region= term corresponds to the region (in this instance the \textcite{Kreemer_etal2003} class) to which the cell belongs: Intra-plate [IPL], Subduction [S], Continental [C], Oceanic[O] and Ridge[R]. If the user does not have a previously defined regionalisation, can be determined using the $0.6^{\circ} \times 0.5^{\circ}$ global regionalisation cells.
 
-The simplest strain workflow is to implement the model as defined by \cite{Bird_etal2010}. This process is illustrated in the following steps:
+The simplest strain workflow is to implement the model as defined by \textcite{Bird_etal2010}. This process is illustrated in the following steps:
 
 \begin{enumerate}
 
 \item To simply load in the csv data the \verb=ReadStrainCsv= tool is used:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-In [1]: from hmtk.parsers.strain.strain_csv_parser import ReadStrainCsv, WriteStrainCsv
+\begin{python}[frame=single]
+>> from hmtk.parsers.strain.strain_csv_parser import\
+    ReadStrainCsv, WriteStrainCsv
 
-\# Load the file
-In [2]: reader = ReadStrainCsv(''path/to/strain/file.csv'')
+# Load the file
+>> reader = ReadStrainCsv(''path/to/strain/file.csv'')
+>> strain_model = reader.read_data(scaling_factor=1E-9)
+\end{python}
 
-In [3]: strain_model = reader.read_data(scaling_factor=1E-9)
+\item If the regionalisation is not supplied within the input file then it can be assigned initially from the in-built \textcite{Kreemer_etal2003} regionalisation. This is done as follows (and may take time to execute depending on the size of the data):
 
-\end{Verbatim}
+\begin{python}[frame=single]
+# (Optional) To assign regionalisation from Kreemer et al. 2003
+>> from hmtk.strain.regionalisation.kreemer_regionalisation\
+    import KreemerRegionalisation
+# (Optional)
+>> regionalisation = KreemerRegionalisation()
+# (Optional)
+>> strain_model = regionalisation.get_regionalisation(
+    strain_model)
+\end{python}
 
-\item If the regionalisation is not supplied within the input file then it can be assigned initially from the in-built \cite{Kreemer_etal2003} regionalisation. This is done as follows (and may take time to execute depending on the size of the data):
+\item The next step is to implement the Shift calculations. The Shift module must first be imported and the magnitudes for which the activity rates are to be calculated must be defined as a list (or array). The strain data is input into the calculation along with two other configurable options: \verb=cumulative= decides whether it is the cumulative rate of events above each magnitude (\verb=True=), or the incremental activity rate for the bin $M \left( i \right):M \left( {i + 1} \right)$ (\verb=False=), \verb=in_seconds= decides whether to return the rates per second for consistency with \textcite{Bird_etal2010} (\verb=True=) or as annual rates (\verb=False=). 
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-\# (Optional) To assign regionalisation from Kreemer et al. 2003
-In [4]: from hmtk.strain.regionalisation.kreemer_regionalisation import  KreemerRegionalisation
-\# (Optional)
-In [5]: regionalisation = KreemerRegionalisation()
-\# (Optional)
-In [6]: strain_model = regionalisation.get_regionalisation(strain_model)
-\end{Verbatim}
-
-\item The next step is to implement the Shift calculations. The Shift module must first be imported and the magnitudes for which the activity rates are to be calculated must be defined as a list (or array). The strain data is input into the calculation along with two other configurable options: \verb=cumulative= decides whether it is the cumulative rate of events above each magnitude (\verb=True=), or the incremental activity rate for the bin $M \left( i \right):M \left( {i + 1} \right)$ (\verb=False=), \verb=in_seconds= decides whether to return the rates per second for consistency with \cite{Bird_etal2010} (\verb=True=) or as annual rates (\verb=False=). 
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-In [7]: from hmtk.strain.shift import Shift
-
-\# In this example, calculate cumulative rates for M > 5., 6., 7., 8.
-In [8]: magnitudes = [5., 6., 7., 8.]
-
-In [9]: model = Shift(magnitudes)
-
-In [10]: model.calculate_activity_rate(strain_model, cumulative=False, in_seconds=False)
-
-\end{Verbatim}
+\begin{python}[frame=single]
+>> from hmtk.strain.shift import Shift
+# In this example, calculate cumulative rates 
+# for M > 5., 6., 7., 8.
+>> magnitudes = [5., 6., 7., 8.]
+>> model = Shift(magnitudes)
+>> model.calculate_activity_rate(strain_model,
+                                 cumulative=False,
+                                 in_seconds=False)
+\end{python}
 
 \item Finally the resulting model can be written to a csv file. This will be in the same format as the input file, now with additional attributes and activity rates calculated.
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
-\# Export the resulting rates to a csv file
-In [11]: writer = WriteStrainCsv(''path/to/output/file.csv'')
-
-In [12]: writer.write_file(model.strain, scaling_factor=1E-9)
-\end{Verbatim}
+\begin{python}[frame=single]
+# Export the resulting rates to a csv file
+>> writer = WriteStrainCsv(''path/to/output/file.csv'')
+>> writer.write_file(model.strain, scaling_factor=1E-9)
+\end{python}
 \end{enumerate}
 
-
 Additional support for writing a continuum model to a nrml Point Source model is envisaged, although further work is needed to determine the optimum approach for defining the seismogenic coupling depths, hypocentral depths and focal mechanisms. 
- 
-
-
-
- 
- 
- 
-  
-
-

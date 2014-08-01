@@ -38,15 +38,13 @@ sigmaMagnitude* & Uncertainty on the homogenised magnitude (float) typically Mw 
 
 To load the catalogue using the IPython environment, in an open IPython session type:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-[1] from hmtk.parsers.catalogue import CsvCatalogueParser
-
-[2] catalogue_filename = 'path/to/catalogue_file.csv'
-
-[3] parser = CsvCatalogueParser(catalogue_filename)
-
-[4] catalogue = parser.read_file()
-\end{Verbatim}
+%\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}
+>> from hmtk.parsers.catalogue import CsvCatalogueParser
+>> catalogue_filename = 'path/to/catalogue_file.csv'
+>> parser = CsvCatalogueParser(catalogue_filename)
+>> catalogue = parser.read_file()
+\end{python}
 
 \textbf{N.B. the csv file can contain additional attributes of the catalogue too and will be parsed correctly; however, if the attribute is not one that is specifically recognised by the catalogue class then a message will be displayed indicating:}
 
@@ -58,12 +56,10 @@ Catalogue Attribute ... is not a recognised catalogue key
 
 The variable \verb=catalogue= is an instance of the class hmtk.seismicity.catalogue.Catalogue, which now contains the catalogue itself (as \verb=catalogue.data=) and some methods that can be applied to the catalogue. The first attribute (\verb=catalogue.data=), is a dictionary where each attribute of the catalogue is either a 1-D numpy vector (for float and integer values) or a python list (for string values). For example, to return a vector containing all the magnitudes in the \verb=magnitude= column of the catalogue simply type:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [5]: catalogue.data['magnitude']
-Out [e.g.] [5]: array([ 6.5,  6.5,  6. , ...,  4.8,  5.2,  4.1])
-
-\end{Verbatim}
+\begin{python}
+>> catalogue.data['magnitude']
+array([ 6.5,  6.5,  6. , ...,  4.8,  5.2,  4.1])
+\end{python}
 
 The catalogue class contains several helpful methods (called via \verb=catalogue. ...=):
 \begin{itemize}
@@ -71,18 +67,17 @@ The catalogue class contains several helpful methods (called via \verb=catalogue
 
 \item \verb=catalogue.load_to_array(keys)= Returns a numpy array of floating data, with the columns ordered according to the list of keys. If the key corresponds to a string item (e.g. Agency) then an error will be raised.
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [6]: catalogue.load_to_array(['year', 'longitude', 'latitude', 'depth', 'magnitude'])
-
-Out[6]: 
-array([[ 1910.   ,    26.941,    38.507,    13.2  ,     6.5  ],
-       [ 1910.   ,    22.19 ,    37.72 ,    20.4  ,     6.5  ],
-       [ 1910.   ,    28.881,    33.274,    25.   ,     6.   ],
+\begin{python}[frame=single]
+>> catalogue.load_to_array(['year', 'longitude', 'latitude',
+                            'depth', 'magnitude'])
+array([[ 1910. ,  26.941 ,  38.507 ,  13.2 ,  6.5 ],
+       [ 1910. ,  22.190 ,  37.720 ,  20.4 ,  6.5 ],
+       [ 1910. ,  28.881 ,  33.274 ,  25.0 ,  6.0 ],
        ..., 
-       [ 2009.   ,    20.054,    39.854,    20.2  ,     4.8  ],
-       [ 2009.   ,    23.481,    38.05 ,    15.2  ,     5.2  ],
-       [ 2009.   ,    28.959,    34.664,    18.4  ,     4.1  ]]) 
-\end{Verbatim}
+       [ 2009. ,  20.054 ,  39.854 ,  20.2 ,  4.8 ],
+       [ 2009. ,  23.481 ,  38.050 ,  15.2 ,  5.2 ],
+       [ 2009. ,  28.959 ,  34.664 ,  18.4 ,  4.1 ]]) 
+\end{python}
 
 \item \verb=catalogue.load_from_array(keys, data_array)= Creates the catalogue data dictionary from an array, given header as an ordered list of dictionary keys. This can be used in the case where the earthquake catalogue is loaded in a simple ascii format. For example, if the user wishes to load in a catalogue from the Zmap format, which gives the columns as:
 
@@ -93,22 +88,24 @@ minute, second
 
 This file type could be parsed into a catalogue without the need of a specific parser, as follows:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: import numpy
-# Assuming no headers in the file (set skip_header=1 if headers are found)
-In [2]: data = numpy.genfromtxt('PATH/TO/ZMAP_FILE.txt', skip_header=0)
+\begin{python}[frame=single]
+>> import numpy
+# Assuming no headers in the file 
+# (set skip_header=1 if headers are found)
+>> data = numpy.genfromtxt('PATH/TO/ZMAP_FILE.txt',
+                           skip_header=0)
 
-In [3]: headers = ['longitude', 'latitude', 'year', 'month', 'day',
-                   'magnitude', 'depth', 'hour', 'minute', 'second']
+>> headers = ['longitude', 'latitude', 'year', 'month',
+              'day', 'magnitude', 'depth', 'hour', 
+              'minute', 'second']
 
 # Create instance of a catalogue class
-In [4]: from hmtk.seismicity.catalogue import Catalogue
-In [5]: catalogue = Catalogue()
+>> from hmtk.seismicity.catalogue import Catalogue
+>> catalogue = Catalogue()
 
 # Load the data array into the catalogue
-In [6]: catalogue.load_from_array(data, headers)
-
-\end{Verbatim}
+>> catalogue.load_from_array(data, headers)
+\end{python}
  
 
 \item \verb=catalogue.get_decimal_time()= 
@@ -141,30 +138,33 @@ Orders the catalogue according to the event order specified in IDX. Behaves the 
 
 Returns a depth histogram for the catalogue using bins specified by \verb=depth_bins=. If \verb;normalisation=True; then the function will return the histogram as a probability mass function, otherwise the original count will be returned. If uncertainties are reported on depth such that one or more values in \\ \verb=catalogue.data['depthError']= are greater than 0., the function will perform a bootstrap analysis, taking into account the depth error, with the number of bootstraps given by the keyword \verb=bootstrap=. 
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 # Import numpy and matplotlib
-In [1]: import numpy as np
-In [2]: import matplotlib.pyplot as plt
+>> import numpy as np
+>> import matplotlib.pyplot as plt
 
-# Define depth bins for (e.g) 0. - 150 km in intervals of 10 km
-In [3]: depth_bins = np.arange(0., 160., 10.)
+# Define depth bins for (e.g) 
+# 0. - 150 km in intervals of 10 km
+>> depth_bins = np.arange(0., 160., 10.)
 
 # Get normalised histograms (without bootstrapping)
-In [4]: depth_hist = catalogue.get_depth_distribution(depth_bins, normalisation=True)
-\end{Verbatim}
+>> depth_hist = catalogue.get_depth_distribution(
+    depth_bins,
+    normalisation=True)
+\end{python}
 
 To generate a simple histogram plot of hypocentral depth, the process below can be followed to produce a depth histogram similar to the one shown in Figure \ref{fig:simple_depth_hist}:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_depth_histogram
+\begin{python}[frame=single]
+>> from hmtk.plotting.seismicity.catalogue_plots import\
+    plot_depth_histogram
 
-In [2]: depth_bin = 5.0
-
-In [3]: plot_depth_histogram(catalogue,
-                             depth_bin,
-                             filename="/path/to/image.eps", \# Optional
-                             filetype="eps")   \# Optional
-\end{Verbatim}
+>> depth_bin = 5.0
+>> plot_depth_histogram(catalogue,
+                        depth_bin,
+                        filename="/path/to/image.eps",
+                        filetype="eps")
+\end{python}
 \begin{figure}[htb]
   \centering
       \includegraphics[trim=10mm 8mm 10mm 10mm, clip, width=12cm]{./figures/simple_depth_histogram.eps}
@@ -177,33 +177,37 @@ In [3]: plot_depth_histogram(catalogue,
 
 Returns a two-dimensional histogram of magnitude and hypocentral depth, with the corresponding bins defined by the vectors \verb=magnitude_bins= and \verb=depth_bins=. The options \verb=normalisation= and \verb=bootstrap= are the same as for the one dimensional histogram. The usage is illustrated below:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-# Define depth bins for (e.g) 0. - 150 km in intervals of 55 km
-In [1]: depth_bins = np.arange(0., 155., 5.)
+\begin{python}[frame=single]]
+# Define depth bins for (e.g) 
+# 0. - 150 km in intervals of 55 km
+>> depth_bins = np.arange(0., 155., 5.)
 
 # Define magnitude bins (e.g.) 2.5 - 7.6 in intervals of 0.1
-In [2]: magnitude_bins = np.arange(2.5, 7.7, 0.1)
+>> magnitude_bins = np.arange(2.5, 7.7, 0.1)
 
 # Get normalised histograms (without bootstrapping)
-In [3]: mag_depth_hist = catalogue.get_magnitude_depth_distribution(magnitude_bins,
-                                           depth_bins,
-                                           normalisation=True,
-                                           bootstrap=None)
-\end{Verbatim}
+>> m_d_hist = catalogue.get_magnitude_depth_distribution(
+    magnitude_bins,
+    depth_bins,
+    normalisation=True,
+    bootstrap=None)
+\end{python}
 
 To generate a plot of magnitude-depth density, the following function can be used to produce a figure similar to that shown in Figure \ref{fig:mag_depth_density}.
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_magnitude_depth_density
-In [2]: magnitude_bin = 0.1
-In [3]: depth_bin = 5.0 
-In [4]: plot_magnitude_depth_density(catalogue,
-                                     magnitude_bin
-                                     depth_bin,
-                                     logscale=True, \# Logarithmic colour scale
-                                     filename="/path/to/image.eps", \# Optional
-                                     filetype="eps")   \# Optional
-\end{Verbatim}
+\begin{python}[frame=single]
+>> from hmtk.plotting.seismicity.catalogue_plots import\
+     plot_magnitude_depth_density
+>> magnitude_bin = 0.1
+>> depth_bin = 5.0 
+>> plot_magnitude_depth_density(
+    catalogue,
+    magnitude_bin
+    depth_bin,
+    logscale=True, \# Logarithmic colour scale
+    filename="/path/to/image.eps", \# Optional
+    filetype="eps")   \# Optional
+\end{python}
 
 \begin{figure}[htb]
   \centering
@@ -217,32 +221,32 @@ In [4]: plot_magnitude_depth_density(catalogue,
 
 Returns a 2D histogram of magnitude with time. \verb=time_bins= are the bin edges for the time windows, in decimal years. To run the function simple follow:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 # Define annual time bins from 1900 CE to 2012 CE
-In [1]: time_bins = np.arange(1900., 2013., 1.)
-
+>> time_bins = np.arange(1900., 2013., 1.)
 # Define magnitude bins (e.g.) 2.5 - 7.6 in intervals of 0.1
-In [2]: magnitude_bins = np.arange(2.5, 7.7, 0.1)
-
+>> magnitude_bins = np.arange(2.5, 7.7, 0.1)
 # Get normalised histograms (without bootstrapping)
-In [3]: mag_time_hist = catalogue.get_magnitude_time_distribution(magnitude_bins,
-                                          timme_bins,
-                                          normalisation=True,
-                                          bootstrap=None)
-\end{Verbatim}
+>> mag_time_hist = catalogue.get_magnitude_time_distribution(
+    magnitude_bins,
+    time_bins,
+    normalisation=True,
+    bootstrap=None)
+\end{python}
 
 To automatically generate a plot, similar to that shown in Figure \ref{fig:mag_time_density} , run the following:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: from hmtk.plotting.seismicity.catalogue_plots import plot_magnitude_time_density
-In [2]: magnitude_bin_width = 0.1
-In [3]: time_bin_width = 0.1 
-In [4]: plot_magnitude_time_density(catalogue,
-                                    magnitude_bin_width,
-                                    time_bin_width,
-                                    filename="/path/to/image.eps", \# Optional
-                                    filetype="eps")   \# Optional
-\end{Verbatim}
+\begin{python}[frame=single]
+>> from hmtk.plotting.seismicity.catalogue_plots import\
+    plot_magnitude_time_density
+>> magnitude_bin_width = 0.1
+>> time_bin_width = 0.1 
+>> plot_magnitude_time_density(catalogue,
+                               magnitude_bin_width,
+                               time_bin_width,
+                               filename="/path/to/image.eps", 
+                               filetype="eps")
+\end{python}
 
 \begin{figure}[htb]
   \centering
@@ -258,15 +262,16 @@ In the process of constructing a PSHA seismogenic source model from seismicity i
 
 To setup the ``Selector'' tool:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: from hmtk.seismicity.selector import CatalogueSelector
+\begin{python}[frame=single]
+>> from hmtk.seismicity.selector import CatalogueSelector
 
-\# Assuming that there already exists a catalogue named ''catalogue1''
+# Assuming that there already exists a 
+# catalogue named ''catalogue1''
 
-In [2]: selector1 = CatalogueSelector(catalogue1,
-                                      create_copy=True)
+>> selector1 = CatalogueSelector(catalogue1,
+                                 create_copy=True)
 
-\end{Verbatim}
+\end{python}
 
 The optional keyword \verb=create_copy= ensures that when the events not selected are purged from the catalogue a ``deepcopy'' is taken of the original catalogue. This ensures that the original catalogue remains unmodified when a subset of events is selected.
 
@@ -286,28 +291,27 @@ Selects events within a square of side length \verb=distance=, on a location (re
 
 \verb;.within_joyner_boore_distance(surface, distance);
 
-Returns earthquakes within a distance (km) of the surface projection (``Joyner-Boore'' distance) of a fault surface. The fault surface must be defined as an instance of the class \verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
+Returns earthquakes within a distance (km) of the surface projection (``Joyner-Boore'' distance) of a fault surface. The fault surface must be defined as an instance of the class \\\verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
 
 \verb;.within_rupture_distance(surface, distance);
 
-Returns earthquakes within a distance (km) of a fault surface. The fault surface must be defined as an instance of the class \verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
+Returns earthquakes within a distance (km) of a fault surface. The fault surface must be defined as an instance of the class \\\verb=openquake.hazardlib.geo.surface.simple_fault.SimpleFaultSurface= or\\ \verb=openquake.hazardlib.geo.surface.complex_fault.ComplexFaultSurface=.
 
 \verb;.within_time_period(start_time=None, end_time=None);
 
 Selects earthquakes within a time period. Times must be input as instances of a \verb=datetime= object. For example:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In [1]: from datetime import datetime
-
-In [2]: selector1 = CatalogueSelector(catalogue1, create_copy=True)
-\# Early time limit is 1 January 1990 00:00:00
-In [3]: early = datetime(1990, 1, 1, 0, 0, 0)
-\# Late time limit is 31 December 1999 23:59:59
-In [4]: late = datetime(1999, 12, 31, 23, 59, 59)
-
-In [5]: catalogue_nineties = selector1.within_time_period(start_time=early,
-                                                          end_time=late)
-\end{Verbatim}
+\begin{python}[frame=single]
+>> from datetime import datetime
+>> selector1 = CatalogueSelector(catalogue1, create_copy=True)
+# Early time limit is 1 January 1990 00:00:00
+>> early = datetime(1990, 1, 1, 0, 0, 0)
+# Late time limit is 31 December 1999 23:59:59
+>>: late = datetime(1999, 12, 31, 23, 59, 59)
+>> catalogue_nineties = selector1.within_time_period(
+    start_time=early,
+    end_time=late)
+\end{python}
 
 \verb;.within_depth_range(lower_depth=None, upper_depth=None);
 
@@ -321,15 +325,15 @@ Selects earthquakes whose magnitudes are within the range specified by the lower
 
 To identify Poissonian rate of seismicity, it is necessary to remove foreshocks/aftershocks/swarms from the catalogue. The Modeller's Toolkit contains, at present, two algorithms to undertake this task, with more under development.
 
-\subsection{\cite{GardnerKnopoff1974}}
+\subsection{\textcite{GardnerKnopoff1974}}
 
 The most widely applied simple windowing algorithm is that of 
-\cite{GardnerKnopoff1974}. Originally conceived for Southern California, 
+\textcite{GardnerKnopoff1974}. Originally conceived for Southern California, 
 the method simply identifies aftershocks by virtue of fixed time-distance
 windows proportional to the magnitude of the main shock. Whilst this 
 premise is relatively simple, the manner in which the windows are 
 applied can be ambiguous. Four different possibilities can be 
-considered (\cite{LuenStark2012}):
+considered \parencite{LuenStark2012}:
 
 \begin{enumerate}
 \item Search events in magnitude-descending order. Remove events if it is 
@@ -355,8 +359,8 @@ originating due to the previous aftershocks); however, it is assumed
 all would occur within the window.
 
 Several modifications to the time and distance windows have been 
-suggested, which are summarised in \cite{vanStiphout2012}. The windows 
-originally suggested by \cite{GardnerKnopoff1974} are approximated by:
+suggested, which are summarised in \textcite{vanStiphout2012}. The windows 
+originally suggested by \textcite{GardnerKnopoff1974} are approximated by:
 
 \begin{equation}\begin{split} 
 \mbox{distance (km)} = &10^{0.1238 M + 0.983}\\
@@ -365,7 +369,7 @@ originally suggested by \cite{GardnerKnopoff1974} are approximated by:
               10^{0.5409 M - 0.547} & \mbox{otherwise}  \end{cases}\end{split}
 \end{equation}
 
-An alternative formulation is proposed by Gr\"unthal (as reported in \cite{vanStiphout2012}):
+An alternative formulation is proposed by Gr\"unthal (as reported in \textcite{vanStiphout2012}):
 
 \begin{equation}\begin{split} 
 \mbox{distance (km)} = & e^{1.77 + \left( {0.037 + 1.02 M} \right)^2} \\ 
@@ -373,7 +377,7 @@ An alternative formulation is proposed by Gr\"unthal (as reported in \cite{vanSt
     \right)^2}|    & \text{if $M \geq 6.5$ } \\ 10^{2.8 + 0.024 M} & 
     \text{otherwise}  \end{cases}\end{split}
 \end{equation}
-A further alternative is suggested by \cite{Uhrhammer1986}
+A further alternative is suggested by \textcite{Uhrhammer1986}
 %
 \begin{equation}
 \mbox{distance (km)} = e^{-1.024 + 0.804 M} \quad \mbox{time (decimal years)} = 
@@ -397,7 +401,7 @@ distance  and time (Figure \ref{fig:declust_scaling}).
 	\label{fig:declust_scaling}
 \end{figure}
 
-The \cite{GardnerKnopoff1974} algorithm and its derivatives represent 
+The \textcite{GardnerKnopoff1974} algorithm and its derivatives represent 
 are most computationally straightforward approach to declustering. The \verb=time_dist_windows= attribute indicates the choice of the 
 time and distance window scaling model from the three listed. As 
 the current version of this algorithm considers the events in a 
@@ -409,40 +413,30 @@ So for an evenly sized time window for foreshocks and aftershocks,the\\
 \verb=foreshock_time_window= parameter should equal 1. For shorter or longer 
 foreshock time windows this parameter can be reduced or increased respectively.
 
-To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \cite{GardnerKnopoff1974} algorithm, using for example the \cite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
+To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \textcite{GardnerKnopoff1974} algorithm, using for example the \textcite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
+>> from hmtk.seismicity.declusterer.distance_time_windows import\
+    UhrhammerWindow
 
-In [1]: from hmtk.seismicity.declusterer.distance_time_windows import UhrhammerWindow
-
-In [2]: declust_config = \{'time_distance_window': UhrhammerWindow(),
-   ....:                   'fs_time_prop': 1.0\}
-
-\end{Verbatim}
+>> declust_config = {
+    'time_distance_window': UhrhammerWindow(),
+    'fs_time_prop': 1.0}
+\end{python}
 
 
 To run the declustering algorithm simply import and run the algorithm as shown:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
+>> from hmtk.seismicity.declusterer.dec_gardner_knopoff import\
+    GardnerKnopoffType1
 
-In [1]: from hmtk.seismicity.declusterer.distance_time_windows import UhrhammerWindow
+>> declustering = GardnerKnopoffType1()
 
-In [2]: declust_config = \{'time_distance_window': UhrhammerWindow(),
-   ....:                   'fs_time_prop': 1.0\}
-
-\end{Verbatim}
-
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [3]: from hmtk.seismicity.declusterer.dec_gardner_knopoff import GardnerKnopoffType1
-
-In [4]: declustering = GardnerKnopoffType1()
-
-In [5]: cluster_index, cluster_flag = declustering.decluster(catalogue,
-                                                             declust_config)
-
-\end{Verbatim}
+>> cluster_index, cluster_flag = declustering.decluster(
+    catalogue,
+    declust_config)
+\end{python}
 
 There are two outputs of a declustering algorithm: \verb=cluster_index= and \verb=cluster_flag=. Both are numpy vectors, of the same length as the catalogue, containing information about the clusters in the catalogue. \verb=cluster_index= indicates the cluster to which each event is assigned (0 if not assigned to a cluster). \verb=cluster_flag= indicates whether an event is a non-Poissonian event, in which case the value is assigned to 1, or a mainshock, the value is assigned as 0. This output definition is the same for all declustering algorithms.
 
@@ -450,60 +444,58 @@ At this point the user may wish to either retain the catalogue in its current fo
 
 To simply add the clustering information to the data dictionary simply type:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [6]: catalogue.data['Cluster_Index'] = cluster_index
-In [7]: catalogue.data['Cluster_Flag'] = cluster_flag
-
-\end{Verbatim}
+\begin{python}[frame=single]
+>> catalogue.data['Cluster_Index'] = cluster_index
+>> catalogue.data['Cluster_Flag'] = cluster_flag
+\end{python}
  
 Alternatively, to purge the catalogue of non-Poissonian events:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [6]: mainshock_flag = cluster_flag == 0
-In [7]: catalogue.purge_catalogue(mainshock_flag)
-
-\end{Verbatim}
+\begin{python}[frame=single]
+>> mainshock_flag = cluster_flag == 0
+>> catalogue.purge_catalogue(mainshock_flag)
+\end{python}
 
 
-\subsection{AFTERAN (\cite{Musson1999PSHABalkan})}
+\subsection{AFTERAN \parencite{Musson1999PSHABalkan}}
 
-A particular development of the standard windowing approach is introduced in the program AFTERAN (\cite{Musson1999PSHABalkan}). This is a modification of the \cite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
+A particular development of the standard windowing approach is introduced in the program AFTERAN \parencite{Musson1999PSHABalkan}. This is a modification of the \textcite{GardnerKnopoff1974} algorithm, using a moving time window rather than a fixed time window. In AFTERAN, considering each earthquake in order of descending magnitude, events within a fixed distance window are identified (the distance window being those suggested previously). These events are searched using a moving time window of T days. For a given mainshock, non Poissonian events are identified if they occur both within the distance window and the initial time window. The time window is then moved, beginning at the last flagged event, and the process repeated. For a given mainshock, all non-Poissonian events are identified when the algorithm finds a continuous period of T days in which no aftershock or foreshock is identified. 
 
-The theory of the AFTERAN algorithm is broadly consistent with that of \cite{GardnerKnopoff1974}. This algorithm, whilst a little more computationally complex, and therefore slower, than the \cite{GardnerKnopoff1974} windowing approach, remains simple to implement. 
+The theory of the AFTERAN algorithm is broadly consistent with that of \textcite{GardnerKnopoff1974}. This algorithm, whilst a little more computationally complex, and therefore slower, than the \textcite{GardnerKnopoff1974} windowing approach, remains simple to implement. 
 
-As with the \cite{GardnerKnopoff1974} function, the \verb=time_dist_window= attribute indicates the choice of the time and distance window scaling model. The parameter \verb=time_window= indicates the size (in days) of the moving time window used to identify fore- and aftershocks. The following example will show how to run the AFTERAN algorithm, using the  \cite{GardnerKnopoff1974} definition of the distance windows, and a fixed-width moving time window of 100 days.
+As with the \textcite{GardnerKnopoff1974} function, the \verb=time_dist_window= attribute indicates the choice of the time and distance window scaling model. The parameter \verb=time_window= indicates the size (in days) of the moving time window used to identify fore- and aftershocks. The following example will show how to run the AFTERAN algorithm, using the  \textcite{GardnerKnopoff1974} definition of the distance windows, and a fixed-width moving time window of 100 days.
 
   
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 
-In [1] from hmtk.seismicity.declusterer.dec_afteran import Afteran
+>> from hmtk.seismicity.declusterer.dec_afteran import\
+    Afteran
 
-In [2]: from hmtk.seismicity.declusterer.distance_time_windows import GardnerKnopoffWindow   
+>> from hmtk.seismicity.declusterer.distance_time_windows import\
+    GardnerKnopoffWindow   
  
-In [3]: declust_config = \{'time_distance_window': GardnerKnopoffWindow(),
-                          'time_window': 100.0\} 
+>> declust_config = {
+    'time_distance_window': GardnerKnopoffWindow(),
+    'time_window': 100.0} 
 
-In [4]: declustering = Afteran()
+>> declustering = Afteran()
 
-In [5]: cluster_index, cluster_flag = declustering.decluster(catalogue, declust_config)
-
-\end{Verbatim}
-
- 
+>> cluster_index, cluster_flag = declustering.decluster(
+    catalogue,
+    declust_config)
+\end{python} 
 
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 \section{Completeness}
 
-In the earliest stages of processing an instrumental seismic catalogue to derive inputs for seismic hazard analysis, it is necessary to determine the magnitude completeness threshold of the catalogue. To outline the meaning of the term ''magnitude completeness'' and the requirements for its analysis as an input to PSHA, the terminology of \cite{MignanWoessner2012} is adopted. This defines the magnitude of completeness as the ''lowest magnitude at which 100 \% of the events in a space-time volume are detected (\cite{RydelekSacks1989, WoessnerWiemer2005})''. Incompleteness of an earthquake catalogue will produce bias when determining models of earthquake recurrence, which may have a significant impact on the estimation of hazard at a site. Identification of the completeness magnitude of an earthquake catalogue is therefore a clear requirement for the processing of input data for seismic hazard analysis.
+In the earliest stages of processing an instrumental seismic catalogue to derive inputs for seismic hazard analysis, it is necessary to determine the magnitude completeness threshold of the catalogue. To outline the meaning of the term ''magnitude completeness'' and the requirements for its analysis as an input to PSHA, the terminology of \textcite{MignanWoessner2012} is adopted. This defines the magnitude of completeness as the ''lowest magnitude at which 100 \% of the events in a space-time volume are detected \parencite{RydelekSacks1989, WoessnerWiemer2005}''. Incompleteness of an earthquake catalogue will produce bias when determining models of earthquake recurrence, which may have a significant impact on the estimation of hazard at a site. Identification of the completeness magnitude of an earthquake catalogue is therefore a clear requirement for the processing of input data for seismic hazard analysis.
 
-It should be noted that this summary of methodologies for estimating completeness is directed toward techniques that can be applied to a ''typical'' instrumental seismic catalogue. We therefore make the assumption that the input data will contain basic information for each earthquake such as time, location, magnitude. We do not make the assumption that network-specific or station-specific properties (e.g., configuration, phase picks, attenuation factors) are known a priori. This limits the selection of methodologies to those classed as estimators of ''sample completeness'', which defines completeness on the basis of the statistical properties of the earthquake catalogue, rather than ''probability-based completeness'', which defines the probability of detection given knowledge of the properties of the seismic network (\cite{SchorlemmerWoessner2008}). This therefore excludes the methodology of (\cite{SchorlemmerWoessner2008}), and similar approaches such as that of \cite{Felzer2008}
+It should be noted that this summary of methodologies for estimating completeness is directed toward techniques that can be applied to a ''typical'' instrumental seismic catalogue. We therefore make the assumption that the input data will contain basic information for each earthquake such as time, location, magnitude. We do not make the assumption that network-specific or station-specific properties (e.g., configuration, phase picks, attenuation factors) are known a priori. This limits the selection of methodologies to those classed as estimators of ''sample completeness'', which defines completeness on the basis of the statistical properties of the earthquake catalogue, rather than ''probability-based completeness'', which defines the probability of detection given knowledge of the properties of the seismic network \parencite{SchorlemmerWoessner2008}. This therefore excludes the methodology of \textcite{SchorlemmerWoessner2008}, and similar approaches such as that of \textcite{Felzer2008}
 
 The current workflows assume that completeness will be applied to the whole catalogue, ideally returning a table of time-varying completeness. The option to explore spatial variation in completeness is not explicitly supported, but could be accommodated by an appropriate configuration of the toolkit.
 
-In the current version of the Modeller's Toolkit the \cite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
+In the current version of the Modeller's Toolkit the \textcite{Stepp1971} methodology for analysis of catalogue completeness is implemented. Further methods are in development, and will be input in future releases.
 
 %\subsection{User-defined Table}
 %
@@ -520,7 +512,7 @@ In the current version of the Modeller's Toolkit the \cite{Stepp1971} methodolog
 
 \subsection{\cite{Stepp1971}}
 
-This is one of the earliest analytical approaches to estimation of completeness magnitude. It is based on estimators of the mean rate of recurrence of earthquakes within given magnitude and time ranges, identifying the completeness magnitude when the observed rate of earthquakes above MC begins to deviate from the expected rate. If a time interval ($T_i$) is taken, and the earthquake sequence assumed Poissonian, then the unbiased estimate of the mean rate of events per unit time interval of a given sample is:
+This is one of the earliest analytical approaches to estimation of completeness magnitude. It is based on estimators of the mean rate of recurrence of earthquakes within given magnitude and time ranges, identifying the completeness magnitude when the observed rate of earthquakes above $M_C$ begins to deviate from the expected rate. If a time interval ($T_i$) is taken, and the earthquake sequence assumed Poissonian, then the unbiased estimate of the mean rate of events per unit time interval of a given sample is:
 
 \begin{equation}
    \lambda = \frac{1}{n} \sum_{i = 1}^{n} T_i
@@ -537,39 +529,38 @@ where $T$ is the sample length. As the Poisson assumption implies a stationary p
 \begin{figure}[htb]
 	\centering
 		\includegraphics[height=10cm, keepaspectratio=true]{./figures/C2Fig1SteppFig1.eps}
-	\caption{Example of Completeness Estimation by the \cite{Stepp1971} methodology}
+	\caption{Example of Completeness Estimation by the \textcite{Stepp1971} methodology}
 	\label{fig:SteppFigExample1}
 \end{figure}
 
-The analysis of \citet{Stepp1971} is a coarse, but relatively robust, approach to estimating the temporal variation in completeness of a catalogue. It has been widely applied since its development. The accuracy of the completeness magnitude depends on the magnitude and time intervals considered, and a degree of judgement is often needed to determine the time at which the rate deviates from the expected values. It has tended to be applied to catalogues on a large scale, and for relatively higher completeness magnitudes. 
+The analysis of \textcite{Stepp1971} is a coarse, but relatively robust, approach to estimating the temporal variation in completeness of a catalogue. It has been widely applied since its development. The accuracy of the completeness magnitude depends on the magnitude and time intervals considered, and a degree of judgement is often needed to determine the time at which the rate deviates from the expected values. It has tended to be applied to catalogues on a large scale, and for relatively higher completeness magnitudes. 
 
 To translate the methodology from a largely graphical methods into a computational method the completeness period needs to be identified by automatically identifying the point at which the gradient of the observed values decreases with respect to that expected from a Poisson process (see \ref{fig:SteppFigExample1}). In the implementation found within the current toolkit, the divergence point is identified by fitting a two-segment piecewise linear function to the observed data. Although a two-segment piecewise linear function is normally fit with four parameters (intercept, $slope_1$, $slope_2$ and crossover point), by virtue of the assumption that for the complete catalogue the rate is assumed to be stationary such that $\sigma_{\lambda} = \frac{1}{\sqrt{T}}$ the slope of the first segment can be fixed as $-0.5$, and the second slope should be constrained such that $slope_2 \leq -0.5$, whilst the crossover point ($x_c$) is subject to the constraint ($x_c \geq 0.0$). Thus it is possible to fit the two-segment linear function using constrained optimisation with only three free parameters. For this purpose the toolkit minimises the residual sum-of-squares of the model fit using numerical optimisation. 
 
-To run the \cite{Stepp1971} algorithm the configuration parameters should be entered in the form of a dictionary, such as the example shown below:
+To run the \textcite{Stepp1971} algorithm the configuration parameters should be entered in the form of a dictionary, such as the example shown below:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [1]: comp_config = \{'magnitude_bin': 0.5,
-                        'time_bin': 5.,
-                        'increment_lock': True\}
-
-\end{Verbatim}
+\begin{python}[frame=single]
+comp_config = {'magnitude_bin': 0.5,
+               'time_bin': 5.,
+               'increment_lock': True}
+\end{python}
 
 The algorithm has three configurable options. The \verb=time_bin= parameter describes the size of the time window in years, the \verb=magnitude_bin= parameter describes the size of the magnitude bin, sensitivity is as described previously. The final option (\verb=increment_lock=) is an option that is used to ensure consistency in the results to avoid the completeness magnitude increasing for the latest intervals in the catalogue simply due to the variability associated with the short duration. If \verb=increment_lock= is set to \verb=True=, the program will ensure that the completeness magnitude for shorter, more recent windows is less than or equal to that of older, longer windows. This is often a condition for some recurrence analysis tools, so it may be advisable to set this option to true in certain workflows. Otherwise it should be set to \verb=False to show the apparent variability=. Some degree of judgement is necessary here. In particular it is expected that the user may be aware of circumstances particular to their catalogue for which a recent increase in completeness magnitude is expected (for example, a certain recording network no longer operational).  
 
 
 The process of running the algorithm is shown below:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
+>> from hmtk.seismicity.completeness.comp_stepp_1971 import\
+    Stepp1971
 
-In [2]: from hmtk.seismicity.completeness.comp_stepp_1971 import Stepp1971
+>> completeness_algorithm = Stepp1971()
 
-In [3]: completeness_algorithm = Stepp1971()
+>> completeness_table = completeness_algorithm.completeness(
+    catalogue,
+    comp_config)
 
-In [4]: completeness_table = completeness_algorithm.completeness(catalogue, comp_config)
-
-In [5]: completeness_table
-Out[5]: 
+>> completeness_table 
 array([[ 1990.  ,     4.25],
        [ 1962.  ,     4.75],
        [ 1959.  ,     5.25],
@@ -577,22 +568,18 @@ array([[ 1990.  ,     4.25],
        [ 1906.  ,     6.25],
        [ 1904.  ,     6.75],
        [ 1904.  ,     7.25]])
-
-\end{Verbatim}
+\end{python}
 
 As shown in the resulting \verb=completeness_table=, the completeness algorithm will output the time variation in completeness (in this example with the \verb=increment_lock= set) in the form of a two-column table with column 1 indicating the completeness year for the magnitude bin centred on the magnitude value found in column 2.
 
-
 At present, it may be the case that the user wishes to enter a time-varying completeness results for use in subsequent functions, based on alternative methods or on judgement. This can be entered in the \verb=completeness_table= setting, as in the example shown here (take note of the requirements for the square brackets):
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
+\begin{python}[frame=single]
 completeness_table: [[1990., 4.0],
                      [1960., 5.0],
                      [1930., 6.0],
                      [1900., 6.5]]
-
-\end{Verbatim}
+\end{python}
 
 If a \verb=completeness_table= is input then this will override the selection of the completeness algorithm, and the calculation will take the values in \verb=completeness_table= directly. 
 
@@ -600,11 +587,11 @@ If a \verb=completeness_table= is input then this will override the selection of
 
 \section{Recurrence Models}
 
-The current sets of tools are intended to determine the parameters of the \cite{GutenbergRichter1944} recurrence model, namely the a- and b-value. It is expected that in the most common use case the catalogue that is input to these algorithms will be declustered, with a time-varying completeness defined according to a \verb=completeness_table= of the kind shown previously. If no \verb=completeness_table= is input the algorithm will assume the input catalogue is complete above the minimum magnitude for its full duration.
+The current sets of tools are intended to determine the parameters of the \textcite{GutenbergRichter1944} recurrence model, namely the a- and b-value. It is expected that in the most common use case the catalogue that is input to these algorithms will be declustered, with a time-varying completeness defined according to a \verb=completeness_table= of the kind shown previously. If no \verb=completeness_table= is input the algorithm will assume the input catalogue is complete above the minimum magnitude for its full duration.
 
-\subsection{\cite{Aki1965}}
+\subsection{\textcite{Aki1965}}
 
-The classical maximum likelihood estimator for a simple unbounded \cite{GutenbergRichter1944} model is that of \cite{Aki1965}, adapted for binned magnitude data by \cite{Bender1983}. It assumes a fixed completeness magnitude ($M_C$) for the catalogue, and a simple power law recurrence model. It does not explicitly take into account magnitude uncertainty.
+The classical maximum likelihood estimator for a simple unbounded \textcite{GutenbergRichter1944} model is that of \textcite{Aki1965}, adapted for binned magnitude data by \textcite{Bender1983}. It assumes a fixed completeness magnitude ($M_C$) for the catalogue, and a simple power law recurrence model. It does not explicitly take into account magnitude uncertainty.
 
 \begin{equation}
    b = \frac{ \log_{10} \left( e \right)}{ \bar{m} - m_0 + \left( {\frac{\Delta M}{2}} \right)}
@@ -614,7 +601,7 @@ The classical maximum likelihood estimator for a simple unbounded \cite{Gutenber
 
 \subsection{Maximum Likelihood}
 
-This method adjusts the \cite{Aki1965} and \cite{Bender1983} method to incorporate for time variation in completeness. The catalogue is divided into
+This method adjusts the \textcite{Aki1965} and \textcite{Bender1983} method to incorporate for time variation in completeness. The catalogue is divided into
 into S sub-catalogues, where each sub-catalogue corresponds to a period 
 with a corresponding $M_C$.  An average a- and b-value (with uncertainty) is returned by taking 
 the mean of the a- and b-value of each sub-catalogue, weighted by 
@@ -624,49 +611,49 @@ the number of events in each sub-catalogue.
    \hat{b} = \frac{1}{S} \sum_{i = 1}^{S} w_i b_i
 \end{equation}
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
+>> mle_config = {'magnitude_interval': 0.1,
+                 'Average Type': 'Weighted',
+                 'reference_magnitude': None}
 
-In [1]: mle_config = \{'magnitude_interval': 0.1,
-                      'Average Type': 'Weighted',
-                      'reference_magnitude': None\}
+>> from hmtk.seismicity.occurrence.b_maximum_likelihood import\
+    BMaxLikelihood
 
-In [2]: from hmtk.seismicity.occurrence.b_maximum_likelihood import BMaxLikelihood
+>> recurrence = BMaxLikelihood()
 
-In [3]: recurrence = BMaxLikelihood()
-
-In [4]: bval, sigmab, aval, sigmaa = recurrence.calculate(catalogue, mle_config, 
+>> bval, sigmab, aval, sigmaa = recurrence.calculate(
+    catalogue,
+    mle_config, 
     completeness=completeness_table)
-
-\end{Verbatim}
+\end{python}
 
 Where \verb=magnitude_window= indicates the size of the magnitude bin, \verb=recurrence_algorithm= and \verb=reference_magnitude= the magnitude for which the output calculates that rate greater than or equal to (set to \verb=0= for $10^{a}$). 
 
-\subsection{\cite{KijkoSmit2012}}
+\subsection{\textcite{KijkoSmit2012}}
 
-A recent adaption of the \cite{Aki1965} estimator of b-value for  a catalogue containing different completeness periods has been proposed by \cite{KijkoSmit2012}. Dividing the earthquake catalogue into $s$ subcatalogues of $n_i$ events with corresponding completeness magnitudes $m_{c_i}$ for $i = 1, 2, ..., s$, the likelihood function of $\beta$ where $\beta = b \ln		 \left( {10.0} \right)$ is given as:
+A recent adaption of the \textcite{Aki1965} estimator of b-value for  a catalogue containing different completeness periods has been proposed by \textcite{KijkoSmit2012}. Dividing the earthquake catalogue into $s$ subcatalogues of $n_i$ events with corresponding completeness magnitudes $m_{c_i}$ for $i = 1, 2, ..., s$, the likelihood function of $\beta$ where $\beta = b \ln		 \left( {10.0} \right)$ is given as:
 
 \begin{equation}
     \mathbf{L} = \prod_{i = 1}^{s} \prod_{j = 1}^{n_i} \beta \exp(\left[ {-\beta \left( {m_j^i - m_{min}^i } \right) } \right])
 \end{equation}
 
-which gives a maximum likelihood estimator of $\beta$:
+\noindent which gives a maximum likelihood estimator of $\beta$:
 
 \begin{equation}
     \beta = \left( {\frac{r_1}{\beta_1} + \frac{r_2}{\beta_2} + \dots + \frac{r_s}{\beta_s}} \right)^{-1}
 \end{equation}
 
-where $r_i = n_i / n$ and $n = \sum_{i = 1}^{s} n_i$ above the level of completeness $m_i$.
+\noindent where $r_i = n_i / n$ and $n = \sum_{i = 1}^{s} n_i$ above the level of completeness $m_i$.
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]]
 
-In [1]: kijko_smit_config = \{'magnitude_interval': 0.1,
-                             'reference_magnitude': None\}
+>> kijko_smit_config = {'magnitude_interval': 0.1,
+                        'reference_magnitude': None\}
+\end{python}
 
-\end{Verbatim}
+\subsection{\textcite{Weichert1980}}
 
-\subsection{\cite{Weichert1980}}
-
-Recognising the typical conditions of an earthquake catalogue, \cite{Weichert1980} developed a maximum likelihood estimator of $b$ for grouped magnitudes and unequal periods of observation. The likelihood formulation for this approach is:
+Recognising the typical conditions of an earthquake catalogue, \textcite{Weichert1980} developed a maximum likelihood estimator of $b$ for grouped magnitudes and unequal periods of observation. The likelihood formulation for this approach is:
 
 \begin{equation}
    \mathbf{L} \left( {\beta | n_i, m_i, t_i} \right) = \frac{ N!}{\prod_i n_i!} \prod_i p_{i}^{n_i}
@@ -684,22 +671,21 @@ The extremum of $\ln \left( {\mathbf{L}}\right)$ is found at:
    \frac{\sum_i t_i m_i \exp \left( {-\beta m_i} \right)}{\sum_j t_j \exp \left( {-\beta m_j} \right)}
 \end{equation}
 
-The computational implementation of this method is given as an appendix to \cite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \citep[e.g.][]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \citet{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
+The computational implementation of this method is given as an appendix to \textcite{Weichert1980}. This formulation of the maximum likelihood estimator for b-value, and consequently seismicity rate, is in widespread use, with applications in many national seismic hazard analysis \parencite[e.g.][]{usgsNSHM1996,usgsNSHM2002}. The algorithm has been demonstrated to be efficient and unbiased for most applications. It is recognised by \textcite{Felzer2008} that an implicit assumption is made regarding the stationarity of the seismicity for all the time periods. 
 
-To implement the \cite{Weichert1980} recurrence estimator, the configuration properties are defined as:
+To implement the \textcite{Weichert1980} recurrence estimator, the configuration properties are defined as:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
 
-In [1]: weichert_config = \{`magnitude_interval': 0.1,
-                           `reference_magnitude': None,
-                           \# The remaining parameters are optional
-                           `bvalue': 1.0,
-                           `itstab': 1E-5,
-                           `maxiter': 1000\}
+>> weichert_config = {`magnitude_interval': 0.1,
+                      `reference_magnitude': None,
+                      # The remaining parameters are optional
+                      `bvalue': 1.0,
+                      `itstab': 1E-5,
+                      `maxiter': 1000}
+\end{python}
 
-\end{Verbatim}
-
-As the \cite{Weichert1980} algorithm is reaches the MLE estimation by iteration then three additional optional parameters can control the iteration process: \verb=bvalue= is the initial guess for the b-value, \verb=itstab= the difference in b-value in order to reach convergence, and \verb=maxiter= the maximum number of iterations. \footnote{The iterative nature of the \cite{Weichert1980} algorithm can result in very slow convergence and unstable behaviour when the magnitudes infer b-values that are very small, or even negative. This can occur when very few events are in the resulting catalogue, or when the magnitudes converge within a narrow range.}
+As the \textcite{Weichert1980} algorithm is reaches the MLE estimation by iteration then three additional optional parameters can control the iteration process: \verb=bvalue= is the initial guess for the b-value, \verb=itstab= the difference in b-value in order to reach convergence, and \verb=maxiter= the maximum number of iterations. \footnote{The iterative nature of the \textcite{Weichert1980} algorithm can result in very slow convergence and unstable behaviour when the magnitudes infer b-values that are very small, or even negative. This can occur when very few events are in the resulting catalogue, or when the magnitudes converge within a narrow range.}
 
 
 
@@ -708,9 +694,9 @@ As the \cite{Weichert1980} algorithm is reaches the MLE estimation by iteration 
 
 The estimation of the maximum magnitude for use in seismic hazard analysis is a complex, and often controversial, process that should be guided by information from geology and the seismotectonics of a seismic source. Estimation of maximim magnitude from the observed (instrumental and historical) seismicity can be undertaken using methods assuming a truncated \cite{GutenbergRichter1944} model, or via non-parametric methods that are independent any assumed functional form. 
 
-\subsection{\cite{Kijko2004}}
+\subsection{\textcite{Kijko2004}}
 
-Three different estimators of maximum magnitude are given by \cite{Kijko2004}, each depending on a different set of assumptions:
+Three different estimators of maximum magnitude are given by \textcite{Kijko2004}, each depending on a different set of assumptions:
 \begin{enumerate}
 \item ''Fixed b-value'': Assumes a single b-value with no uncertainty 
 \item ''Uncertain b-value'': Assumes and uncertain b-value defined by an expected b and the standard deviation
@@ -740,35 +726,35 @@ All three estimators require an iterative solution, therefore additional paramet
 
 \subsubsection{''Fixed b-value''}
 
-For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \cite{GutenbergRichter1944} distribiution with a fixed "b" value, the increment of maximum magnitude is determined via:
+For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \textcite{GutenbergRichter1944} distribiution with a fixed "b" value, the increment of maximum magnitude is determined via:
 
 \begin{equation}
 \Delta = \int\limits_{m_{min}} ^{m_{max}} \left[ {\frac{1 - \exp \left[ {-\beta \left( {m - m_{min}} \right)} \right]}{1 - \exp \left[ {-\beta \left( {m_{max}^{obs} - m_{min}} \right) } \right]}} \right] ^n dm
 \end{equation}
 
 
-The execution of the \cite{Kijko2004} ''fixed-b'' algorithm is as follows:
+The execution of the \textcite{Kijko2004} ''fixed-b'' algorithm is as follows:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
-In [1]: mmax_config = \{`input_mmax': 7.6,
-                       `input_mmax_uncertainty': 0.22,
-                       `b-value': 1.0,
-                       `input_mmin': 5.0,
-                       `tolerance': 1.0E-5,  \# Defaults to this if not specified
-                       `maximum_iterations': 1000\} \# Defaults to this if not specified
+\begin{python}[frame=single]
+>> mmax_config = {`input_mmax': 7.6,
+                  `input_mmax_uncertainty': 0.22,
+                  `b-value': 1.0,
+                  `input_mmin': 5.0,
+                  `tolerance': 1.0E-5,  \# Default
+                  `maximum_iterations': 1000\} \# Defaults
                        
-In [2]: from hmtk.seismicity.max_magnitude.kijko_sellevol_fixed_b import KijkoSellevolFixedb
+>> from hmtk.seismicity.max_magnitude.kijko_sellevol_fixed_b\
+    import KijkoSellevolFixedb
 
-In [3]: mmax_estimator = KijkoSellevolFixedb()
+>> mmax_estimator = KijkoSellevolFixedb()
 
-In [4]: mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue, mmax_config)
-                
-\end{Verbatim}
+>> mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue,
+                                                    mmax_config)   
+\end{python}
 
 \subsubsection{''Uncertain b-value''}
 
-For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \cite{GutenbergRichter1944} distribiution with an uncertain "b" value, characterised by and expected term ($b$) and a corresponding undertainty ($\sigma_b$), the increment of maximum magnitude is determined via:
+For a catalogue of $n$ earthquakes, whose magnitudes are distributed by a \textcite{GutenbergRichter1944} distribiution with an uncertain "b" value, characterised by and expected term ($b$) and a corresponding undertainty ($\sigma_b$), the increment of maximum magnitude is determined via:
 
 
 \begin{equation}
@@ -785,23 +771,23 @@ In both the fixed and uncertain ''b'' case a minimum magnitude will need to be i
 
 The execution of the ''uncertain b-value'' estimator is undertaken in a very similar to that of the fixed b-value, the only additional parameter being the \verb=sigma-b= term:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
-In [1]: mmax_config = \{'input_mmax': 7.6,
-                       'input_mmax_uncertainty': 0.22,
-                       'b-value': 1.0,
-                       'sigma-b': 0.15
-                       'input_mmin': 5.0,
-                       'tolerance': 1.0E-5, \# Defaults to this if not specified
-                       'maximum_iterations': 1000\} \# Defaults to this if not specified
+\begin{python}[frame=single]
+>> mmax_config = {'input_mmax': 7.6,
+                  'input_mmax_uncertainty': 0.22,
+                  'b-value': 1.0,
+                  'sigma-b': 0.15
+                  'input_mmin': 5.0,
+                  'tolerance': 1.0E-5, 
+                  'maximum_iterations': 1000}
                        
-In [2]: from hmtk.seismicity.max-magnitude.kijko_sellevol_bayes import KijkoSellevolBayes
+>> from hmtk.seismicity.max-magnitude.kijko_sellevol_bayes\
+    import KijkoSellevolBayes
 
-In [3]: mmax_estimator = KijkoSellevolBayes()
+>> mmax_estimator = KijkoSellevolBayes()
 
-In [4]: mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue, mmax_config)
-                
-\end{Verbatim}
+>> mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue,
+                                                    mmax_config)
+\end{python}
 
 \subsubsection{Non-Parametric Gaussian}
 
@@ -820,28 +806,28 @@ Therefore the uncertainty on $m_{max}$ is conditioned primarily on the uncertain
 
 Due to the need to define some additional parameters the configuration file is slightly different. No b-value or minimum magnitude needs to be specified; however, the algorithm will consider only the largest \verb=number_earthquakes= magnitudes (or all magnitudes if the number of observations is smaller). The algorithm also numerically approximates the integral of the Gaussian pdf, so \verb=number_samples= is the number of samples of the distribution. The rest of the execution remains the same as for the exponential recurrence estimators of $M_{max}$:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-
-In [1]: mmax_config = \{'input_mmax': 7.6,
-                       'input_mmax_uncertainty': 0.22,
-                       'number_samples': 51, \# Default value
-                       'number_earthquakes': 100 \# Default value
-                       'tolerance': 1.0E-5, \# Defaults to this if not specified
-                       'maximum_iterations': 1000\} \# Defaults to this if not specified
+\begin{python}[frame=single]
+>> mmax_config = {'input_mmax': 7.6,
+                  'input_mmax_uncertainty': 0.22,
+                  'number_samples': 51, # Default
+                  'number_earthquakes': 100 # Default 
+                  'tolerance': 1.0E-5, 
+                  'maximum_iterations': 1000}
                        
-In [2]: from hmtk.seismicity.max-magnitude.kijko_nonparametric_gaussian import
-    KijkoNonParametricGaussian
+>> from hmtk.seismicity.max-magnitude.kijko_nonparametric_gaussian\
+     import KijkoNonParametricGaussian
 
-In [3]: mmax_estimator = KijkoNonParametricGaussian()
+>> mmax_estimator = KijkoNonParametricGaussian()
 
-In [4]: mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue, mmax_config)
+>> mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue,
+                                                    mmax_config)
                 
-\end{Verbatim}
+\end{python}
 
 
-\subsection{Cumulative Moment \citep{MakropoulosBurton1983}}
+\subsection{Cumulative Moment \parencite{MakropoulosBurton1983}}
 
-The cumulative moment release method is an adaptation of the cumulative strain energy release method for estimating $m_{max}$ originally proposed by \cite{MakropoulosBurton1983}. Another method based on a pseudo-graphical formulation, an estimator of maximum magnitude can be derived from a plot of cumulative seismic moment release with time. The average slope of this plot indicates the mean moment release for the input catalogue in question. Two further straight lines are defined with gradients equal to that of the slope of mean cumulative moment release, both enveloping the cumulative plot. The vertical distance between these two lines indicates the total amount of moment that may be released in the region, if no earthquakes were to occur in the corresponding time (i.e. the distance between the upper and lower bounding lines on the time axis). This concept is illustrated in Figure \ref{fig:Cumulative_Moment}. 
+The cumulative moment release method is an adaptation of the cumulative strain energy release method for estimating $m_{max}$ originally proposed by \textcite{MakropoulosBurton1983}. Another method based on a pseudo-graphical formulation, an estimator of maximum magnitude can be derived from a plot of cumulative seismic moment release with time. The average slope of this plot indicates the mean moment release for the input catalogue in question. Two further straight lines are defined with gradients equal to that of the slope of mean cumulative moment release, both enveloping the cumulative plot. The vertical distance between these two lines indicates the total amount of moment that may be released in the region, if no earthquakes were to occur in the corresponding time (i.e. the distance between the upper and lower bounding lines on the time axis). This concept is illustrated in Figure \ref{fig:Cumulative_Moment}. 
 
 \begin{figure}[htb]
 	\centering
@@ -850,39 +836,41 @@ The cumulative moment release method is an adaptation of the cumulative strain e
 	\label{fig:Cumulative_Moment}
 \end{figure}
 
-The cumulative moment estimator of $m_{max}$, whilst simple in concept, has several key advantages. As a non-parametric method it is independent of any assumed probability distribution and cannot estimate $m_{max}$ lower than the observed $m_{max}$. It is also principally controlled by the largest events in the catalogue, this making it relative insensitive to uncertainties in completeness or lower bound threshold. In practice, this estimator, and to some extent that of \cite{Kijko2004} are dependent on having a sufficiently long record of events relative to the strain cycle for the region in question, such that the estimate of average moment release is stable. This will obviously depend on the length of the catalogue, and for some regions, particularly those in low strain intraplate environments, it is often the case that $m_{max}$ will be close to the observed $m_{max}$. Therefore it may be the case that it is most appropriate to use these techniques on a larger scale, either considering multiple sources or an appropriate tectonic proxy.
+The cumulative moment estimator of $m_{max}$, whilst simple in concept, has several key advantages. As a non-parametric method it is independent of any assumed probability distribution and cannot estimate $m_{max}$ lower than the observed $m_{max}$. It is also principally controlled by the largest events in the catalogue, this making it relative insensitive to uncertainties in completeness or lower bound threshold. In practice, this estimator, and to some extent that of \textcite{Kijko2004} are dependent on having a sufficiently long record of events relative to the strain cycle for the region in question, such that the estimate of average moment release is stable. This will obviously depend on the length of the catalogue, and for some regions, particularly those in low strain intraplate environments, it is often the case that $m_{max}$ will be close to the observed $m_{max}$. Therefore it may be the case that it is most appropriate to use these techniques on a larger scale, either considering multiple sources or an appropriate tectonic proxy.
 
-For the cumulative moment estimator it is possible to take into account the uncertainty on $m_{max}$ by applying bootstrap sampling to the observed magnitudes and their respective uncertainties. This has the advantage that $\sigma_{m_{max}}$ is not controlled by the uncertainty on the observed $m_{max}$, as it is for the \cite{Kijko2004} algorithm. Instead it takes into account the uncertainty on all the magnitudes in the catalogue. The cost of this, however, is that this method is more computationally intensive, and therefore slower, than \cite{Kijko2004}, depending on the number of bootstrap samples the user chooses.
+For the cumulative moment estimator it is possible to take into account the uncertainty on $m_{max}$ by applying bootstrap sampling to the observed magnitudes and their respective uncertainties. This has the advantage that $\sigma_{m_{max}}$ is not controlled by the uncertainty on the observed $m_{max}$, as it is for the \textcite{Kijko2004} algorithm. Instead it takes into account the uncertainty on all the magnitudes in the catalogue. The cost of this, however, is that this method is more computationally intensive, and therefore slower, than \textcite{Kijko2004}, depending on the number of bootstrap samples the user chooses.
 
-The algorithm is slightly simpler to run than the \cite{Kijko2004} methods; however, due to the bootstrapping process it is slightly slower. It is run as per the following example:
+The algorithm is slightly simpler to run than the \textcite{Kijko2004} methods; however, due to the bootstrapping process it is slightly slower. It is run as per the following example:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
 
-In [1]: mmax_config = {'number_bootstraps': 1000}
+>> mmax_config = {'number_bootstraps': 1000}
                        
-In [2]: from hmtk.seismicity.max_magnitude.cumulative_moment_release import CumulativeMoment
+>> from hmtk.seismicity.max_magnitude.cumulative_moment_release\
+     import CumulativeMoment
 
-In [3]: mmax_estimator = CumulativeMoment()
+>> mmax_estimator = CumulativeMoment()
 
-In [4]: mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue, mmax_config)
+>> mmax, mmax_uncertainty = mmax_estimator.get_mmax(catalogue,
+                                                    mmax_config)
                 
-\end{Verbatim}
+\end{python}
 
-For the cumulative moment algorithm the only user configurable parameter is the \verb=number_bootstraps=, which is the number of samples used during the bootstrapping process. 
+For the cumulative moment algorithm the only user configurable parameter is the \\ \verb=number_bootstraps=, which is the number of samples used during the bootstrapping process. 
 
 \section{Smoothed Seismicity}
 
 The use of smoothed seismicity in seismic hazard analysis has generally become a common way of characterising distributed seismicity, for which the seismogenic source are defined exclusively from the uncertain locations of observed seismicity. There are many different methods for smoothing the catalogue, adopting different smoothing kernels or making different correction factors to compensate for spatial and/or temporal completeness. 
 
-\subsection{\cite{frankel1995}}
+\subsection{\textcite{frankel1995}}
 
-A smoothed seismicity method that has one of the clearest precedents for use in seismic hazard analysis is that of \cite{frankel1995}, originally derived to characterise the seismicity of the Central and Eastern United States as part of the 1996 National Seismic Hazard Maps of the United States. The method applies a simple isotropic Gaussian smoothing kernel to derive the expected rate of events at each cell $\tilde{n}_i$ from the observed rate $n_j$ of seismicity in a grid of $j$ cells. This kernel takes the form:
+A smoothed seismicity method that has one of the clearest precedents for use in seismic hazard analysis is that of \textcite{frankel1995}, originally derived to characterise the seismicity of the Central and Eastern United States as part of the 1996 National Seismic Hazard Maps of the United States. The method applies a simple isotropic Gaussian smoothing kernel to derive the expected rate of events at each cell $\tilde{n}_i$ from the observed rate $n_j$ of seismicity in a grid of $j$ cells. This kernel takes the form:
 
 \begin{equation}
 \tilde{n_i} = \frac{\sum_j n_j e^{d_{ij}^2 / c^2}}{\sum_j e^{d_{ij}^2 / c^2}} 
 \end{equation}
 
-In the implementation of the algorithm, two steps are taken that we prefer to make configurable options here. The first step is that the time-varying completeness is accounted for using a correction factor ($t_f$) based on the \cite{Weichert1980} method:
+In the implementation of the algorithm, two steps are taken that we prefer to make configurable options here. The first step is that the time-varying completeness is accounted for using a correction factor ($t_f$) based on the \textcite{Weichert1980} method:
 
  \begin{equation}
  t_f = \frac{\sum_i e^{-\beta m_{c_i}}}{\sum_i T_i e^{-\beta m_{c_i}}} 
@@ -896,40 +884,43 @@ The smoothed seismicity separates out the core implementation (i.e. the gridding
 
 The first stage is to upload the catalogue into an instance of the catalogue class
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
+>> input_file = 'path/to/input_file.csv'
 
-In [1]: input_file = 'path/to/input_file.csv'
+>> from hmtk.parsers.catalogue.csv_catalogue_parser import\
+    CsvCatalogueParser
 
-In [2]: from hmtk.parsers.catalogue.csv_catalogue_parser import CsvCatalogueParser
+>> parser = CsvCatalogueParser(input_file)
 
-In [3]: parser = CsvCatalogueParser(input_file)
-
-In [4]: catalogue = parser.read_file()
-
-\end{Verbatim}
+>> catalogue = parser.read_file()
+\end{python}
 
 Next setup the smoothing algorithm using and the corresponding kernel:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
 
 # Imports the smoothed seismicity algorithm
-In [5]: from hmtk.seismicity.smoothing.smoothed_seismicity import SmoothedSeismicity
+>> from hmtk.seismicity.smoothing.smoothed_seismicity import\
+    SmoothedSeismicity
 
 # Imports the Kernel function
-In [6]: from hmtk.seismicity.smoothing.kernels.isotropic_gaussian import IsotropicGaussian
+>> from hmtk.seismicity.smoothing.kernels.isotropic_gaussian\
+    import IsotropicGaussian
 
 # Grid limits should be set up as 
-# [min_long, max_long, spc_long, min_lat max_lat, spc_lat, min_depth, max_depth,
-# spc_depth]
-In [7]: grid_limits = [0., 10., 0.1, 0., 10., 0.1, 0., 60., 30.]
+# [min_long, max_long, spc_long, 
+#  min_lat max_lat, spc_lat,
+#  min_depth, max_depth, spc_depth]
+>> grid_limits = [0., 10., 0.1, 0., 10., 0.1, 0., 60., 30.]
 # Assuming a b-value of 1.0
-In [8]: smooth_seis = SmoothedSeismicity(grid_limits, use_3d=True, bvalue=1.0)
-
-\end{Verbatim}
+>> smooth_seis = SmoothedSeismicity(grid_limits,
+                                    use_3d=True,
+                                    bvalue=1.0)
+\end{python}
 
 The smoothed seismicity function needs to be set up with three variables: i) the extent (and spacing) of the grid, ii) the choice to use 3D smoothing (i.e. distances are taken as hypocentral rather than epicentral) and iii) the input b-value. The extent of the grid can also be defined from the catalogue. If preferred the user need only specify the spacing of the longitude-latitude grid (as a single floating point value), then the grid will be defined by taking the bounding box of the earthquake catalogue and extended by the total smoothing length (i.e. the bandwidth (in km) multiplied by the maximum number of bandwidths). 
 
-To run the smoothed seismicity analysis, the configurable parameters are: \verb=BandWidth= the bandwidth of the Gaussian kernel (in km), \verb=Length_Limit= the number of bandwidths considered as a maximum smoothing length, and \verb=increment= chooses whether to output the incremental a-value (for consistency with the original \cite{frankel1995} methodology) or the cumulative a-value (corresponding to the a-value of the Gutenberg-Richter model).
+To run the smoothed seismicity analysis, the configurable parameters are: \verb=BandWidth= the bandwidth of the Gaussian kernel (in km), \verb=Length_Limit= the number of bandwidths considered as a maximum smoothing length, and \verb=increment= chooses whether to output the incremental a-value (for consistency with the original \textcite{frankel1995} methodology) or the cumulative a-value (corresponding to the a-value of the Gutenberg-Richter model).
 
 
 The algorithm requires two essential inputs (the earthquake catalogue and the config file), and three optional inputs:
@@ -945,17 +936,22 @@ kernel class (currently only Isotropic Gaussian is supported - and will be used 
 
 The analysis is then run via:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
+\begin{python}[frame=single]
 # Set up config (e.g. 50 km band width, up to 3 bandwidths)
-In [9]: config = {`Length_Limit': 3., `BandWidth': 50., 'increment': True}
-
+>> config = {`Length_Limit': 3.,
+             `BandWidth': 50.,
+             'increment': True}
 # Run the analysis!
-In [10]: output_data = smooth_seis.run_analysis(catalogue, config, completeness_table, 
-    smoothing_kernel=IsotropicGaussian(), end_year=None)
+>> output_data = smooth_seis.run_analysis(
+    catalogue,
+    config,
+    completeness_table, 
+    smoothing_kernel=IsotropicGaussian(), 
+    end_year=None)
 
 # To write the resulting data to a csv file
-In [11] = smooth_seis.write_to_csv(`path/to/output_file.csv')
-\end{Verbatim}
+>> smooth_seis.write_to_csv(`path/to/output_file.csv')
+\end{python}
 
 The resulting output will be a csv file with the following columns:
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
@@ -964,10 +960,3 @@ Longitude, Latitude, Depth, Observed Count, Smoothed Rate, b-value
 
 \noindent where \verb=Observed Count= is the observed number of earthquakes in each cell, and \\ 
 \verb=Smoothed Rate= is the smoothed seismicity rate.
-
-
-
-
-
-
-

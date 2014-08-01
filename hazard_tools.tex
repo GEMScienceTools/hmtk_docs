@@ -4,11 +4,11 @@
 
 The seismic source model formats currently required by the hmtk are the nrml  The source model is both input and output in GEM's NRML (``Natural Risk Markup Language``) format (although support for shapefile input definitions are expected in future releases). However, unlike the OpenQuake engine, for which each source typology must contain all of the necessary attributes, it is recognised that it may be desirable to use the seismic source model with a partially defined source (one for which only the ID, name and geometry are known) in order to make use of the modelling tools. Therefore, the validation checks have been relaxed to allow for data such as the recurrence model, the hypocentral depth distribution and the faulting mechanism to be specified at a later stage. However, if using this minimal format it will not be possible to use the resulting output file in OpenQuake until the remaining information is filled in.  
 
-A full description of the complete nrml seismogenic source model format is found in the OpenQuake Version 1.0 manual \cite{crowley2010}. An example of a minimal format is shown below for:
+A full description of the complete nrml seismogenic source model format is found in the OpenQuake Version 1.0 manual \parencite{crowley2010}. An example of a minimal format is shown below for:
 
 \subsubsection{Point Source}
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
 <?xml version='1.0' encoding='utf-8'?>
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
@@ -48,7 +48,7 @@ A full description of the complete nrml seismogenic source model format is found
 
 \subsubsection{Area Source}
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
 <?xml version='1.0' encoding='utf-8'?>
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
@@ -100,7 +100,7 @@ A full description of the complete nrml seismogenic source model format is found
 
 \subsubsection{Simple Fault Source}
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
 <?xml version='1.0' encoding='utf-8'?>
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
@@ -138,7 +138,7 @@ A full description of the complete nrml seismogenic source model format is found
 
 \subsubsection{Complex Fault Source}
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
 <?xml version='1.0' encoding='utf-8'?>
 <nrml xmlns:gml="http://www.opengis.net/gml" xmlns="http://openquake.org/xmlns/nrml/0.4">
@@ -202,21 +202,20 @@ A full description of the complete nrml seismogenic source model format is found
 
 To load in a source model such as those shown above, in an IPython environment simply execute the following:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
+>> from hmtk.parsers.source_model.nrml04_parser import\
+    nrmlSourceModelParser
 
-In: [1] from hmtk.parsers.source_model.nrml04_parser import nrmlSourceModelParser
+>> model_filename = 'path/to/source_model_file.xml'
 
-In: [2] model_filename = 'path/to/source_model_file.xml'
+>> model_parser = nrmlSourceModelParser(model_filename)
 
-In: [3] model_parser = nrmlSourceModelParser(model_filename)
-
-In: [4] model = model_parser.read_file()
+>> model = model_parser.read_file()
 Area source - ID: 1, name: Quito
 Point Source - ID: 2, name: point
 Simple Fault source - ID: 3, name: Mount Diablo Thrust
 Complex Fault Source - ID: 4, name: Cascadia Megathrust
-
-\end{Verbatim}
+\end{python}
 
 If loaded successfully a list of the source typology, ID and source name for each source will be returned to the screen as shown above. The variable \verb=model= contains the whole source model, and can support multiple typologies (i.e. point, area, simple fault and complex fault).
 
@@ -228,25 +227,21 @@ The HMTK provides a set of classes (tools, in effect) designed to represent the 
 
 The general source model class can be created using the following function, which at a minimum requires a unique identifier (\verb=identifier=) and a name (\verb=name=):
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In: [1] from hmtk.sources.source_model import mtkSourceModel
-
-In: [2] model1 = mtkSourceModel(identifier="0001",
-                                name="Source Model 1")
-\end{Verbatim}
-
+\begin{python}[frame=single]
+>> from hmtk.sources.source_model import mtkSourceModel
+>> model1 = mtkSourceModel(identifier="0001",
+                           name="Source Model 1")
+\end{python}
 
 If a list of sources is already provided, these can be passed to the class at the creation:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] model1 = mtkSourceModel(identifier="0001",
-                                name="Source Model 1",
-                                sources=list_of_sources)
-\end{Verbatim}
+\begin{python}[frame=single]
+>> model1 = mtkSourceModel(identifier="0001",
+                           name="Source Model 1",
+                           sources=list_of_sources)
+\end{python}
 
 The source model class contains two methods:
-
 
 \verb;.serialise_to_nrml(filename, use_defaults=False);
 
@@ -258,13 +253,14 @@ This method converts the existing source model to an instance of the equivalent 
 
 This method converts the \verb=mtkSourceModel= into an instance of the equivalent source model class in the OpenQuake hazard library. This can be used to run a full PSHA calculation from the source model. The OpenQuake source model class requires the definition of a temporal occurrence model (TOM). This describes the type of recurrence model and the period for which the probabilities are defined. For example, in the most common case in which the user wishes to run a time-independent (i.e. Poissonian) PSHA and return the probability of exceeding a specific ground motion level in, e.g., 50 years:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] from openquake.hazardlib.tom import PoissonTOM
+\begin{python}[frame=single]
+>> from openquake.hazardlib.tom import PoissonTOM
 
-In: [2] temporal_model = PoissonTOM(50.0)
+>> temporal_model = PoissonTOM(50.0)
 
-In: [3] oq_source_model1 = model1.convert_to_oqhazardlib(temporal_model)
-\end{Verbatim}
+>> oq_source_model1 = model1.convert_to_oqhazardlib(
+    temporal_model)
+\end{python}
 
 The optional parameters control the discretisation of the geometry of the corresponding sources, if they are present in the model: \verb=simple_mesh_spacing= the mesh spacing (in km) of the simple fault typology, \verb=complex_mesh_spacing= the mesh spacing (in km) of the complex fault typology, and \verb=area_discretisation= the spacing of the mesh of nodes used to discretise the area source model.
 
@@ -274,7 +270,7 @@ In the ideal circumstances the user will have defined, for each source, the comp
 
 \begin{itemize}
 \item Aspect Ratio: 1.0
-\item Magnitude Scaling Relation: \cite{wells1994} (``WC1994'')
+\item Magnitude Scaling Relation: \textcite{wells1994} (``WC1994'')
 \item Nodal Plane Distribution: Strike = 0.0, Dip = 90.0, Rake = 0.0, Weight=1.0
 \item Hypocentral Depth Distribution: Depth = 10.0 km, Weight = 1.0
 \end{itemize}
@@ -288,7 +284,7 @@ The HMTK point source typology has the following attributes:
 \item \verb=id=: Unique Identifier
 \item \verb=name=: Name of source
 \item \verb=trt=: Tectonic Region Type
-\item \verb=geometry=: Geometry of the source as an instance of the Openquake Point Geometry 
+\item \verb=geometry=: Geometry of the source as an instance of the OpenQuake Point Geometry 
 \item \verb=upper_depth=: Upper seismogenic depth (km)
 \item \verb=lower_depth=: Lower seismogenic depth (km)
 \item \verb=mag_scale_rel=: Magnitude Scaling Relation
@@ -301,21 +297,21 @@ The HMTK point source typology has the following attributes:
 
 A source is created by:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] from hmtk.sources.point_source import mtkPointSource
+\begin{python}[frame=single]
+>> from hmtk.sources.point_source import mtkPointSource
 
-In: [2] from openquake.hazardlib.geo.point import Point
+>> from openquake.hazardlib.geo.point import Point
 
-\# In this example the point is located at 30.0N, 40.0E
-In: [3] point_location = Point(30.0, 30.0)
+# In this example the point is located at 30.0N, 40.0E
+>> point_location = Point(30.0, 30.0)
 
-In: [4] point_source1 = mtkPointSource("001",
-                                       "Point1",
-                                       "Active Shallow Crust",
-                                       point_location,
-                                       upper_depth=0.0,
-                                       lower_depth=30.0)
-\end{Verbatim}
+>> point_source1 = mtkPointSource("001",
+                                  "Point1",
+                                  "Active Shallow Crust",
+                                  point_location,
+                                  upper_depth=0.0,
+                                  lower_depth=30.0)
+\end{python}
 
 The point source class has the following methods:
 
@@ -344,23 +340,22 @@ The HMTK area source typology contains the same attributes as the HMTK point sou
 
 A source is created by:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] from hmtk.sources.point_source import mtkAreaSource
+\begin{python}[frame=single]
+>> from hmtk.sources.point_source import mtkAreaSource
+>> from openquake.hazardlib.geo import point, polygon
+# Create a simple polygon
+>> area_boundary = polygon.Polygon([point.Point(30.0, 31.0),
+                                    point.Point(30.1, 31.0),
+                                    point.Point(30.1, 31.0),
+                                    point.Point(30.0, 30.0)]) 
 
-In: [2] from openquake.hazardlib.geo import point, polygon
-\# Create a simple polygon
-In: [3] area_boundary = polygon.Polygon([point.Point(30.0, 31.0),
-                                         point.Point(30.1, 31.0),
-                                         point.Point(30.1, 31.0),
-                                         point.Point(30.0, 30.0)]) 
-
-In: [4] area_source1 = mtkAreaSource("001",
-                                     "Area1",
-                                     "Active Shallow Crust",
-                                     area_boundary,
-                                     upper_depth=0.0,
-                                     lower_depth=30.0)
-\end{Verbatim}
+>> area_source1 = mtkAreaSource("001",
+                                "Area1",
+                                "Active Shallow Crust",
+                                area_boundary,
+                                upper_depth=0.0,
+                                lower_depth=30.0)
+\end{python}
 
 The area source model also has the following methods
 
@@ -385,7 +380,7 @@ The HMTK Simple Fault source model is one of two typologies intended to characte
 
 
 \begin{itemize}
-\item \verb=geometry=: Geometry of the source as an instance of the Openquake simple fault surface geometry
+\item \verb=geometry=: Geometry of the source as an instance of the OpenQuake simple fault surface geometry
 \item \verb=dip=: Dip angle in degrees
 \item \verb=rake=: The rake angle of the fault (in degrees)
 \item \verb=fault_trace=: The fault trace (i.e. the projection of the fault up-dip to the ground surface) as an instance of the class \verb=openquake.hazardlib.geo.line.Line=
@@ -393,25 +388,25 @@ The HMTK Simple Fault source model is one of two typologies intended to characte
 
 This class can be created in a slightly different manner when compared to the point and area source classes, as the example below describes:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] from hmtk.sources.point_source import mtkSimpleFaultSource
+\begin{python}[frame=single]
+>> from hmtk.sources.point_source import mtkSimpleFaultSource
 
-In: [2] from openquake.hazardlib.geo import line, point
-\# Create a simple polygon
-In: [3] fault_trace = line.Line([point.Point(30.0, 31.0),
-                                 point.Point(30.5, 30.5),
-                                 point.Point(31.0, 30.5)]) 
+>> from openquake.hazardlib.geo import line, point
+# Create a simple polygon
+>> fault_trace = line.Line([point.Point(30.0, 31.0),
+                            point.Point(30.5, 30.5),
+                            point.Point(31.0, 30.5)]) 
 
-In: [4] fault_source1 = mtkSimpleFaultSource("001",
-                                             "SimpleFault1",
-                                             "Active Shallow Crust")
+>> fault_source1 = mtkSimpleFaultSource("001",
+                                        "SimpleFault1",
+                                        "Active Shallow Crust")
 
-In: [5] fault_source1.create_geometry(fault_trace, 
-                                      dip=60.0,
-                                      upper_depth=0.,
-                                      lower_depth=25.,
-                                      mesh_spacing=1.0)
-\end{Verbatim}
+>> fault_source1.create_geometry(fault_trace, 
+                                 dip=60.0,
+                                 upper_depth=0.,
+                                 lower_depth=25.,
+                                 mesh_spacing=1.0)
+\end{python}
 
 The HMTK simple fault source has the following methods:
 
@@ -438,116 +433,132 @@ The HMTK Complex Fault describes a fault model using the OpenQuake complex fault
 
 The object can be created in the following manner:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [1] from hmtk.sources.point_source import mtkComplexFaultSource
+\begin{python}[frame=single]
+>> from hmtk.sources.point_source import mtkComplexFaultSource
 
-In: [2] from openquake.hazardlib.geo import line, point
-\# Create the upper edge of the fault in three dimensions
-In: [3] upper_edge = line.Line([point.Point(30.0, 31.0, 0.,),
-                                point.Point(30.5, 30.5, 1.),
-                                point.Point(31.0, 30.5, 0.5.)]) 
+>> from openquake.hazardlib.geo import line, point
+# Create the upper edge of the fault in three dimensions
+>> upper_edge = line.Line([point.Point(30.0, 31.0, 0.,),
+                           point.Point(30.5, 30.5, 1.),
+                           point.Point(31.0, 30.5, 0.5.)]) 
                                  
-\# Create the lower edge of the fault in three dimensions
-In: [3] lower_edge = line.Line([point.Point(30.05, 31.0, 27.0.,),
-                                point.Point(30.53, 30.5, 21.),
-                                point.Point(31.1, 30.5, 25.5.)]) 
+# Create the lower edge of the fault in three dimensions
+>> lower_edge = line.Line([point.Point(30.05, 31.0, 27.0.,),
+                           point.Point(30.53, 30.5, 21.),
+                           point.Point(31.1, 30.5, 25.5.)]) 
 
-In: [4] fault_source1 = mtkComplexFaultSource("001",
-                                             "ComplexFault1",
-                                             "Active Shallow Crust")
+>> fault_source1 = mtkComplexFaultSource("001",
+                                         "ComplexFault1",
+                                         "Active Shallow Crust")
 
-In: [5] fault_source1.create_geometry([upper_edge, lower_edge],
-                                      mesh_spacing=1.0)
-\end{Verbatim}
+>> fault_source1.create_geometry([upper_edge,
+                                  lower_edge],
+                                  mesh_spacing=1.0)
+\end{python}
 
 \section{Hazard Calculation Tools}
 
 The dependency of the HMTK on the openquake hazardlib permits the usage of its seismic hazard calculators for performing small scale PSHA calculations. The motivation for doing so comes primarily from the desire to explore the impact of modelling decisions, not only on the resulting recurrence model but also on the resulting hazard curve. Such sensitivity studies can provide an important insight into which elements of the model impact are most relevant for the seismic hazard analysis.
 
-In the following example we show how to set-up and run a PSHA calculation from an hmtk source model, using one GMPE (\cite{akkar2010}) and two intensity measures (PGA and Sa (1.0)). 
+In the following example we show how to set-up and run a PSHA calculation from an hmtk source model, using one GMPE \parencite{akkar2010} and two intensity measures (PGA and Sa (1.0)). 
 
 \begin{enumerate}
 
 \item The initial step to running a PSHA calculation is to transform the HMTK source model into its corresponding openquake.hazardlib model. To do this we use the \verb=.convert_to_oqhazardlib= function described previously
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 # Setup the temporal occurrence model
-In: [1] from openquake.hazardlib.tom import PoissonTOM
-In: [2] tom = PoissonTOM(50.0)
+>> from openquake.hazardlib.tom import PoissonTOM
+>> tom = PoissonTOM(50.0)
 # If the HMTK source model is called "mtk_source_model"
-In: [3] oq_source_model = mtk_source_model.convert_to_oqhazardlib(tom)
-\end{Verbatim}
+>> oq_source_model = \
+    mtk_source_model.convert_to_oqhazardlib(tom)
+\end{python}
 
 \item The next step is to set up a site model. To do this we use the \\ \verb=openquake.hazardlib.site= classes. In this example we consider three sites:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-In: [4] from openquake.hazardlib import site
-In: [5] from openquake.hazardlib.geo.point import Point
+\begin{python}[frame=single]
+>> from openquake.hazardlib import site
+>> from openquake.hazardlib.geo.point import Point
 # Site 1 is located at (30E, 40N), vs30 is 760 (measured)
-In: [6] site_1 = site.Site(Point(30.0, 40.0), 760., True, 100.0, 5.0)
+>> site_1 = site.Site(Point(30.0, 40.0), 
+                      760.,
+                      True,
+                      100.0,
+                      5.0)
 # Site 2 is located at (30.5E, 40.5N), vs30 is 500 (measured)
-In: [7] site_2 = site.Site(Point(30.5, 40.5), 500., True, 100.0, 5.0)
+>> site_2 = site.Site(Point(30.5, 40.5),
+                      500.,
+                      True,
+                      100.0,
+                      5.0)
 # Site 3 is located at (31.0E, 40.5N), vs30 is 200 (inferred)
-In: [8] site_3 = site.Site(Point(31.0, 40.5), 500., True, 100.0, 5.0)
+>> site_3 = site.Site(Point(31.0, 40.5),
+                      500.,
+                      True,
+                      100.0,
+                      5.0)
 # Join them together to form a site collection
-In: [9]: sites = site.SiteCollection([site_1, site_2, site_3])
-\end{Verbatim}
+>> sites = site.SiteCollection([site_1, site_2, site_3])
+\end{python}
 
 Alternatively if you have your site data in an array (such would be the case if you were loading from a csv file), you can use a built-in HMTK function to create the site model
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 # For the same sites as in the previous example
-In: [4] from hmtk.hazard import site_array_to_collecion
-In: [5] site_array = np.array([[30.0, 40.0, 760., 1.0, 100., 5.0, 1.],
-                               [30.5, 40.5, 500., 1.0, 100., 5.0, 2.],
-                               [31.0, 40.6, 200., 0.0, 100., 5.0, 3.]])
-In: [6] sites = site_array_to_collection(site_array)
-\end{Verbatim}
+>> from hmtk.hazard import site_array_to_collecion
+>> site_array = np.array(
+    [[30.0, 40.0, 760., 1.0, 100., 5.0, 1.],
+     [30.5, 40.5, 500., 1.0, 100., 5.0, 2.],
+     [31.0, 40.6, 200., 0.0, 100., 5.0, 3.]])
+>> sites = site_array_to_collection(site_array)
+\end{python}
 
-\item Define the GMPE tectonic regionalisation. In this case we consider only one tectonic region type (Active Shallow Crust) and one GMPE (\cite{akkar2010}). 
+\item Define the GMPE tectonic regionalisation. In this case we consider only one tectonic region type (Active Shallow Crust) and one GMPE \parencite{akkar2010}). 
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-# The Akkar & Bommer (2010) GMPE is known to OpenQuake as AkkarBommer2010
-In: [10] gmpe_model = \{"Active Shallow Crust": "AkkarBommer2010"\}
-\end{Verbatim}
+\begin{python}[frame=single]
+# The Akkar & Bommer (2010) GMPE is known to 
+# OpenQuake as AkkarBommer2010
+>> gmpe_model = {"Active Shallow Crust": "AkkarBommer2010"}
+\end{python}
 
 \item Define the intensity measure types and corresponding intensity measure levels
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [11]: imt_list = ["PGA", "SA(1.0)"]
-In [12]: pga_iml = [0.001, 0.01, 0.02, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0, 2.0]
-In [13]: sa1_iml = [0.001, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0, 1.5]
-In [14]: iml_list = [pga_iml, sa1_iml]
-\end{Verbatim}
+\begin{python}[frame=single]
+>> imt_list = ["PGA", "SA(1.0)"]
+>> pga_iml = [0.001, 0.01, 0.02, 0.05, 0.1, 
+                    0.2, 0.4, 0.6, 0.8, 1.0, 2.0]
+>> sa1_iml = [0.001, 0.01, 0.02, 0.05, 0.1,
+                    0.2, 0.3, 0.5, 0.7, 1.0, 1.5]
+>> iml_list = [pga_iml, sa1_iml]
+\end{python}
 
 \item Run the PSHA calculation
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
-
-In [15]: from hmtk.hazard import HMTKHazardCurve
-In [16]: haz_curves = HMTKHazardCurve(oq_source_model,
-                                      sites,
-                                      gmpe_model,
-                                      iml_list,
-                                      imt_list,
-                                      truncation_level=3.0,
-                                      source_integration_dist=None,
-                                      rupture_integration_dist=None)
-\end{Verbatim}
+\begin{python}[frame=single]
+>> from hmtk.hazard import HMTKHazardCurve
+>> haz_curves = HMTKHazardCurve(oq_source_model,
+                                sites,
+                                gmpe_model,
+                                iml_list,
+                                imt_list,
+                                truncation_level=3.0,
+                                source_integration_dist=None,
+                                rupture_integration_dist=None)
+\end{python}
 
 \item The output, in the above example ``\verb=haz_curves='', is a dictionary that has the following form:
 
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
+\begin{python}[frame=single]
 
-In [17]: haz_curves
-\{PGA: np.array([[P(IML_1), P(IML_2), ... P(IML_nIML)],
+>> haz_curves
+{PGA: np.array([[P(IML_1), P(IML_2), ... P(IML_nIML)],
                 [P(IML_1), P(IML_2), ... P(IML_nIML)],
                 [P(IML_1), P(IML_2), ... P(IML_nIML)]]),
- SA(1.0): np.array([[P(IML_1), P(IML_2), ... P(IML_nIML)],
-                    [P(IML_1), P(IML_2), ... P(IML_nIML)],
-                    [P(IML_1), P(IML_2), ... P(IML_nIML)]])\}
-\end{Verbatim}
+SA(1.0): np.array([[P(IML_1), P(IML_2), ... P(IML_nIML)],
+                   [P(IML_1), P(IML_2), ... P(IML_nIML)],
+                   [P(IML_1), P(IML_2), ... P(IML_nIML)]])}
+\end{python}
 
 where $P(IML_i)$ is the probability of exceeding intensity measure level $i$ in the period of the temporal occurrence model (50 years in this case). So for each intensity measure type there is a corresponding 2-D array of values with $N_{SITES}$ rows and $N_{IMLS}$ columns, where $N_{SITES}$ is the number of sites in the site model, and $N_{IMLS}$ is the number of intensity measure levels defined for the specific intensity measure type.
 
