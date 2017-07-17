@@ -41,7 +41,7 @@ The Modeller's Toolkit and associated software are designed for execution
 from the command line. As with OpenQuake, the preferred environment is 
 Ubuntu Linux (12.04 or later). A careful effort has been made to keep 
 the number of additional dependencies to a minimum. No packaged version of the software has been released at the time of writing, so the user must install the dependencies manually. More information regarding the current dependencies of the toolkit can be found at \hfill \\
-\href{http://github.com/GEMScienceTools/hmtk}{http://github.com/GEMScienceTools/hmtk}. 
+\href{https://github.com/gem/oq-engine}{https://github.com/gem/oq-engine}. 
 
 The current dependencies are:
 \begin{itemize}
@@ -73,7 +73,7 @@ The Matplotlib, Pyyaml and Decorator dependencies are installed in the library f
 ~\$ sudo pip install decorator
 \end{Verbatim}
 
-To enable usage of the hmtk within any location in the operating system, OSX and Linux users should add the folder location manually to the command line profile file. This can be done as follows:
+To enable usage of the openquake.hmtk within any location in the operating system, OSX and Linux users should add the folder location manually to the command line profile file. This can be done as follows:
 
 \begin{enumerate}
 \item Using a command line text editor (e.g. VIM), open the \verb=~/.profile= folder as follows:
@@ -85,10 +85,10 @@ To enable usage of the hmtk within any location in the operating system, OSX and
 \item At the bottom of the profile file (if one does not exist it will be created) add the line:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-export PYTHONPATH=/path/to/hmtk/folder/:\$PYTHONPATH
+export PYTHONPATH=/path/to/openquake.hmtk/folder/:\$PYTHONPATH
 \end{Verbatim}
 
-Where \verb=/path/to/hmtk/folder/= is the system path to the location of the hmtk folder (use the command \verb=pwd= from within the hmtk folder to view the full system path).
+Where \verb=/path/to/openquake.hmtk/folder/= is the system path to the location of the openquake.hmtk folder (use the command \verb=pwd= from within the openquake.hmtk folder to view the full system path).
 
 \item Re-source the bash shell via the command
 
@@ -126,14 +126,14 @@ This will install the oq-hazardlib with the full C-extensions, which speed up so
 
 Then close the console by typing \verb=exit=. 
 
-Finally, download the zipped folder of the hmtk from the github repository and unzip to a folder of your choosing. To allow for usage of the hmtk throughout your operating system, do the following: 
+Finally, download the zipped folder of the openquake.hmtk from the github repository and unzip to a folder of your choosing. To allow for usage of the openquake.hmtk throughout your operating system, do the following: 
 
 \begin{enumerate}
 \item From the desktop, right-click \textbf{My Computer} and open \textbf{Properties}
 \item In the ``System Properties'' window click on the \textbf{Advanced} tab.
 \item From the ``Advanced'' section open the \textbf{Environment Variables}.
 \item In the ``Environment Variables'' you sill see a list of ``System Variables'', select ``Path'' and ``Edit''.
-\item Add the path to the hmtk directory to the list of folders then save.
+\item Add the path to the openquake.hmtk directory to the list of folders then save.
 \end{enumerate}
 
 After this process it may be necessary to restart PythonXY.
@@ -188,7 +188,7 @@ As previously indicated, the Modeller's Toolkit itself is a Python library. This
 
 This manual is designed to explain the various functions in the toolkit and to provide some illustrative examples showing how to implement them for particular contexts and applications. The tutorial itself does not specifically require a working knowledge of Python. However, an understanding of the basic python data types, and ideally some familiarity with the use of Python objects, is highly desirable. Users who are new to Python are recommended to familiarise themselves with Appendix \ref{sec:python_guide} of this tutorial. This provides a brief overview of the Python programming language and should introduce concepts such as classes and dictionaries, which will be encountered in due course. For more detail of the complete Python language, a comprehensive overview of its features and usage standard python documentation (\href{http://docs.python.org/2/tutorial/}{http://docs.python.org/2/tutorial/}). Where necessary particular Python programming concepts will be explained in further detail.
 
-The code snippets (indicated by verbatim text) can be executed from within an ''Interactive Python (IPython)'' environment, or may form the basis for usage of the hmtk in other python scripts that the user may wish to run construct themselves. If not already installed on your system, IPython can be installed from the python package repository by entering: 
+The code snippets (indicated by verbatim text) can be executed from within an ''Interactive Python (IPython)'' environment, or may form the basis for usage of the openquake.hmtk in other python scripts that the user may wish to run construct themselves. If not already installed on your system, IPython can be installed from the python package repository by entering: 
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 ~\$ sudo pip install ipython
@@ -202,7 +202,7 @@ An ``interactive'' session can then be opened by typing \verb=ipython= at the co
 
 To exit an IPython session at any time simply type \verb=exit=.
 
-For a more visual application of the hmtk the reader is encouraged to utilise the ``IPython Notebook'' (\href{http://ipython.org/notebook.html}{http://ipython.org/notebook.html}). This novel tool implements IPython inside a web-browser environment, permitting the user to create and store real Python workflows that can be retrieved and executed, whilst allowing for images and text to be embedded. A screenshot of the hmtk used in an IPython Notebook environment is shown in Figure \ref{fig:notebook}. From version 1.0 of IPython, the IPython Notebook comes installed. A notebook session can be
+For a more visual application of the openquake.hmtk the reader is encouraged to utilise the ``IPython Notebook'' (\href{http://ipython.org/notebook.html}{http://ipython.org/notebook.html}). This novel tool implements IPython inside a web-browser environment, permitting the user to create and store real Python workflows that can be retrieved and executed, whilst allowing for images and text to be embedded. A screenshot of the openquake.hmtk used in an IPython Notebook environment is shown in Figure \ref{fig:notebook}. From version 1.0 of IPython, the IPython Notebook comes installed. A notebook session can be
 started via the command:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
@@ -211,8 +211,8 @@ started via the command:
 
 \begin{figure}[htb]
   \centering
-      \includegraphics[width=\textwidth]{./figures/hmtk_notebook_screenshot.eps}
-  \caption{Example of the hmtk embedded in an IPython Notebook}
+      \includegraphics[width=\textwidth]{./figures/openquake.hmtk_notebook_screenshot.eps}
+  \caption{Example of the openquake.hmtk embedded in an IPython Notebook}
   \label{fig:notebook}
 \end{figure}
 
@@ -221,17 +221,17 @@ started via the command:
 
 %\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 %
-%~\$ git clone https://github.com/GEMScienceTools/hmtk.git
+%~\$ git clone https://github.com/gem/oq-engine.git
 %
 %\end{Verbatim}
 
 \subsection{Visualisation}
 
-In addition to the scientific tools, which will be described in detail in due course, the hmtk also has a set of functionalities for visualisation of data and results pertinent to the preparation of seismic hazard input models. Whilst not necessarily an essential component of the hmtk, the usage of the plotting functions can facilitate model development. Particular visualisation functions shall be referred to where relevant for the particular tool or data set. 
+In addition to the scientific tools, which will be described in detail in due course, the openquake.hmtk also has a set of functionalities for visualisation of data and results pertinent to the preparation of seismic hazard input models. Whilst not necessarily an essential component of the openquake.hmtk, the usage of the plotting functions can facilitate model development. Particular visualisation functions shall be referred to where relevant for the particular tool or data set. 
 
 \subsubsection{Map Creation}
 
-Contained within the existing plotting tools is a set of functions to create maps of geospatial data. To do this, the hmtk requires the Matplotlib "Basemap" add-on, which can also be installed from the command line using the Python Package Manager (pip) for OSX/Linux environments:
+Contained within the existing plotting tools is a set of functions to create maps of geospatial data. To do this, the openquake.hmtk requires the Matplotlib "Basemap" add-on, which can also be installed from the command line using the Python Package Manager (pip) for OSX/Linux environments:
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 ~\$ sudo pip install basemap
@@ -243,7 +243,7 @@ To set-up a simple basemap it is necessary to define the configuration of the pl
 
 %\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 \begin{python}[frame=single]
-In [1]: from hmtk.plotting.mapping import HMTKBaseMap
+In [1]: from openquake.hmtk.plotting.mapping import HMTKBaseMap
 
 In [2]: map_config = \{"min_lon": 18.0,
                        "max_lon": 32.0,
@@ -263,7 +263,7 @@ The class \verb=HMTKBaseMap= contains a set of methods for mapping other data fo
 \begin{itemize}
 \item \verb;.add_catalogue(catalogue, overlay=False);
 
-This function will overlay an earthquake catalogue onto the basemap. The input value \verb=catalogue= is the earthquake catalogue as an instance of the class \\\verb=hmtk.seismicity.catalogue.Catalogue= (see the next section for details), whilst the parameter \verb=overlay= indicates whether the use expects to add another layer on top of the map (True) or whether to close the image to overlaying (False), as would be the case when the image is ready for exporting. An example map for the Aegean is shown in Figure \ref{fig:eqcat_simple}.
+This function will overlay an earthquake catalogue onto the basemap. The input value \verb=catalogue= is the earthquake catalogue as an instance of the class \\\verb=openquake.hmtk.seismicity.catalogue.Catalogue= (see the next section for details), whilst the parameter \verb=overlay= indicates whether the use expects to add another layer on top of the map (True) or whether to close the image to overlaying (False), as would be the case when the image is ready for exporting. An example map for the Aegean is shown in Figure \ref{fig:eqcat_simple}.
    
 \begin{figure}[htb]
   \centering
@@ -275,7 +275,7 @@ This function will overlay an earthquake catalogue onto the basemap. The input v
 \item \verb;.add_source_model(model, area_border='k-', border_width='1.0',;\\
     \verb;    point_marker='ks', point_size=2.0, overlay=False);
 
-This function adds a source model to the basemap. The input value \verb=model= is an instance of the class \verb=hmtk.sources.source_model.mtkSourceModel= (see next section). The remaining parameters control the plot settings: i) \verb=area_border= (the colour of the borders of an area source), ii) \verb=border_width= (the line width of the area source border), iii) \verb=point_marker= (the marker style for a point source), iv) \verb=point_size= (the size of the point source). An example of a source model plot is shown in \ref{fig:source_model_map}.
+This function adds a source model to the basemap. The input value \verb=model= is an instance of the class \verb=openquake.hmtk.sources.source_model.mtkSourceModel= (see next section). The remaining parameters control the plot settings: i) \verb=area_border= (the colour of the borders of an area source), ii) \verb=border_width= (the line width of the area source border), iii) \verb=point_marker= (the marker style for a point source), iv) \verb=point_size= (the size of the point source). An example of a source model plot is shown in \ref{fig:source_model_map}.
  
 \begin{figure}[htb]
   \centering

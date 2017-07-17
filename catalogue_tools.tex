@@ -40,7 +40,7 @@ To load the catalogue using the IPython environment, in an open IPython session 
 
 %\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize, samepage=true]
 \begin{python}
->> from hmtk.parsers.catalogue import CsvCatalogueParser
+>> from openquake.hmtk.parsers.catalogue import CsvCatalogueParser
 >> catalogue_filename = 'path/to/catalogue_file.csv'
 >> parser = CsvCatalogueParser(catalogue_filename)
 >> catalogue = parser.read_file()
@@ -54,7 +54,7 @@ Catalogue Attribute ... is not a recognised catalogue key
 
 \textbf{This is expected behaviour and simply indicates that although this data is given in the input file, it is not retained in the data dictionary.}
 
-The variable \verb=catalogue= is an instance of the class hmtk.seismicity.catalogue.Catalogue, which now contains the catalogue itself (as \verb=catalogue.data=) and some methods that can be applied to the catalogue. The first attribute (\verb=catalogue.data=), is a dictionary where each attribute of the catalogue is either a 1-D numpy vector (for float and integer values) or a python list (for string values). For example, to return a vector containing all the magnitudes in the \verb=magnitude= column of the catalogue simply type:
+The variable \verb=catalogue= is an instance of the class openquake.hmtk.seismicity.catalogue.Catalogue, which now contains the catalogue itself (as \verb=catalogue.data=) and some methods that can be applied to the catalogue. The first attribute (\verb=catalogue.data=), is a dictionary where each attribute of the catalogue is either a 1-D numpy vector (for float and integer values) or a python list (for string values). For example, to return a vector containing all the magnitudes in the \verb=magnitude= column of the catalogue simply type:
 
 \begin{python}
 >> catalogue.data['magnitude']
@@ -100,7 +100,7 @@ This file type could be parsed into a catalogue without the need of a specific p
               'minute', 'second']
 
 # Create instance of a catalogue class
->> from hmtk.seismicity.catalogue import Catalogue
+>> from openquake.hmtk.seismicity.catalogue import Catalogue
 >> catalogue = Catalogue()
 
 # Load the data array into the catalogue
@@ -156,7 +156,7 @@ Returns a depth histogram for the catalogue using bins specified by \verb=depth_
 To generate a simple histogram plot of hypocentral depth, the process below can be followed to produce a depth histogram similar to the one shown in Figure \ref{fig:simple_depth_hist}:
 
 \begin{python}[frame=single]
->> from hmtk.plotting.seismicity.catalogue_plots import\
+>> from openquake.hmtk.plotting.seismicity.catalogue_plots import\
     plot_depth_histogram
 
 >> depth_bin = 5.0
@@ -196,7 +196,7 @@ Returns a two-dimensional histogram of magnitude and hypocentral depth, with the
 To generate a plot of magnitude-depth density, the following function can be used to produce a figure similar to that shown in Figure \ref{fig:mag_depth_density}.
 
 \begin{python}[frame=single]
->> from hmtk.plotting.seismicity.catalogue_plots import\
+>> from openquake.hmtk.plotting.seismicity.catalogue_plots import\
      plot_magnitude_depth_density
 >> magnitude_bin = 0.1
 >> depth_bin = 5.0 
@@ -237,7 +237,7 @@ Returns a 2D histogram of magnitude with time. \verb=time_bins= are the bin edge
 To automatically generate a plot, similar to that shown in Figure \ref{fig:mag_time_density} , run the following:
 
 \begin{python}[frame=single]
->> from hmtk.plotting.seismicity.catalogue_plots import\
+>> from openquake.hmtk.plotting.seismicity.catalogue_plots import\
     plot_magnitude_time_density
 >> magnitude_bin_width = 0.1
 >> time_bin_width = 0.1 
@@ -263,7 +263,7 @@ In the process of constructing a PSHA seismogenic source model from seismicity i
 To setup the ``Selector'' tool:
 
 \begin{python}[frame=single]
->> from hmtk.seismicity.selector import CatalogueSelector
+>> from openquake.hmtk.seismicity.selector import CatalogueSelector
 
 # Assuming that there already exists a 
 # catalogue named ''catalogue1''
@@ -416,7 +416,7 @@ foreshock time windows this parameter can be reduced or increased respectively.
 To run a declustering analysis on the earthquake catalogue it is necessary to set-up the configuration using a python dictionary (see Appendix \ref{sec:python_guide}). A config file for the \textcite{GardnerKnopoff1974} algorithm, using for example the \textcite{Uhrhammer1986} time-distance windows with equal sized time window for aftershocks and foreshocks, would be created as shown:
 
 \begin{python}[frame=single]
->> from hmtk.seismicity.declusterer.distance_time_windows import\
+>> from openquake.hmtk.seismicity.declusterer.distance_time_windows import\
     UhrhammerWindow
 
 >> declust_config = {
@@ -428,7 +428,7 @@ To run a declustering analysis on the earthquake catalogue it is necessary to se
 To run the declustering algorithm simply import and run the algorithm as shown:
 
 \begin{python}[frame=single]
->> from hmtk.seismicity.declusterer.dec_gardner_knopoff import\
+>> from openquake.hmtk.seismicity.declusterer.dec_gardner_knopoff import\
     GardnerKnopoffType1
 
 >> declustering = GardnerKnopoffType1()
@@ -468,10 +468,10 @@ As with the \textcite{GardnerKnopoff1974} function, the \verb=time_dist_window= 
   
 \begin{python}[frame=single]
 
->> from hmtk.seismicity.declusterer.dec_afteran import\
+>> from openquake.hmtk.seismicity.declusterer.dec_afteran import\
     Afteran
 
->> from hmtk.seismicity.declusterer.distance_time_windows import\
+>> from openquake.hmtk.seismicity.declusterer.distance_time_windows import\
     GardnerKnopoffWindow   
  
 >> declust_config = {
@@ -551,7 +551,7 @@ The algorithm has three configurable options. The \verb=time_bin= parameter desc
 The process of running the algorithm is shown below:
 
 \begin{python}[frame=single]
->> from hmtk.seismicity.completeness.comp_stepp_1971 import\
+>> from openquake.hmtk.seismicity.completeness.comp_stepp_1971 import\
     Stepp1971
 
 >> completeness_algorithm = Stepp1971()
@@ -616,7 +616,7 @@ the number of events in each sub-catalogue.
                  'Average Type': 'Weighted',
                  'reference_magnitude': None}
 
->> from hmtk.seismicity.occurrence.b_maximum_likelihood import\
+>> from openquake.hmtk.seismicity.occurrence.b_maximum_likelihood import\
     BMaxLikelihood
 
 >> recurrence = BMaxLikelihood()
@@ -743,7 +743,7 @@ The execution of the \textcite{Kijko2004} ''fixed-b'' algorithm is as follows:
                   `tolerance': 1.0E-5,  \# Default
                   `maximum_iterations': 1000\} \# Defaults
                        
->> from hmtk.seismicity.max_magnitude.kijko_sellevol_fixed_b\
+>> from openquake.hmtk.seismicity.max_magnitude.kijko_sellevol_fixed_b\
     import KijkoSellevolFixedb
 
 >> mmax_estimator = KijkoSellevolFixedb()
@@ -780,7 +780,7 @@ The execution of the ''uncertain b-value'' estimator is undertaken in a very sim
                   'tolerance': 1.0E-5, 
                   'maximum_iterations': 1000}
                        
->> from hmtk.seismicity.max-magnitude.kijko_sellevol_bayes\
+>> from openquake.hmtk.seismicity.max-magnitude.kijko_sellevol_bayes\
     import KijkoSellevolBayes
 
 >> mmax_estimator = KijkoSellevolBayes()
@@ -814,7 +814,7 @@ Due to the need to define some additional parameters the configuration file is s
                   'tolerance': 1.0E-5, 
                   'maximum_iterations': 1000}
                        
->> from hmtk.seismicity.max-magnitude.kijko_nonparametric_gaussian\
+>> from openquake.hmtk.seismicity.max-magnitude.kijko_nonparametric_gaussian\
      import KijkoNonParametricGaussian
 
 >> mmax_estimator = KijkoNonParametricGaussian()
@@ -846,7 +846,7 @@ The algorithm is slightly simpler to run than the \textcite{Kijko2004} methods; 
 
 >> mmax_config = {'number_bootstraps': 1000}
                        
->> from hmtk.seismicity.max_magnitude.cumulative_moment_release\
+>> from openquake.hmtk.seismicity.max_magnitude.cumulative_moment_release\
      import CumulativeMoment
 
 >> mmax_estimator = CumulativeMoment()
@@ -887,7 +887,7 @@ The first stage is to upload the catalogue into an instance of the catalogue cla
 \begin{python}[frame=single]
 >> input_file = 'path/to/input_file.csv'
 
->> from hmtk.parsers.catalogue.csv_catalogue_parser import\
+>> from openquake.hmtk.parsers.catalogue.csv_catalogue_parser import\
     CsvCatalogueParser
 
 >> parser = CsvCatalogueParser(input_file)
@@ -900,11 +900,11 @@ Next setup the smoothing algorithm using and the corresponding kernel:
 \begin{python}[frame=single]
 
 # Imports the smoothed seismicity algorithm
->> from hmtk.seismicity.smoothing.smoothed_seismicity import\
+>> from openquake.hmtk.seismicity.smoothing.smoothed_seismicity import\
     SmoothedSeismicity
 
 # Imports the Kernel function
->> from hmtk.seismicity.smoothing.kernels.isotropic_gaussian\
+>> from openquake.hmtk.seismicity.smoothing.kernels.isotropic_gaussian\
     import IsotropicGaussian
 
 # Grid limits should be set up as 

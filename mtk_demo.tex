@@ -1,4 +1,4 @@
-The Hazard Modeller's Toolkit (or ``hmtk'') is a Python library of functions written by scientists at the GEM Model Facility, which is intended to provide 
+The Hazard Modeller's Toolkit (or ``openquake.hmtk'') is a Python library of functions written by scientists at the GEM Model Facility, which is intended to provide 
 scientists and engineers with the tools to help create the seismogenic 
 input models that go into the OpenQuake hazard engine. The process of 
 developing building the hazard model is a complex and often challenging 
@@ -23,7 +23,7 @@ The Modeller's Toolkit and associated software are designed for execution
 from the command line. As with OpenQuake, the preferred environment is 
 Ubuntu Linux (11.04 or later). A careful effort has been made to keep 
 the number of additional dependencies to a minimum. No packaged version of the software has been released at the time of writing, so the user must install the dependencies manually. More information regarding the current dependencies of the toolkit can be found at \hfill \\
-\href{http://github.com/GEMScienceTools/hmtk}{http://github.com/GEMScienceTools/hmtk}. 
+\href{http://github.com/GEMScienceTools/openquake.hmtk}{http://github.com/gem/oq-engine}. 
 
 The current dependencies are:
 \begin{itemize}
@@ -76,16 +76,16 @@ Alternatively you can download the code directly into  any current repository wi
 
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 
-~\$ git clone https://github.com/GEMScienceTools/hmtk.git
+~\$ git clone https://github.com/gem/oq-engine.git
 
 \end{Verbatim}
 
 
-The execution of the Modeller's Toolkit is done from within the main directory in which the code is contained. The selection of the algorithm and the general configuration of the software is done via a configuration file (in this example \verb=Nepal_hmtk_demo_config.yml=. This is a YAML (Yet Another Markup Language) file, which can be opened and edited with any common text editor (e.g. vi, emacs, gedit).
+The execution of the Modeller's Toolkit is done from within the main directory in which the code is contained. The selection of the algorithm and the general configuration of the software is done via a configuration file (in this example \verb=Nepal_openquake.hmtk_demo_config.yml=. This is a YAML (Yet Another Markup Language) file, which can be opened and edited with any common text editor (e.g. vi, emacs, gedit).
 
 To run the Nepal "wrapper" code for the Modeller's Toolkit simply move into the directory in which the \verb=main.py= file is found. Once the configuration file is correctly set up, execute via the following command:
 \begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ python hmtk_Nepal_Demo.py --input=Nepal_hmtk_demo_config.yml
+~\$ python openquake.hmtk_Nepal_Demo.py --input=Nepal_openquake.hmtk_demo_config.yml
 \end{Verbatim}
 
 %The \verb=-d= indicates that the program can be run in ''debug'' mode. This will create a log (written automatically to the file \verb=debug.log=) of the processes that are executed inside the toolkit in addition to certain parameters that may be calculated at intermediate steps of the process, but are not written to the output. The \verb=-d= can be omitted if preferred, in which case the program will return only a minimal indication of the progress to the command prompt.

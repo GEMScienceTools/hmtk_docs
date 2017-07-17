@@ -2,7 +2,7 @@
 
 \subsection{The Source Model Format}
 
-The seismic source model formats currently required by the hmtk are the nrml  The source model is both input and output in GEM's NRML (``Natural Risk Markup Language``) format (although support for shapefile input definitions are expected in future releases). However, unlike the OpenQuake engine, for which each source typology must contain all of the necessary attributes, it is recognised that it may be desirable to use the seismic source model with a partially defined source (one for which only the ID, name and geometry are known) in order to make use of the modelling tools. Therefore, the validation checks have been relaxed to allow for data such as the recurrence model, the hypocentral depth distribution and the faulting mechanism to be specified at a later stage. However, if using this minimal format it will not be possible to use the resulting output file in OpenQuake until the remaining information is filled in.  
+The seismic source model formats currently required by the openquake.hmtk are the nrml  The source model is both input and output in GEM's NRML (``Natural Risk Markup Language``) format (although support for shapefile input definitions are expected in future releases). However, unlike the OpenQuake engine, for which each source typology must contain all of the necessary attributes, it is recognised that it may be desirable to use the seismic source model with a partially defined source (one for which only the ID, name and geometry are known) in order to make use of the modelling tools. Therefore, the validation checks have been relaxed to allow for data such as the recurrence model, the hypocentral depth distribution and the faulting mechanism to be specified at a later stage. However, if using this minimal format it will not be possible to use the resulting output file in OpenQuake until the remaining information is filled in.  
 
 A full description of the complete nrml seismogenic source model format is found in the OpenQuake Version 1.0 manual \parencite{crowley2010}. An example of a minimal format is shown below for:
 
@@ -203,7 +203,7 @@ A full description of the complete nrml seismogenic source model format is found
 To load in a source model such as those shown above, in an IPython environment simply execute the following:
 
 \begin{python}[frame=single]
->> from hmtk.parsers.source_model.nrml04_parser import\
+>> from openquake.hmtk.parsers.source_model.nrml04_parser import\
     nrmlSourceModelParser
 
 >> model_filename = 'path/to/source_model_file.xml'
@@ -228,7 +228,7 @@ The HMTK provides a set of classes (tools, in effect) designed to represent the 
 The general source model class can be created using the following function, which at a minimum requires a unique identifier (\verb=identifier=) and a name (\verb=name=):
 
 \begin{python}[frame=single]
->> from hmtk.sources.source_model import mtkSourceModel
+>> from openquake.hmtk.sources.source_model import mtkSourceModel
 >> model1 = mtkSourceModel(identifier="0001",
                            name="Source Model 1")
 \end{python}
@@ -298,7 +298,7 @@ The HMTK point source typology has the following attributes:
 A source is created by:
 
 \begin{python}[frame=single]
->> from hmtk.sources.point_source import mtkPointSource
+>> from openquake.hmtk.sources.point_source import mtkPointSource
 
 >> from openquake.hazardlib.geo.point import Point
 
@@ -319,7 +319,7 @@ The point source class has the following methods:
 \verb;    distance_metric="epicentral", point_depth=None,;\\
 \verb;    upper_eq_depth=None, lower_eq_depth=None);
 
-This selects a catalogue within a distance from the point location. The input \verb=selector= must be an instance of the \verb=hmtk.seismicity.selector.CatalogueSelector= class, \\ \verb=distance= is the distance (in km). Two different selection types (identified using the option \verb=selector_type=, are available: ``circle'' selects events within a circle of radius \verb=distance= from the point, ``square'' selects events within a square grid cell of side length \verb=distance= centred on the points. The distance can be selected in terms of ``epicentral'' or ``hypocentral'' distance. \verb=point_depth= can locate the selection point at a specific depth (only relevant if hypocentral distance is used), whilst \verb=upper_eq_depth= and \verb=lower_eq_depth= limit the selection to earthquakes within the specified upper depth limit and lower depth limit respectively. 
+This selects a catalogue within a distance from the point location. The input \verb=selector= must be an instance of the \verb=openquake.hmtk.seismicity.selector.CatalogueSelector= class, \\ \verb=distance= is the distance (in km). Two different selection types (identified using the option \verb=selector_type=, are available: ``circle'' selects events within a circle of radius \verb=distance= from the point, ``square'' selects events within a square grid cell of side length \verb=distance= centred on the points. The distance can be selected in terms of ``epicentral'' or ``hypocentral'' distance. \verb=point_depth= can locate the selection point at a specific depth (only relevant if hypocentral distance is used), whilst \verb=upper_eq_depth= and \verb=lower_eq_depth= limit the selection to earthquakes within the specified upper depth limit and lower depth limit respectively. 
 
 
 \verb;.create_oqnrml_source(use_defaults=False);
@@ -341,7 +341,7 @@ The HMTK area source typology contains the same attributes as the HMTK point sou
 A source is created by:
 
 \begin{python}[frame=single]
->> from hmtk.sources.point_source import mtkAreaSource
+>> from openquake.hmtk.sources.point_source import mtkAreaSource
 >> from openquake.hazardlib.geo import point, polygon
 # Create a simple polygon
 >> area_boundary = polygon.Polygon([point.Point(30.0, 31.0),
@@ -389,7 +389,7 @@ The HMTK Simple Fault source model is one of two typologies intended to characte
 This class can be created in a slightly different manner when compared to the point and area source classes, as the example below describes:
 
 \begin{python}[frame=single]
->> from hmtk.sources.point_source import mtkSimpleFaultSource
+>> from openquake.hmtk.sources.point_source import mtkSimpleFaultSource
 
 >> from openquake.hazardlib.geo import line, point
 # Create a simple polygon
@@ -434,7 +434,7 @@ The HMTK Complex Fault describes a fault model using the OpenQuake complex fault
 The object can be created in the following manner:
 
 \begin{python}[frame=single]
->> from hmtk.sources.point_source import mtkComplexFaultSource
+>> from openquake.hmtk.sources.point_source import mtkComplexFaultSource
 
 >> from openquake.hazardlib.geo import line, point
 # Create the upper edge of the fault in three dimensions
@@ -460,7 +460,7 @@ The object can be created in the following manner:
 
 The dependency of the HMTK on the openquake hazardlib permits the usage of its seismic hazard calculators for performing small scale PSHA calculations. The motivation for doing so comes primarily from the desire to explore the impact of modelling decisions, not only on the resulting recurrence model but also on the resulting hazard curve. Such sensitivity studies can provide an important insight into which elements of the model impact are most relevant for the seismic hazard analysis.
 
-In the following example we show how to set-up and run a PSHA calculation from an hmtk source model, using one GMPE \parencite{akkar2010} and two intensity measures (PGA and Sa (1.0)). 
+In the following example we show how to set-up and run a PSHA calculation from an openquake.hmtk source model, using one GMPE \parencite{akkar2010} and two intensity measures (PGA and Sa (1.0)). 
 
 \begin{enumerate}
 
@@ -506,7 +506,7 @@ Alternatively if you have your site data in an array (such would be the case if 
 
 \begin{python}[frame=single]
 # For the same sites as in the previous example
->> from hmtk.hazard import site_array_to_collecion
+>> from openquake.hmtk.hazard import site_array_to_collection
 >> site_array = np.array(
     [[30.0, 40.0, 760., 1.0, 100., 5.0, 1.],
      [30.5, 40.5, 500., 1.0, 100., 5.0, 2.],
@@ -536,7 +536,7 @@ Alternatively if you have your site data in an array (such would be the case if 
 \item Run the PSHA calculation
 
 \begin{python}[frame=single]
->> from hmtk.hazard import HMTKHazardCurve
+>> from openquake.hmtk.hazard import HMTKHazardCurve
 >> haz_curves = HMTKHazardCurve(oq_source_model,
                                 sites,
                                 gmpe_model,

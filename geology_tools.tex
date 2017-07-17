@@ -239,7 +239,7 @@ The remaining attributes are not essential and are not used in the calculation a
 
 \subsection{Fault Recurrence Models}
 
-The current implementation of the hmtk supports nine different models for deriving recurrence models from geological parameters. Six different models are provided for exponential distributions, which originate from the study of \textcite{AndersonLuco1983}, one for a ''simple characteristic'' earthquake (used here), a further exponential model \parencite{YoungsCoppersmith1985} and the hybrid characteristic-exponential model also presented by \textcite{YoungsCoppersmith1985}. Models describing exponential recurrence requiring the definition of a ''b-value'' for each source. The various nuances and assumptions behind each model are described in the sources cited here, and the reader is strongly encouraged to refer to the source material for further detail.
+The current implementation of the openquake.hmtk supports nine different models for deriving recurrence models from geological parameters. Six different models are provided for exponential distributions, which originate from the study of \textcite{AndersonLuco1983}, one for a ''simple characteristic'' earthquake (used here), a further exponential model \parencite{YoungsCoppersmith1985} and the hybrid characteristic-exponential model also presented by \textcite{YoungsCoppersmith1985}. Models describing exponential recurrence requiring the definition of a ''b-value'' for each source. The various nuances and assumptions behind each model are described in the sources cited here, and the reader is strongly encouraged to refer to the source material for further detail.
 
 Common to many of these models is the moment magnitude definition of \textcite{HanksKanamori1979}:
 
@@ -339,7 +339,7 @@ The models are then compared, as shown in Figure \ref{fig:anderson_luco_arb}, us
                         and_luc_config2,
                         and_luc_config3]
 # Import geological recurrence model plotting function
->> from hmtk.plotting.faults.geology_mfd_plot import\
+>> from openquake.hmtk.plotting.faults.geology_mfd_plot import\
      plot_recurrence_models
 >> plot_recurrence_models(anderson_luco_arb,
                           area,
@@ -570,7 +570,7 @@ The two \textcite{YoungsCoppersmith1985} distributions are compared in Figure \r
 The particulars of the geological workflow are largely established in the input definition, and not in the configuration file. Execution of the whole process is then relatively simple, so it is broken down here into two steps. The first step simply imports an appropriate parser and loads the fault source. The parser contains a method called \verb=read_file(x)= which takes as an input the desired mesh spacing (in km) used to create the mesh of the fault surface. In the example below this is set to 1.0 km, but for large complex faults (such as large subduction zones) it may be desirable to select a larger spacing to avoid storing a large mesh in RAM.
 
 \begin{python}[frame=single]
->> from hmtk.parsers.faults.fault_yaml_parser import\
+>> from openquake.hmtk.parsers.faults.fault_yaml_parser import\
     FaultYmltoSource
 
 >> input_file = 'path/to/fault_model_file.yml'
@@ -614,7 +614,7 @@ The following example compares the case when epistemic uncertainties are incorpo
 \verb=simple_fault_example_4branch.yml=) is included, which considers two epistemic uncertainties for a specific fault: slip rate and magnitude frequency distribution type. The fault has two estimates of slip rate (5 $mm \ yr^{-1}$ and 7 $mm\ yr^{-1}$), each assigned a weighting of 0.5. Two magnitude frequency distribution types (Characteristic and \textcite{AndersonLuco1983} ``Arbitrary'') are assigned, with weights of 0.7 and 0.3 respectively. The analysis is run, in the manner described previously. Firstly we consider the case when the different options are enumerated (the default option:
 
 \begin{python}[frame=single]
->> from hmtk.parsers.faults.fault_yaml_parser import\
+>> from openquake.hmtk.parsers.faults.fault_yaml_parser import\
     FaultYmltoSource
 >> input_file = \
  'tests/parsers/faults/yaml_examples/

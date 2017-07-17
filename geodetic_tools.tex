@@ -64,7 +64,7 @@ The simplest strain workflow is to implement the model as defined by \textcite{B
 \item To simply load in the csv data the \verb=ReadStrainCsv= tool is used:
 
 \begin{python}[frame=single]
->> from hmtk.parsers.strain.strain_csv_parser import\
+>> from openquake.hmtk.parsers.strain.strain_csv_parser import\
     ReadStrainCsv, WriteStrainCsv
 
 # Load the file
@@ -76,7 +76,7 @@ The simplest strain workflow is to implement the model as defined by \textcite{B
 
 \begin{python}[frame=single]
 # (Optional) To assign regionalisation from Kreemer et al. 2003
->> from hmtk.strain.regionalisation.kreemer_regionalisation\
+>> from openquake.hmtk.strain.regionalisation.kreemer_regionalisation\
     import KreemerRegionalisation
 # (Optional)
 >> regionalisation = KreemerRegionalisation()
@@ -88,7 +88,7 @@ The simplest strain workflow is to implement the model as defined by \textcite{B
 \item The next step is to implement the Shift calculations. The Shift module must first be imported and the magnitudes for which the activity rates are to be calculated must be defined as a list (or array). The strain data is input into the calculation along with two other configurable options: \verb=cumulative= decides whether it is the cumulative rate of events above each magnitude (\verb=True=), or the incremental activity rate for the bin $M \left( i \right):M \left( {i + 1} \right)$ (\verb=False=), \verb=in_seconds= decides whether to return the rates per second for consistency with \textcite{Bird_etal2010} (\verb=True=) or as annual rates (\verb=False=). 
 
 \begin{python}[frame=single]
->> from hmtk.strain.shift import Shift
+>> from openquake.hmtk.strain.shift import Shift
 # In this example, calculate cumulative rates 
 # for M > 5., 6., 7., 8.
 >> magnitudes = [5., 6., 7., 8.]
