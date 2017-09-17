@@ -1,0 +1,14 @@
+rm hmtk_tutorial.acn
+rm hmtk_tutorial.aux
+rm hmtk_tutorial.bbl
+rm hmtk_tutorial.bcf
+rm hmtk_tutorial.blg
+rm hmtk_tutorial.dvi
+rm hmtk_tutorial.glo
+rm hmtk_tutorial.idx
+rm hmtk_tutorial.ist
+rm hmtk_tutorial.log
+rm hmtk_tutorial.out
+rm hmtk_tutorial.pdf
+rm hmtk_tutorial.ps
+rm hmtk_tutorial.toc
