@@ -1,29 +1,25 @@
-The Hazard Modeller's Toolkit (or HMTK) is a Python 2.7 library of functions written by scientists at the GEM Model Facility, which is intended to provide 
+The Hazard Modeller's Toolkit (or ``openquake.hmtk'') is a Python library of functions originally written by scientists at the GEM Model Facility, and now maintained by the GEM Foundation Secretariat. The HMTK is intended to provide 
 scientists and engineers with the tools to help create the seismogenic 
 input models that go into the OpenQuake hazard engine. The process of 
-developing building the hazard model is a complex and often challenging 
-one, and whilst many aspect of the practice are relatively common, the 
+developing a hazard model is a complex and often challenging 
+one, and while many aspects of the practice are relatively common, the 
 choice of certain methods or tools for undertaking each step can be a 
 matter of judgement. The intention of this software is to provide 
 scientists and engineers with the means to apply many of the most 
 commonly used algorithms for preparing seismogenic source models 
-using seismicity and geological data. In forthcoming 
-versions will hope to make available more tools for the current processes
-indicated here, and to integrate new functionalities for i) merging and
-homogenisation of earthquake catalogues, ii) calculation of activity 
-rates from geological and geodetic data, iii) testing and interpretation
-of Ground Motion Prediction Equations, and iv) integration of 
-seismological and geological data and treatment of uncertainty 
-in the construction of seismogenic source zones.
+using seismicitiy and geological data. 
+
+This manual is Version 2.0 of the HMTK tutorial. The major differences in the toolkit and the tutorial compared to the original release are i) the HMTK is now contained in the OpenQuake Engine, and does not require any separate installation, ii) the OpenQuake $hazardlib$ source classes have been adopted in order to ensure full compatibility and consistency between the two libraries, and iii) the plotting functions that produce maps now use Generic Mapping Tools (GMT) and Python scripts housed in the OpenQuake Model Building Toolkit. 
+
 
 \section{The Development Process}
 
-The Hazard Modeller's Toolkit is an activity that has been under development in GEM and has followed different stages. The present decision to make the modelling tools available as a library reflects the general trend in the OpenQuake development process toward having a modular software framework. This means that the modelling - hazard - risk process is separated into libraries (e.g. oq-hazardlib, oq-risklib) that can be utilised as standalone tools, in addition to being integrated within the OpenQuake engine and platform. This is designed to allow for flexibility in the process, and also allow the user to begin to utilise (possibly in other contexts) functions and classes that are intended to address particular stages of the calculation. Such an approach ensures that each sub-component of the toolkit is fully tested, with a minimal degree of duplication in the testing process. In the HMTK this is taken a step further, as we are aiming to provide the hazard modeller as much control over the modelling process as possible, whilst retaining as complete a level of code testing as is practical to implement given the development resources available. 
+The Hazard Modeller's Toolkit is developed by GEM, and has occurred in several different stages. The present version makes the modelling tools available as a library, reflecting the general trend in the OpenQuake development process toward having a modular software framework. This means that the modelling - hazard - risk process is separated into libraries (e.g. oq-hazardlib, oq-risklib) that can be utilised as standalone tools, in addition to being integrated within the OpenQuake engine and platform. This is designed to allow for flexibility in the process, and also allow the user to begin to utilise (possibly in other contexts) functions and classes that are intended to address particular stages of the calculation. Such an approach ensures that each sub-component of the toolkit is fully tested, with a minimal degree of duplication in the testing process. In the HMTK this is taken a step further, as we are aiming to provide the hazard modeller as much control over the modelling process as possible, while retaining as complete a level of code testing as is practical to implement given the development resources available. 
 
-The change in the HMTK development process that leads towards the current version is designed to address particular objectives:
+The HMTK aims to address particular objectives:
 
 \begin{description}
-\item[Portability] Reduction in the number of Python dependencies to allow for a greater degree of cross-platform deployment than is currently feasible with the main OpenQuake engine
+\item[Portability] Reduction in the number of Python dependencies to allow for a high degree of cross-platform deployment 
 
 \item[Adaptability] Cleaner separation of methods into self-contained components that can be implemented and tested within requiring adaption of the remainder of the code.
 
@@ -38,105 +34,10 @@ The change in the HMTK development process that leads towards the current versio
 \section{Getting Started and Running the Software}
 
 The Modeller's Toolkit and associated software are designed for execution 
-from the command line. As with OpenQuake, the preferred environment is 
-Ubuntu Linux (12.04 or later). A careful effort has been made to keep 
-the number of additional dependencies to a minimum. No packaged version of the software has been released at the time of writing, so the user must install the dependencies manually. More information regarding the current dependencies of the toolkit can be found at \hfill \\
-\href{https://github.com/gem/oq-engine}{https://github.com/gem/oq-engine}. 
+from the command line. As with the OpenQuake Engine, the preferred environment is 
+Ubuntu Linux (12.04 or later), but is also supported on other operating systems.
+Since the HMTK is contained by the OpenQuake Engine, all dependencies required by the HMTK itself are installed alongside the OpenQuake Engine. For more information regarding the current dependencies and installing the OpenQuake Engine, see \href{https://github.com/gem/oq-engine}{https://github.com/gem/oq-engine}.
 
-The current dependencies are:
-\begin{itemize}
-\item Numpy and Scipy (included in the standard OpenQuake installation)
-\item Shapely (included in the standard OpenQuake installation)
-\item Openquake nrmllib (included in the standard OpenQuake installation) 
-    \hfill \\ (\href{http:/github.com/gem/oq-nrmllib}{http:/github.com/gem/oq-nrmllib}) 
-\item Openquake hazardlib (included in the standard OpenQuake installation) 
-    \hfill \\ (\href{http:/github.com/gem/oq-hazardlib}{http:/github.com/gem/oq-hazardlib})
-\item Matplotlib (\href{http://matplotlib.org/}{http://matplotlib.org/})
-\item PyYaml
-\item Python Decorator
-\end{itemize}
-
-If the OpenQuake Hazard Library (oq-hazardlib) and the OpenQuake Nrml library are already installed on your system (as would be the case if a full installation of the OpenQuake-engine has already been successfully installed) then both dependencies are already available. If this is not the case, however, you will need to install the packages manually. For Linux and OSX users, the recommended approach is to run:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ sudo pip install -e https://github.com/gem/oq-hazardlib.git
-~\$ sudo pip install -e https://github.com/gem/oq-nrmllib.git
-\end{Verbatim}
-
-For Windows users, the recommended approach for windows users would be to use Ubuntu Linux 12.04 within a Virtual Machine. However, instructions to install natively in Windows can be found in due course.
-
-The Matplotlib, Pyyaml and Decorator dependencies are installed in the library for the demos, but can be installed easily from the command line by:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ sudo pip install matplotlib
-~\$ sudo pip install pyyaml
-~\$ sudo pip install decorator
-\end{Verbatim}
-
-To enable usage of the openquake.hmtk within any location in the operating system, OSX and Linux users should add the folder location manually to the command line profile file. This can be done as follows:
-
-\begin{enumerate}
-\item Using a command line text editor (e.g. VIM), open the \verb=~/.profile= folder as follows:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ vim ~/.profile
-\end{Verbatim}
-
-\item At the bottom of the profile file (if one does not exist it will be created) add the line:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-export PYTHONPATH=/path/to/openquake.hmtk/folder/:\$PYTHONPATH
-\end{Verbatim}
-
-Where \verb=/path/to/openquake.hmtk/folder/= is the system path to the location of the openquake.hmtk folder (use the command \verb=pwd= from within the openquake.hmtk folder to view the full system path).
-
-\item Re-source the bash shell via the command
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ source ~/.profile
-\end{Verbatim}
- 
-\end{enumerate}
-
-\subsubsection{Windows Installation}
-
-Although this installation has been primarily tested in a Linux/Unix environment it is possible to install natively in Windows using the following process. This assumes that no other version of Python is installed in your windows environment.
-
-The easiest way to install the OpenQuake hazardlib and nrmllib is by virtue of the PythonXY program \href{http://code.google.com/p/pythonxy/}{http://code.google.com/p/pythonxy/}. This is a free and open python user interface, which will bring in almost all of the dependencies the OpenQuake libraries need. The an installer for the latest version of PythonXY can be downloaded from here: \\ \href{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}{http://code.google.com/p/pythonxy/wiki/Downloads?tm=2}.
-
-Click on the executable and follow the instructions (the installation may take up to half an hour or more, depending on the system). It is strongly recommended that the use opt for the ``\textbf{FULL}'' installation, which should bring in almost all of the dependencies needed for installing the OpenQuake hazard library. 
-
-For the oq-nrmllib it is necessary to install the Lxml library (\href{http://lxml.de}{http://lxml.de}). This is not officially supported for Windows, so it is recommended (by Python developers themselves!) to install the unofficial Lxml binding from here: \footnote{\href{http://www.lfd.uci.edu/~gohlke/pythonlibs/}{http://www.lfd.uci.edu/~gohlke/pythonlibs/}}. Download and then run the 32-bit package named ``lxml-\#.\#.\#.win32-py2.7.exe''.
-
-Next you will need to install the op-hazardlib and oq-nrmllib. From the web repositories listed previously click the button ``Download Zip'', then extract contents to the folders \verb=C:/oq-hazardlib= and \verb=C:/oq-nrmllib= respectively.
-
-Now open up an enhanced IPython console. Go to Start $->$ Python(xy) $->$ Enhanced Consoles $->$ IPython (sh). This will open up an Ipython console terminal. To install the oq-hazardlib, at the console prompt type:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$: cd C:/oq-hazardlib/
-~\$: python setup.py install build --compiler=mingw32
-\end{Verbatim}
-
-This will install the oq-hazardlib with the full C-extensions, which speed up some of the geometry calculations. Then do the same with the oq-nrmllib.
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$: cd C:/oq-hazardlib/
-~\$: python setup.py install
-\end{Verbatim}
-
-Then close the console by typing \verb=exit=. 
-
-Finally, download the zipped folder of the openquake.hmtk from the github repository and unzip to a folder of your choosing. To allow for usage of the openquake.hmtk throughout your operating system, do the following: 
-
-\begin{enumerate}
-\item From the desktop, right-click \textbf{My Computer} and open \textbf{Properties}
-\item In the ``System Properties'' window click on the \textbf{Advanced} tab.
-\item From the ``Advanced'' section open the \textbf{Environment Variables}.
-\item In the ``Environment Variables'' you sill see a list of ``System Variables'', select ``Path'' and ``Edit''.
-\item Add the path to the openquake.hmtk directory to the list of folders then save.
-\end{enumerate}
-
-After this process it may be necessary to restart PythonXY.
 
 \subsection{Current Features}
 
@@ -211,98 +112,167 @@ started via the command:
 
 \begin{figure}[htb]
   \centering
-      \includegraphics[width=\textwidth]{./figures/hmtk_notebook_screenshot.eps}
+      \includegraphics[width=\textwidth]{./figures_v2/hmtk_notebook_screenshot.jpg}
   \caption{Example of the openquake.hmtk embedded in an IPython Notebook}
   \label{fig:notebook}
 \end{figure}
 
-%The Modeller's Toolkit itself requires no specific installation. In a Unix/Linux environment you can simply download the code as a zipped package from the website shown previously, then unzip and move into the code directory.
-%Alternatively you can download the code directly into  any current repository with the command
-
-%\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-%
-%~\$ git clone https://github.com/gem/oq-engine.git
-%
-%\end{Verbatim}
 
 \subsection{Visualisation}
 
-In addition to the scientific tools, which will be described in detail in due course, the openquake.hmtk also has a set of functionalities for visualisation of data and results pertinent to the preparation of seismic hazard input models. Whilst not necessarily an essential component of the openquake.hmtk, the usage of the plotting functions can facilitate model development. Particular visualisation functions shall be referred to where relevant for the particular tool or data set. 
+In addition to the scientific tools, which will be described in detail in due course, the original version of the openquake.hmtk also included a set of functionalities for visualisation of data and results pertinent to the preparation of seismic hazard input models. While not considered an essential component of the openquake.hmtk, the usage of the plotting functions can facilitate model development. Particular visualisation functions shall be referred to where relevant for the particular tool or data set. 
+
+The current version of the HMTK includes most of the original visualisation tools. However, the tools for map creation have been depracated, and replaced by a set of mapping functions in the \href{https://github.com/GEMScienceTools/oq-mbtk/tree/master/openquake}{OpenQuake Model Building Toolkit (MBTK)}. The tools now use \href{https://www.generic-mapping-tools.org}{Generic Mapping Tools (GMT)}, and so were moved outside of the HMTK library as to not add GMT as a dependency of the OpenQuake Engine. However, the mapping functions are still described in this tutorial in order to provide users with a replacement to the depracated functions. 
+
+\subsubsection{Mapping tools: additional setup}
+Within the plotting tools is a set of methods to create maps of geospatial data; these tools are housed in the MBTK. Use of the mapping tools requires the following additional package installations:\\
+
+\begin{enumerate}
+	\item \href{https://www.generic-mapping-tools.org/download/}{GMT} version 6.0 or later.
+	\item \href{https://github.com/GEMScienceTools/oq-mbtk/tree/master/openquake}{MBTK}\\
+\end{enumerate}
+
+The functions of \cprotect{\href{https://github.com/GEMScienceTools/oq-mbtk/tree/master/openquake/plt}}{\verb=openquake.plt.mapping=} can also be used independently of the MBTK (NB: the descriptions herein assume that mapping functions are called through the MBTK). 
 
 \subsubsection{Map Creation}
-
-Contained within the existing plotting tools is a set of functions to create maps of geospatial data. To do this, the openquake.hmtk requires the Matplotlib "Basemap" add-on, which can also be installed from the command line using the Python Package Manager (pip) for OSX/Linux environments:
-
-\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
-~\$ sudo pip install basemap
-\end{Verbatim}   
-
-Or, for Windows users, can be downloaded and installed from\\ \href{http://matplotlib.org/basemap/users/download.html}{http://matplotlib.org/basemap/users/download.html}. 
+An IPython Notebook demonstrating how to use the mapping methods can be found \href{https://github.com/GEMScienceTools/oq-mbtk/tree/master/openquake/plt/demo}{in the MBTK}. The basic functionalities are described herein.
 
 To set-up a simple basemap it is necessary to define the configuration of the plot (such as spatial limit and coastline resolution). This is done as follows:
 
-%\begin{Verbatim}[frame=single, commandchars=\\\{\}, fontsize=\scriptsize]
 \begin{python}[frame=single]
-In [1]: from openquake.hmtk.plotting.mapping import HMTKBaseMap
+In [1]: from openquake.plt.mapping import HMTKBaseMap
 
-In [2]: map_config = \{"min_lon": 18.0,
-                       "max_lon": 32.0,
+In [2]: map_config = {"min_lon": 18.0,
+                      "max_lon": 32.0,
                        "min_lat": 33.0,
                        "max_lat": 43.0,
-                       "resolution": "h"\}
+		       "title": "Title of Map"}
 
-In [3]: basemap1 = HMTKBaseMap(map_config, "Title of Map")
+In [3]: basemap1 = HMTKBaseMap(map_config)
 \end{python}
-%\end{Verbatim}  
 
-\verb=HMTKBaseMap= is instantiated with a dictionary of configuration parameters: minimum longitude (\verb=min_lon=), maximum longitude (\verb=max_lon=), minimum latitude (\verb=min_lat=), maximum latitude (\verb=max_lat=). The setting \verb=resolution= determines the coastline resolution: `c' (crude), `l' (low), `i' (intermediate), `h' (high) and `f' (full).
+\verb=HMTKBaseMap= is instantiated with a dictionary of configuration parameters: minimum longitude (\verb=min_lon=), maximum longitude (\verb=max_lon=), minimum latitude (\verb=min_lat=), maximum latitude (\verb=max_lat=). The map title (\verb=title=) can also be specified.
 
-\noindent \textbf{N.B. The resolution of the coastline boundary can be computationally demanding, depending on the application. For very large scale (e.g. continent or global) it is recommended to use the `c' or `l' settings, whilst for maps of the order of $20^{\circ} \times 20^{\circ}$ or better, the `h' setting can be used.} 
+A few other configurations can be passed to \verb=HMTKBaseMap= via keyword parameters during the map instantiation:
 
-The class \verb=HMTKBaseMap= contains a set of methods for mapping other data for model building:
 \begin{itemize}
-\item \verb;.add_catalogue(catalogue, overlay=False);
+	\item \verb=projection=: String beginning with '-J' that indicates the map projection, and optionally central meridian and scaling, following the GMT syntax (\href{http://gmt.soest.hawaii.edu/doc/latest/gmt.html\#j-full}{GMT Map Projections}). The default `-JM15c' is a Mercator projection 15 cm wide.
+\item \verb=lat_lon_spacing=: Indicates the spacing of latitude and longitude tickmarks. The default is 2 degrees.
+\item \verb=output_folder=: Denotes the output directory for the final map and associated files (if saved, see \verb=.savemap=) relative to the local path. The \verb=output_folder= is immeidately created by \verb=HMTKBaseMap=, and used for all temporary files created during the mapping process. The default is \textit{gmt}. 
+\item \verb=overwrite=: If True, gives permission to overwrite all existing files in the specified \verb=output_folder=.\\
+\end{itemize}
 
-This function will overlay an earthquake catalogue onto the basemap. The input value \verb=catalogue= is the earthquake catalogue as an instance of the class \\\verb=openquake.hmtk.seismicity.catalogue.Catalogue= (see the next section for details), whilst the parameter \verb=overlay= indicates whether the use expects to add another layer on top of the map (True) or whether to close the image to overlaying (False), as would be the case when the image is ready for exporting. An example map for the Aegean is shown in Figure \ref{fig:eqcat_simple}.
-   
+\noindent The class \verb=HMTKBaseMap= contains a set of methods for mapping catalogue data or simplified source models:\\
+
+\noindent \verb;.add_catalogue(cat, scale=0.05, cpt_file=`tmp.cpt', color_field=`depth',;\\
+		\verb;logscale=True);\\
+
+\noindent This function will overlay an earthquake catalogue onto the basemap. The input value \verb=cat= is the earthquake catalogue as an instance of the class \\\verb=openquake.hmtk.seismicity.catalogue.Catalogue= (see the next section for details). The catalogue is the only mandatory parameter, but the user can also specify the following optional parameters:\\
+
+\begin{itemize}
+	\item \verb=scale=: a scaling coefficient that sets the symbol size per magnitude $m$. Size follows the equation ${\verb=scale=}*10^{(-1.5+m*0.3)}$, where m is magnitude. See GMT documentation.
+	\item \verb=cpt_file=: name of an existing color pallet to color earthquake markers. If not specified, the default "tmp.cpt" is generated based on the catalogue \verb=color_field=
+	\item \verb=color_field=: the parameter used to color the earthquake markers. The given field must correspond to the catalogue header. If not specified, the markers are colored by depth.
+	\item \verb=logscale=: if `True', generates the color pallet according to a log scale. `False' uses a linear color scale. Default is `True'. Ignored if \verb=cpt_file= is specified.\\
+\end{itemize}
+
+
 \begin{figure}[htb]
   \centering
-      \includegraphics[trim=20mm 14mm 1mm 1mm, clip, width=\textwidth]{./figures/EQCatalogueSimple.eps}
+      \includegraphics[width=\textwidth]{./figures_v2/catalogue.jpg}
+      %\includegraphics[trim=20mm 14mm 1mm 1mm, clip, width=\textwidth]{./figures_v2/catalogue.jpg}
   \caption{Example visualisation of an Earthquake Catalogue}
   \label{fig:eqcat_simple}
 \end{figure}
 
-\item \verb;.add_source_model(model, area_border='k-', border_width='1.0',;\\
-    \verb;    point_marker='ks', point_size=2.0, overlay=False);
 
-This function adds a source model to the basemap. The input value \verb=model= is an instance of the class \verb=openquake.hmtk.sources.source_model.mtkSourceModel= (see next section). The remaining parameters control the plot settings: i) \verb=area_border= (the colour of the borders of an area source), ii) \verb=border_width= (the line width of the area source border), iii) \verb=point_marker= (the marker style for a point source), iv) \verb=point_size= (the size of the point source). An example of a source model plot is shown in \ref{fig:source_model_map}.
+\noindent \verb;.add_source_model(model);\\
+
+\noindent This method adds a source model to the basemap. The input value \verb=model= is an instance of the class \verb=openquake.hazardlib.nrml.SourceModel= (see section \textbf{TODO -> this is replacing the mtk source classes}). An example of a source model plot is shown in \ref{fig:source_model_map}.
+
+NB: At present, only the following source typologies can be plotted automatically:
+
+\begin{itemize}
+\item Point sources
+\item Simple faults
+\item Complex faults
+\item Area sources\\
+\end{itemize}
+
+Non-parametric sources and multi-point sources will be added soon.\\
  
 \begin{figure}[htb]
   \centering
-      \includegraphics[trim=20mm 14mm 20mm 14mm, clip, width=\textwidth]{./figures/source_model_map.eps}
-  \caption{Example visualisation of a source model with area sources (blue) and simple fault sources (black)}
+      \includegraphics[width=\textwidth]{./figures_v2/PNGSourceModel.jpg}
+	\caption{Example visualisation of a source model for Papua New Guinea \textcite{ghasemi2016} with area sources (blue) and a complex fault.}
   \label{fig:source_model_map}
 \end{figure}
 
-\item \verb;.add_colour_scaled_points(longitude, latitude, data, shape='s',;\\
-\verb;    alpha=1.0, size=20, norm=None, overlay=False);
 
-Overlays a set of data points with colour scaled according to the \verb=data= value.
+\noindent \verb;.add_colour_scaled_points(longitude, latitude, data, label=`', shape=`-Ss', ;\\
+\verb;                                    size=0.3, logscale=False);\\
 
-\item \verb;.add_size_scaled_points(longitude, latitude, data, shape='o',;\\
-\verb;    logplot=False, alpha=1.0, colour='b', smin=2.0, sscale=2.0,;\\
-\verb;    overlay=False);
-
-Overlays a set of data points with size scaled according to the \verb=data= value.
+\noindent This method overlays a set of data points with colour scaled according to the \verb=data= values. Three data arrays are required: one each with the \verb=longitude= and \verb=latitude= coordinates of the data points, and \verb=data=, a set of scalar values (e.g. magnitude or depth, if plotting an earthquake catalogue) associated with those points. In addition to these, the method takes four optional keyword parameters:\\
+\begin{itemize}
+\item \verb=label=: a string used to label the color scale; corresponds to \verb=data=
+\item \verb=shape=: a string indicating the shape of the data markers, using GMT syntax starting with `-S' (see \href{https://docs.generic-mapping-tools.org/latest/psxy.html\#s}{GMT psxy markers}. The default, `-Ss' is squares.
+\item \verb=size=: the size in cm of the plotted markers (see \href{https://docs.generic-mapping-tools.org/latest/psxy.html\#s}{GMT psxy markers}). Default is 0.3 cm.
+\item \verb=logscale=: if True, use a logscale to create the colorbar. Default is False.\\
 \end{itemize}
- 
- 
+
+\begin{figure}[htb]
+  \centering
+      \includegraphics[width=\textwidth]{./figures_v2/colorscaled.jpg}
+	\caption{Example of a seismicity catalogue with color scaled by magnitude.}
+  \label{fig:cat_color_scaled}
+\end{figure}
 
 
+\noindent \verb;.add_size_scaled_points(longitude, latitude, data, shape=`-Ss',;\\
+\verb;                       logplot=False, color=`blue', smin=0.01, coeff=1.0, ;\\
+\verb;                       sscale=2.0, label=`', legend=True);\\
 
+\noindent This method overlays a set of data points with size scaled according to the \verb=data= values. Three data arrays are required: one each with the \verb=longitude= and \verb=latitude= coordinates of points to be plotted, and \verb=data=, a set of scalar values associated with those points. In addition to these, the method takes eight optional keyword parameters:\\
 
+\begin{itemize}
+\item \verb=shape=: a string indicating the shape of the data markers, using GMT syntax starting with `-S' (see \href{https://docs.generic-mapping-tools.org/latest/psxy.html\#s}{GMT psxy markers}. The default, `-Ss' is squares.
+\item \verb=logplot=: if True, use a logscale to create the marker sizes. Default is False.
+\item \verb=color=: a string that indicates the marker color (see \href{https://docs.generic-mapping-tools.org/latest/psxy.html\#w}{GMT psxy markers}. Default is `blue'.
+\item \verb=smin=: size of the smallest symbol in cm. Marker size is computed as\\ ${\verb=smin=}+{\verb=coeff=}\times {\verb=data=}^{\verb=sscale=}$. Default is 0.01 cm.
+\item \verb=coeff=: used with \verb=sscale= and \verb=smin= to set the marker sizes. Default is 1.0.
+\item \verb=sscale=: used with \verb=coeff= and \verb=smin= to set the marker sizes. Default is 2.0.
+\item \verb=label=: a string that corresponds to the \verb=data= array
+\item \verb=legend=: if True, adds a legend to the plot. Default is True. \\
+\end{itemize}
 
+\begin{figure}[htb]
+  \centering
+      \includegraphics[width=\textwidth]{./figures_v2/sizescaled.jpg}
+	\caption{Example of a seismicity catalogue with size scaled by magnitude.}
+  \label{fig:source_model_map}
+\end{figure}
 
+\noindent \verb;.add_focal_mechanism(filename, mech_format);\\
 
+\noindent This method overlays focal mechanisms. The string \verb=filename= indicates a file containing focal mechanism data. \verb=mech_format= is a string contained by quotations used to indicate the data format used by \verb=filename=, allowing two options---focal mechanism (`FM') and seismic moment tensor (`MT')---both using the Harvard CMT convention, as described by \href{https://docs.generic-mapping-tools.org/latest/supplements/seis/psmeca.html?highlight=psmeca\#s}{GMT psmeca}.\\
 
+\noindent \verb;.savemap(filename=None, save_script=False, verb=False);\\
+
+An instance of \verb=HMTKBaseMap= is not automatically saved. In order to do so, the method \verb=.savemap()= must be called, finalizing and executing the GMT script. The method can take the following three keyword arguments:\\
+
+\begin{itemize}
+\item \verb=filename=: a string used to name the map, which includes a suffix (limited to `.pdf', `.png', and `.jpg') indicating the desired file type. If not specified, the map is saved as $map.pdf$ in the directory \verb=output_folder= that was assigned during the \verb=HMTKBaseMap= instantiatation.
+\item \verb=save_script=: if True, the GMT commands are saved to a shell script, and this with all files needed to create the map are saved in \verb=output_folder=. If False (the default), all the temporary files are erased and only the map is saved.
+\item \verb=verb= (verbose): if True, GMT commands are printed as they are executed.\\
+\end{itemize}
+
+The \verb=save_script= option gives the user more flexibility to modify the plot settings than are available through the methods, while providing the structure of the GMT script as a starting point. NB: Take care not to overwrite scripts that have been customized by rerunning the mapping code! \\
+
+The \verb=.savemap()= method is used as follows (continuing from the above Python lines):\\
+
+\begin{python}[frame=single]
+In [4]: finame = 'map_demo.pdf'
+
+In [5]: basemap1.savemap(filename=finame, save_script=True)
+\end{python}
 

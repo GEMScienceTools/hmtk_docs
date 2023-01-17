@@ -1,22 +1,26 @@
 The Hazard Modeller's Toolkit (or ``openquake.hmtk'') is a Python library of functions written by scientists at the GEM Model Facility, which is intended to provide 
 scientists and engineers with the tools to help create the seismogenic 
 input models that go into the OpenQuake hazard engine. The process of 
-developing building the hazard model is a complex and often challenging 
-one, and whilst many aspect of the practice are relatively common, the 
+developing a hazard model is a complex and often challenging 
+one, and while many aspects of the practice are relatively common, the 
 choice of certain methods or tools for undertaking each step can be a 
 matter of judgement. The intention of this software is to provide 
 scientists and engineers with the means to apply many of the most 
 commonly used algorithms for preparing seismogenic source models 
-using seismicitiy and geological data. It is still in an early 
-stage of development and the current versions contain only a preliminary
-set of tools for undertaking the necessary workflows. In forthcoming 
-versions will hope to make available more tools for the current processes
-indicated here, and to integrate new functionalities for i) merging and
-homogenisation of earthquake catalogues, ii) calculation of activity 
-rates from geological and geodetic data, iii) testing and interpretation
-of Ground Motion Prediction Equations, and iv) integration of 
-seismological and geological data and treatment of uncertainty 
-in the construction of seismogenic source zones.
+using seismicitiy and geological data. 
+
+This manual is Version 2.0 of the HMTK tutorial. The major differences in the toolkit and the tutorial compared to the original release are i) the HMTK is now contained in the OpenQuake Engine, and does not require any separate installation, ii) the OpenQuake $hazardlib$ source classes have been adopted in order to ensure full compatibility and consistency between the two libraries, and iii) the plotting functions that produce maps now use Generic Mapping Tools (GMT) and Python scripts housed in the OpenQuake Model Building Toolkit. 
+
+%It is still in an early 
+%stage of development and the current versions contain only a preliminary
+%set of tools for undertaking the necessary workflows. In forthcoming 
+%versions will hope to make available more tools for the current processes
+%indicated here, and to integrate new functionalities for i) merging and
+%homogenisation of earthquake catalogues, ii) calculation of activity 
+%rates from geological and geodetic data, iii) testing and interpretation
+%of Ground Motion Prediction Equations, and iv) integration of 
+%seismological and geological data and treatment of uncertainty 
+%in the construction of seismogenic source zones.
 
 \section{Getting Started and Running the Software}
 The Modeller's Toolkit and associated software are designed for execution 
